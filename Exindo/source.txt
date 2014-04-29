@@ -1,0 +1,4 @@
+slider = http://tympanus.net/codrops/2011/01/03/parallax-slider/
+menu bar = http://tympanus.net/codrops/2013/03/05/horizontal-drop-down-menu/
+rss = https://github.com/sdepold/jquery-rss
+modal login box = http://www.alessioatzeni.com/blog/login-box-modal-dialog-window-with-css-and-jquery/

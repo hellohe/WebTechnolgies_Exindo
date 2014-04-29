@@ -1,0 +1,119 @@
+<html>
+<head>
+<style>
+.rate_widget {
+    border:     1px solid #CCC;
+    overflow:   visible;
+    padding:    10px;
+    position:   relative;
+    width:      270px;
+    height:     54px;
+}
+.ratings_stars {
+    background: url('images/starEmpty.png') no-repeat;
+    float:      left;
+    height:     50px;
+    padding:    2px;
+    width:      50px;
+}
+.ratings_vote {
+    background: url('images/starFull.png') no-repeat;
+}
+.ratings_over {
+    background: url('images/starHighlight.png') no-repeat;
+}
+.total_votes {
+    background: #eaeaea;
+    top: 75px;
+    left: 0;
+    padding: 5px;
+    position: absolute; 
+} 
+</style>
+<!-- change to local jquery-->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+//retrieve initial value from database
+$(document).ready(function() {
+	$('.rate_widget').each(function(i) {
+		var widget = this;
+		var out_data = {
+			widget_id : $(widget).attr('id'),
+			fetch: 1
+		};
+		$.post(
+			'RatingSystem.php',
+			out_data,
+			function(response) {
+				$(widget).data( 'fsr', response );
+				set_votes(widget);
+			},
+			'json'
+		);
+	});
+	
+	//change star on hover
+	$('.ratings_stars').hover(
+		// mouseover
+		function() {
+			$(this).prevAll().andSelf().addClass('ratings_over');
+			$(this).nextAll().removeClass('ratings_vote');
+		},
+		// mouseout
+		function() {
+			$(this).prevAll().andSelf().removeClass('ratings_over');
+			set_votes($(this).parent());
+		}
+	);
+	
+	//send the vote to database
+	$('.ratings_stars').bind('click', function() {
+		var star = this;
+		var widget = $(this).parent();
+		
+		var clicked_data = {
+			clicked_on : $(star).attr('class'),
+			widget_id : $(star).parent().attr('id')
+		};
+		$.post(
+			'RatingSystem.php',
+			clicked_data,
+			function(response) {
+				widget.data( 'fsr', response );
+				set_votes(widget);
+			},
+			'json'
+		); 
+	});
+});
+
+//refresh the stars and vote values
+function set_votes(widget) {
+	var votes = $(widget).data('fsr').number_votes;
+	var exact = $(widget).data('fsr').dec_avg;
+	var avg = Math.round(exact);
+	
+	//window.console && console.log('and now in set_votes, it thinks the fsr is ' + $(widget).data('fsr').number_votes);
+	
+	$(widget).find('.star_' + avg).prevAll().andSelf().addClass('ratings_vote');
+	$(widget).find('.star_' + avg).nextAll().removeClass('ratings_vote'); 
+	$(widget).find('.total_votes').text( votes + ' votes recorded (' + exact + ' rating)' );
+}
+</script>
+</head>
+
+<body>
+<div class='movie_choice'>
+    Rate: Raiders of the Lost Ark
+	<!--change div id="r1" to article title-->
+    <div id="r1" class="rate_widget">
+        <div class="star_1 ratings_stars"></div>
+        <div class="star_2 ratings_stars"></div>
+        <div class="star_3 ratings_stars"></div>
+        <div class="star_4 ratings_stars"></div>
+        <div class="star_5 ratings_stars"></div>
+        <div class="total_votes">vote data</div>
+    </div>
+</div>
+</body>
+</html>

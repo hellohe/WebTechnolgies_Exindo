@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Banten | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> Banten </h1>
+            <img src="images/place/Rhino-Ujung-Kulon-National-Park-509x382.jpg" />
+            <div style="margin-left:250px;">
+            	<h3>Ujung Kulon National Park</h3>
+            
+            	<p>The last sanctuary of the Javan rhinoceros, the Ujung Kulon National Park is the triangular peninsula situated at the south western-most tip of Java. Ujung Kulon is Indonesia’s first and prime National Park, which was designated as a nature reserve since 1921.  This is the largest remaining lowland tropical rainforest ecosystem in West Java. And, together with the awesome Krakatau volcano the 137,000 hectares Park was declared Natural World Heritage Site by UNESCO.
+Ujung Kulon is the habitat of the rhino (badak) of which only 60 survive today. Seeing one of these animals is very rare since they are shy and are traceable only at night. Here also roam free some endangered animals like leopard cats, gibbons, long-tailed macaques, leaf-monkeys, crocodiles, muntjaks, mousedeer and herds of grazing wild oxen. In the Park’s surrounding seas are found the great clam, clown fish, angel fish, parrot fish, mudskippers which can climb trees, and archer fish, which spit water up to a height of more than two meters to catch insects.
+</p>
+			</div>
+            
+            <img  src="images/place/umang 1.jpg" />
+            <div style="margin-left:250px;">
+            <h3>The Amazing Umang Island Resorts</h3>
+            <p>Umang Island, situated in Banten province, is a small island perfect for your tropical getaway. Especially when you've done some business in Jakarta, since Umang Island is only 4,5 hours away from the bustling city.
+The five-hectare private island is maintained by a single management,  Umang Island Resort and Spa, which offers the same comfort as a star-rated hotel with relaxing ambiance.
+The location is also very strategic for nature trekkers as it's near the UNESCO heritage site Ujung Kulon National Park. Umang Island is also well-protected from the West Java sea storms as there's Tanjung Lesung beach to the north and Panaitan Island to the west.
+So whenever you feel like lazying around a white sandy beach overlooking the crystal sea water, you should try Umang Island, where the beauty of nature may give you peace and tranquility.
+
+					</p>
+            </div>
+            
+            <img src="images/place/west-java-beach.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Carita Beach</h3>
+            <p>A vast stretch of white sandy beach decorated with rows of sheltering trees and the magnificent view of the Krakatau volcano on the horizon, that is what awaits at Carita Beach. Situated pleasantly on the shoreline facing the Sunda Straits at the western end of Java Island, in the Pandeglang regency, in the province of Banten, this indulging beach is only a three hours’ drive away from the bustling capital city of Jakarta.
+Here nature graciously offers some of her best features, from the majestic sunrise beyond the hills of Mount Aseupan Pandeglang all the way to the romantic sunset on the horizon over the sea. The various planktons on the surface of the sea would glitter under the brightest moonlight radiating a beautiful scenery. When the young Anak Krakatau is active, its spewing burning lava offers a fascinating scene unlikely to be easily found elsewhere.
+With relatively calm waves, anyone can enjoy swimming safely and conveniently along the beach. For a different sensation mixing swimming and surfing, visitors can try the swim boards rented at many spots along the beach at a very affordable price. The beach is also a perfect place for various funs and exciting water rides such as the Jetski and Banana Boats.
+As a tourist destination, Carita Beach has complete supporting facilities that range from an extensive parking lot, restrooms, tourist  information center, children playgrounds, shelters, swimming pools, sunbathing area, excellent communication and internet networks, and professional lifeguards to ensure safety and convenience. There are also renting facilities for diving and fishing equipment. For accommodation options, there is a wide range of hotels and inns available nearby.
+While the beach offers enough reasons to visit, Carita boasts another attraction which lies in the forest area. Established as a protected forest in 1975, the 95 hectares forest area is a sanctuary to various flora and fauna. Among some of the animal dwellere here are the long-tailed monkeys (Macaca fascicularis), the lutungape (Tachypitechus auratus), giant lizards (Varanus salvator), Python snakes (Phyton sp), wild boars (Susvitatus), bats, eagles (Falco moluccensis), hawks (Spilornis cheela), and various other  bird species. The vegetation found here include teak (Tectona grandis), Mahogany (Swietenia macrophylla), African Mahogany (Swietenia khaya antoteca), and Bungur (Lagerstromia speciosa). 
+Located not too far from the capital city of Jakarta, offering magnificent sceneries and a wide range of activities fit for every age, and supported with all the necessary facilities, Carita Beach is a perfect vacation spot for the entire family.
+</p>
+            
+        </div>
+        
+        <img src="images/place/tanjung-lesung-1.jpg" />
+        <div style="margin-left:250px;">
+        <h3>Tanjung Lesung Resort</h3>
+        <p>Slightly bulging from the mainland of Java into the Sunda Straits is Tanjung Lesung, a developing integrated beach resort for recreation and hotels overlooking Mt. Anak Krakatu, all that is left of the once mighty Krakatau volcano.  Located on Java’s most western coast in the district of Pandeglang in the province of Banten, the Tanjung Lesung resembles the lesung, which in the local Sundanese language means the receptacle for rice pounding.
+This huge 1,500 hectares area of Tanjung Lesung has been developed by the Banten West Java Tourism Development Corporation (BWJ) since 1996, patterned after the famed Nusa Dua Resort in Bali. The resort is envisaged to contain top range hotels and restaurants, a convention hall, a number of golf courses, marina and theme park. 
+Today, Tanjung Lesung offers a perfect place to lay back and immerse oneself in the beauty of nature found along the vast stretch of soft white sandy beaches, clear and calm blue waters, and fresh tropical breezes. The 15km shoreline is the perfect place for various beach activities such as beach volley, beach football, or just  lie down under the indulging sunshine.
+Tanjung Lesung can also act as the staging point for those who wish to venture to the Krakatau volcanic island, or visit the Ujung Kulon National Park. Although this Park is the last habitat of the endangered one-horned Java rhinos it is almost impossible to see them since they are very shy animals. Instead, enjoy watching wild deer, boars and wild buffaloes roam free in the park.   
+The geographic position of Cape Tanjung Lesung does not directly face the Indian Ocean, and therefore its waters are relatively calm and are perfect for swimming and other water activities such as Jet skiing, or boating. The magnificent scenery of Tanjung Lesung also lies beneath the surface. Beautiful coral reefs, decorated with colorful fish and seafloor dwellers make this a perfect spot for snorkeling and Diving. For those who enjoy the sensation of reeling in the big fish, there are many fishing spots that await off the coast of Tanjung Lesung.
+The beach also radiates a romantic atmosphere. For couples, it can be the best place to stroll down the quiet beach, or share the spectacular view of the sun setting over the horizon. Over the years, the beach has also been a favorite for honeymooners who love to spend their time in their choice hotels and cottages.
+Situated only 3 to 4 hours drive from metropolitan Jakarta, Tanjung Lesung Resort offers luxurious beach resort atmosphere comparable to those in Bali or Lombok, but with relatively easier access from Jakarta.
+
+        </p>
+        </div>
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

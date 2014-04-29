@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>South Sumatra | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> South Sumatra </h1>
+            <img src="images/place/benteng kuto besak.jpg" />
+            <div style="margin-left:250px;">
+            	<h3>Kuto Besak Fortress</h3>
+            
+            	<p>Standing atop the 10 meters high and 288.75 meters long thick walls of Kuto Besak Fortress, one looks down on the passing boats and ships on the Musi Riverbelow. Built during the 17th century, Kuto Besak Fort is a legacy of the Palembang Darussalam Sultanate, that ruled from 1550-1823. Acting as a defense post, the location of the Fortress is both politically and geographically strategic as it forms and island on its own, bordered by on its south by the Musi River, the Sekanak River on its west, the Kapuran River on its north, and the Tengkuruk River on its east.
+
+According to history, the building of the Kuto Besak Fortress was initiated by Sultan Mahmud Badaruddin I, who reigned from 1724 to 1758. The construction started in 1780 during the era of Sultan Mahmud Badaruddin. The fort was meant as a palace, which was built to replace the old Keraton Kuto Lamo or Benteng Kuto Lamo which did not look sufficiently grand. Today, the Benteng Kuto Lamo is used as the Museum Sultan Mahmud Badarudin II It took 17 years before Kuto Besak Fortress was finally used officially as the Sultanate’s governmental center from February 21st 1797.
+
+Kuto Besak Fortress is a reflection of the multi- ethnic society of the era of the Palembang Darussalam Sultanate.  Supervision of its construction was entrusted to a Chinese supervisor, while laborers were both native Palembang and Chinese who worked hand in hand in harmony. This is also one of the legacies that is passed down to this day as illustrated in many of the city’s special events such as at the Cap Go Meh and Imlek (Chinese New Year) Celebrations.
+
+History tells us that in 1821 the fort was invaded by the Dutch colonial army. The Kuto Besak Fortress was taken and the reigning Sultan Mahmud Badaruddin II exiled to Maluku.  This marks the end of the Palembang Sultanate era. The Dutch occupation left its marks on the fort as it carved its colonial style on Kuto Besak Fortress.
+
+Today, the  Kuto Besak Fortress is, unfortunately, closed to the public since it is used as a military base. However, the Fortress remains an attraction . As the sun sets in the afternoon, lights glow around the fort, creating sparkles that highlight the walls of the fort.  As one of the historical landmarks, a trip to Palembang will not be complete without a visit to Kuto Besak Fortress.   
+
+Getting there is far from complicated. Take a taxi or find public transportation, anangkot, which passes by the fort. Buses also pass this historic complex, and so does the blue Trans Musi.
+</p>
+			</div>
+            
+            <img src="images/place/DSC_4194.JPG" />
+            <div style="margin-left:250px;">
+            <h3>Jakabaring Sport City </h3>
+            <p>Jakabaring Sport City also known as Jakabaring Sport Complex (Indonesian: Kompleks Olahraga Jakabaring) is a sport facility complex in Palembang, South Sumatra, Indonesia. The complex is located 5 kilometers southeast from Palembang city center, across Musi river through Ampera Bridge in Jakabaring, Seberang Ulu I area. It was the main venue of 2011 Southeast Asian Games. Gelora Sriwijaya Stadium, one of the largest stadium in Indonesia, is located within this complex.
+Recently one of the most noticeable sport event was held at Jakabaring Sport City. The opening and closing ceremony of the Seagames 2011. This event has made Jakabaring sport city as one of the landmark of Palembang.
+					</p>
+            </div>
+            
+            <img src="images/place/download (5).jpg" />
+            <div style="margin-left:250px;">
+            <h3>Ampera Bridge</h3>
+            <p>Ampera Bridge was constructed in April 1962, after getting approval of President Soekarno. At first, this 1,177 meters long and 22 meters wide bridge was called Bung Karno Bridge. It was officially opened on 30 September 1965 by Let. Gen. Ahmad Yani.  However, following a political turmoil in 1966 i.e., when anti-Soekarno movement was stronger, the bridge was renamed to Ampera Bridge. Palembang citizens, however, prefer to call it "Musi Project".
+
+Parts of this 944 tons bridge can lift up and down about 10 meters per minute. It has two lifting towers of 63 meters tall. Distance between these two towers is 75 meters. They have two pendulums, weighing about 500 tons each.
+
+When the middle shares of the bridge is lifted, wide ship of 60 meters wide and a maximum of 44.50 meters tall can pass to ford of Musi River. And when the middle shares of this bridge is not lifted, maximum height of ships that can pass under the bridge is only nine meters above the water level. Unfortunately, at present, the bridge cannot be lifted for safety reasons.
+</p>
+            
+        </div>
+        
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

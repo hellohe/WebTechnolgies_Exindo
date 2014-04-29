@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>North Maluku | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> North Maluku </h1>
+            <img src="images/place/Banda islands.jpg" />
+            <div style="margin-left:250px;">
+            	<h3>The Banda Islands</h3>
+            
+            	<p>Since the first century AD, the Banda islands have been the sole producers of the fragrant nutmeg and mace for which Chinese, Indian, and Arab ships traveled across the seas. These precious spices could be sold at enormous profit in foreign markets.
+The people of Banda thrived on their natural resources, but in later years suffered at the hands of Dutch colonizers who wanted to dominate the world’s spice trade.
+Despite such a big reputation, the fabled Banda islands are only a tiny cluster of islands, composed of three large islands and seven smaller ones. The islands are perched on the rim of Indonesia's deepest underwater gorge, the Banda Sea, where waters can reach depths of over 6,500 meters.
+Two of the biggest islands, Banda Besar and Naira, are covered with nutmeg trees. The third island, Gunung Api or ‘peak of fire’, is an active volcano that emerges from the deep in a perfect cone, and is entirely rugged and highly volcanic. In the waters surrounding these islands you’ll find some of the world’s most spectacular marine gardens, with bright corals and colorful fish, bustling through the crystal-clear waters, making it suitable for diving, snorkeling or even simply sightseeing.
+Lying about 132 kilometers southeast of Ambon, the islands are a remote and exquisitely beautiful part of Indonesia. With multi-colored reefs, warm seas and exotic marine life, the Banda’s are a haven for divers who come from around the world to explore some of the most remote and unspoiled dive sites in the world.
+Today, Banda attracts divers, sailors and cruise ships from around the world by its sheer natural beauty, both above as below the sea, which can only be matched by Raja Ampat, Papua; another location for ultimate underwater adventures.
+The Banda Islands are one of the Indonesia’s most popular destinations for divers. Both experts and beginner divers will enjoy themselves here, as the diving spots vary from the shallow lagoon between Bandaneira and Gunung Api, to the vertical walls of Hatta Island. Wherever you go here, you’ll discover stunning tropical scenery, a remarkable history, friendly locals, and some of the globe's most pristine, biologically diverse coral reefs.
+Scuba diving is still relatively new here, but pioneering divers didn't have to work hard to find a thrill. The undersea world around Ambon and the nearby island of Saparua have top-rate dive sites. As you explore beneath the surface you’ll see everything from sharks, enormous turtles, schools of Napoleon Wrasse, giant groupers, dogtooth tuna, mobula rays, redtooth triggerfish, various species of whales, spinner dolphins, and huge lobsters - neighbors to generous schools of reef fish and endemic Ambon scorpionfish.
+Come to Banda islands and visit the best kept secret in Eastern Indonesia. While flights here are not frequent, it’s worth the wait. For this ideal tropical paradise won’t remain deserted for long.
+ </p>
+			</div>
+            
+            <img src="images/place/Halmahera Islands.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Halmahera Islands </h3>
+            <p>The remote Halmahera island, also called Gilolo or Jailolo, is the largest island in Maluku (the Moluccas), K-shaped almost like a miniature Sulawesi.  With white sandy beaches, unspoiled forests and the spectacular Mt Mamuya in the distance, this island offers stunning scenery. This is a rugged and mountainous landscape and much of the island is still covered in forest.
+While the island covers an enormous area of over 17,000 square kilometers, it is sparsely populated. This island is the core of a larger region, called Moro that includes the island and the coastline of Halmahera, and is closest to Morotai to the north.
+During the fifteenth and sixteenth centuries, Halmahera was largely under the dominion of the powerful sultanate of Ternate. In the mid-sixteenth century, the island was the site of a Portuguese Jesuit mission, most noted of whom was St. Francis Xavier (known here as St. Franciscus Xaverius). The Muslim states on Ternate and Halmahera rejected Christianity, and managed to drive the mission away from the island in 1571. However its influence remains evident as today half the population is Muslim and half are Christian.
+In the seventeenth century, Ternate further exerted its power over Morotai by repeatedly forcing major parts of the population to migrate from the island.
+Halmahera had an important role during World War II. It was here that the Americans started their allied invasions against the occupied Philippines and South Pacific Islands. General McArthur resided on a small island close to Daruba where he planned and coordinated countless air strikes, sea invasions and counter-attacks against the Japanese. The American Daruba Airlfield has seven runways and can still be sighted today. Due to the enormous amount of explosives, ammunition and guns still found in the shallow waters, the island remains out of bounds for divers. Only designated surveyors dive here.
+
+					</p>
+            </div>
+            
+            <img src="images/place/Ambon.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Ambon</h3>
+            <p>The tiny islands of Ambon, Banda, Saumlaki,Ternate and Tidore - among the thousands of islands in the Moluccas seas,- changed the course of world history from the 15th century onwards. These islands were what triggered the European Age of Exploration.  
+
+For in search of the Spice Islands in the Far East, Christopher Columbus sailed west – and discovered America. Vasco da Gama sailed south and discovered the long route around Africa’s Cape of Good Hope in 1498 to finally reach India after a long and perilous voyage. Only later did the Portuguese finally discover the sea route to Banda and Ambon. These small islands in the eastern deep seas of the Indonesian archipelago were for centuries the sole producers of the fragrant nutmeg and mace in the world. At the time these spices fetched their weight in gold in Medieval Europe. 
+
+The tiny islands of Ternate and Tidore,  urther north of Ambon were producers of cloves. Ternate is where the Majestic Mount Gamalama and the astonishing Lake Tolire are located. Indian and Arab traders would sell cloves in Europe for exorbitant prices, but kept the location of their source a tightly held secret. These are the Moluccas – or Maluku – the original Spice Islands, that are now divided into the two provinces of Maluku and North Maluku.  
+
+It is from these islands that the Dutch East India Company first gained their stranglehold on the spice trade in the archipelago, gradually colonizing the Indonesian islands over three centuries, until it came to be called the Dutch East Indies, the present-day Republic of Indonesia.
+
+As the glory days spices passed, the significance of the Moluccas waned. But it is here where the history of European explorations and colonization began.
+   
+Fortunately the beauty of that era still remains. Today, the town of Ambon is the capital of Maluku, occupying a small flat area by the beautiful Ambon Bay that is backed by lush green mountains and facing deep crystal clear waters that are alive with colorful coral gardens and untold species of marine creatures. 
+
+Although small in size, Ambon island still offers plenty of experiences for adventurous travelers. From exploring the charming Kota Ambon – the main town of the island, to walking up mountains through lush tropical vegetation, there are many undiscovered gems ready for visitors to experience.  
+ 
+The town of Ambon – Kota Ambon – is known as ‘Ambon Manise’ meaning sweet or beautiful Ambon. The name refers to both the beauty of the people here and the beauty of the tropical island location. 
+
+As one of the earliest places in Indonesia to be occupied by colonial powers, Ambon has a rich and ancient history. Many of the Ambonese today have mixed European and Ambonese heritage. 
+
+Visit here and discover centuries-old fortresses and the literature of local kingdoms which traces the story of the people, from periods of prosperity to escalating and controlled trades, harsh colonialism, a grueling struggle, and finally, to independence.  
+
+The island also played an important role in World War II when Ambon was used as a headquarters for the Japanese military. Remnants from the war still remain, both in museums and the open air. Some war artifacts remain silently underwater. Today, these remnants are among the most valued historical sites in Ambon.  
+
+Ambon is multicultural and home to various ethnicities including the native Alifuru tribes, the migrating Javanese, Sumatrans, Minahasans, the Butons, the Arabs who came in the 9th century, the Europeans, and the Chinese who first came in the 7th century to share in the commerce of this prosperous spice island.  Between 1999-2002 the island was the scene of Christian-Muslim violence however since 2004 the island has maintained a period of ongoing peace.
+</p>
+            
+        </div>
+        
+         <img src="images/place/Ternate and Tidore.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Ternate and Tidore</h3>
+            <p>Since early in the last millennium, the small islands of Ternate and Tidore in the Moluccas were the only source for cloves in the world. Indian, Arab, Chinese and Javanese merchants used to call on these islands to carry home this precious cargo which sold at exorbitant prices in Europe and the Orient. Cloves, together with nutmeg and mace from the Banda islands were used to flavor and preserve food, as medicines and even as aphrodisiacs. 
+
+But after the Crusades, the trade route to the Far East was blocked for the Europeans, so the Portuguese, Spaniards, British and the Dutch were determined to discover for themselves the fabled Spice islands. 
+
+Vasco da Gama was the first to sail around the Cape of Good Hope in Africa to reach India. Then, from India, the Portuguese finally found the route to the Moluccas in 1521, and arrived in the spice islands of Ternate and Tidore and the Banda islands, then the only source for nutmeg and mace. To get there, the Portuguese seafarers traveled 14,000 kilometers - nearly 9,000 miles – crossing uncharted seas, and overcoming storms, high swells and tropical monsoons. 
+
+At the time, there was already a thriving sultanate (kingdom) on Ternate. But with the arrival of the Spaniards, the Dutch and the British, the fight began among the European powers for the monopoly of the spice trade, which was finally wrested by the Dutch. 
+
+Towards the end of the 16th century, Dutch governor general Jan Pieterszoon Coen replanted cloves to Ambon where the Dutch were in control, then brutally wiped out all the clove plants on Ternate and Tidore, These actions, known as the hongi expeditions, instantly doused the domination of the sultanates of Ternate and Tidore and decimated the main income of the islands’ population. From that time onwards, Ternate and Tidore became forgotten pages in history.
+
+Ternate and Tidore are two almost identical small islands, west of the large island of Halmahera, almost facing one another, each shaped by a volcano emerging from the deep Maluku Sea.  While if Ternate is dominated by Mount Gamalama, in Tidore rises Mount Kiemtabu.
+
+Today, the town of Ternate is the capital city of the province of North Maluku, home to two thirds of the islands population, who are predominantly Muslim.  Here, you can visit historical relics and observe local cultural traditions. The city is a modern hub and a base for the commercial activities of the island. It has business centers, historical attractions, transportation links, and tourism services. The city is also in the midst of development to reform the building and structural damage sustained during the 1999 conflict between Muslims and Christians. In contrast Tidore is dotted with small villages around the island.
+
+The business district of Ternate is an interesting place to take a walk and see the tasteful food sellers which adorn the streets. The walkway is so long it has five names; Jl Sultan Khairun, Jl Merdeka, Jl Mononutu, Jl Hasan Esa and eventually Jl Raya Bastiong. There are also plans to develop a mega mall. 
+
+The volcanic landscape of Ternate has given the island its fertile soil and beaches with black glittering sands. Today, all around the island are colorful boats in various sizes lying in the shallow turquoise water, shielded by swaying coconut trees. 
+
+For culinary and history lovers, the island is a flavorsome and historical delight that will satisfy any craving for knowledge or desire to enjoy appetizing cooking. Entertainment from the friendly locals is also something to experience.  
+
+</p>
+            
+        </div>
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

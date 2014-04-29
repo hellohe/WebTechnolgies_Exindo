@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/jquery.rss.js"></script>
+    <script type="text/javascript" src="js/parallaxslider.js"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize slider
+			var $pxs_container	= $('#pxs_container');
+			$pxs_container.parallaxSlider();
+			
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//initialize news rss
+			$("#news").rss("http://feeds.feedburner.com/IndonesiaTravelNews", {
+				limit: 7,
+				layoutTemplate: '<div>{entries}</div>',
+				entryTemplate: '<p style="border-bottom:#999 thin solid"><a href="{url}" target="_blank" style="text-decoration:none;font-size:16px;font-weight:600;">{title}</a></p>'
+			}).show();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <div class="main">
+                <nav id="cbp-hrmenu" class="cbp-hrmenu">
+                    <ul>
+                        <li><a href="index.html"><img src="images/menubar1.png" /></a></li>
+                        <li><a href="#"><img src="images/menubar2.png" /></a>
+                            <div class="cbp-hrsub">
+                                <div class="cbp-hrsub-inner">
+                                    <div>
+                                        <h4>Sumatra</h4>
+                                        <ul>
+                                            <li><a href="#">Aceh</a></li>
+                                            <li><a href="#">North Sumatra</a></li>                                            
+                                            <li><a href="#">West Sumatra</a></li>
+                                            <li><a href="#">Jambi</a></li>
+                                            <li><a href="#">Bengkulu</a></li>
+                                            <li><a href="#">Riau</a></li>
+                                            <li><a href="#">Riau Archipelago</a></li>
+                                            <li><a href="#">Bangka Belitung</a></li>
+                                            <li><a href="#">South Sumatra</a></li>
+                                            <li><a href="#">Lampung</a></li>
+                                        </ul> 
+                                        <br />                                                                   
+                                        <h4>Kalimantan</h4>
+                                        <ul>
+                                            <li><a href="#">North Kalimantan</a></li>
+                                            <li><a href="#">East Kalimantan</a></li>
+                                            <li><a href="#">South Kalimantan</a></li>
+                                            <li><a href="#">West Kalimantan</a></li>
+                                            <li><a href="#">Central Kalimantan</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4>Java</h4>
+                                        <ul>
+                                            <li><a href="#">Banten</a></li>
+                                            <li><a href="#">DKI Jakarta</a></li>
+                                            <li><a href="#">West Java</a></li>
+                                            <li><a href="#">Central Java</a></li>
+                                            <li><a href="#">Yogyakarta</a></li>
+                                            <li><a href="#">East Java</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Nusa Tenggara</h4>
+                                        <ul>
+                                        	<li><a href="#">West Nusa Tenggara</a></li>
+                                            <li><a href="#">East Nusa Tenggara</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Bali</h4>
+                                        <ul>
+                                        	<li><a href="#">Bali</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4>Sulawesi</h4>
+                                        <ul>
+                                        	<li><a href="#">North Sulawesi</a></li>
+                                            <li><a href="#">Gorontalo</a></li>
+                                            <li><a href="#">Central Sulawesi</a></li>
+                                            <li><a href="#">West Sulawesi</a></li>
+                                            <li><a href="#">South Sulawesi</a></li>
+                                            <li><a href="#">Southeast Sulawesi</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Maluku</h4>
+                                        <ul>
+                                        	<li><a href="#">North Maluku</a></li>
+                                            <li><a href="#">Maluku</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Papua</h4>
+                                        <ul>
+                                        	<li><a href="#">West Papua</a></li>
+                                            <li><a href="#">Papua</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#"><img src="images/menubar3.png" /></a></li>
+                        <li>
+                            <a href="#"><img src="images/menubar4.png" /></a>
+                            <div class="cbp-hrsub">
+                                <div class="cbp-hrsub-inner"> 
+                                    <div>
+                                        <h4>Sumatra</h4>
+                                        <ul>
+                                            <li><a href="#">Aceh</a></li>
+                                            <li><a href="#">North Sumatra</a></li>                                            
+                                            <li><a href="#">West Sumatra</a></li>
+                                            <li><a href="#">Jambi</a></li>
+                                            <li><a href="#">Bengkulu</a></li>
+                                            <li><a href="#">Riau</a></li>
+                                            <li><a href="#">Riau Archipelago</a></li>
+                                            <li><a href="#">Bangka Belitung</a></li>
+                                            <li><a href="#">South Sumatra</a></li>
+                                            <li><a href="#">Lampung</a></li>
+                                        </ul> 
+                                        <br />                                                                   
+                                        <h4>Kalimantan</h4>
+                                        <ul>
+                                            <li><a href="#">North Kalimantan</a></li>
+                                            <li><a href="#">East Kalimantan</a></li>
+                                            <li><a href="#">South Kalimantan</a></li>
+                                            <li><a href="#">West Kalimantan</a></li>
+                                            <li><a href="#">Central Kalimantan</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4>Java</h4>
+                                        <ul>
+                                            <li><a href="#">Banten</a></li>
+                                            <li><a href="#">DKI Jakarta</a></li>
+                                            <li><a href="#">West Java</a></li>
+                                            <li><a href="#">Central Java</a></li>
+                                            <li><a href="#">Yogyakarta</a></li>
+                                            <li><a href="#">East Java</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Nusa Tenggara</h4>
+                                        <ul>
+                                        	<li><a href="#">West Nusa Tenggara</a></li>
+                                            <li><a href="#">East Nusa Tenggara</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Bali</h4>
+                                        <ul>
+                                        	<li><a href="#">Bali</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4>Sulawesi</h4>
+                                        <ul>
+                                        	<li><a href="#">North Sulawesi</a></li>
+                                            <li><a href="#">Gorontalo</a></li>
+                                            <li><a href="#">Central Sulawesi</a></li>
+                                            <li><a href="#">West Sulawesi</a></li>
+                                            <li><a href="#">South Sulawesi</a></li>
+                                            <li><a href="#">Southeast Sulawesi</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Maluku</h4>
+                                        <ul>
+                                        	<li><a href="#">North Maluku</a></li>
+                                            <li><a href="#">Maluku</a></li>
+                                        </ul>
+                                        <br />
+                                        <h4>Papua</h4>
+                                        <ul>
+                                        	<li><a href="#">West Papua</a></li>
+                                            <li><a href="#">Papua</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="#"><img src="images/menubar5.png" /></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> Aceh </h1>
+            <img src="images/place/Grand Mosque of Baiturrahman.jpg" />
+            <div style="margin-left:250px;">
+            	<h3>Grand Mosque of Baiturrahman</h3>
+            
+            	<p>Grand Mosque Baiturrahman (or Masjid Raya Baiturrahman in Bahasa) is the symbol of religious, courage, and nationalism of the people in Aceh. It was built in 1600s. At that time, this mosque is a famous religious center. Many people from overseas such as Iraq, India, etc came here to deepen their religious knowledge. It was used as defenses headquarter during Aceh War or Dutch war (1873 – 1904). The mosque was burnt down in 1873 by Dutch soldiers. In 1879, it was rebuilt and remains until now. Grand Mosque Baiturrahman has undergone 5 renovations and enlargements. It was used It survived the devastating earthquake and tsunami in 2004, with only a few cracks, along with Aceh citizens inside it. </p>
+			</div>
+            
+            <img src="images/place/aceh-leuser.gif" />
+            <div style="margin-left:250px;">
+            <h3>Mount Leuser National Park </h3>
+            <p>Mount Leuser National Park, named after its highest peak, Mount Leuser (3,381 m), is one of the largest and the most diverse national parks in Indonesia, covering an area of 7,927 square kilometer in the northern tip of Sumatera, Indonesia. Embracing various ecosystems, the national park is in fact a cluster of various nature reserves and forests: Gunung Leuser Nature Reserve, Kappi Nature Reserve, Kluet Nature Reserve, Sikundur-Langkat Wildlife Reserve, Ketambe Research Station, Singkil Barat, and Dolok Sembilin.
+The park is so extensive, it covers mangroves, beach and swamp forest, lowland rainforest, moss forest, and up to subalpine forest. When traversing its extraordinary landscape, enthusiastic adventurer like you will not be disappointed.
+The Mount Leuser National Park, which is Taman Nasional Gunung Leuser in Bahasa, encompasses more than 100 kilometers of the Bukit Barisan Mountains, known for its steep, almost inaccessible mountainous terrains. The altitude ranges from beach area in Kluet (South Aceh), to 3,381 meter on top of the Gunung Leuser (Southeast Aceh). The breathtaking Alas River cuts the park into an eastern and western half, where your tropical thirst for adrenaline will be captivatingly fulfilled.
+Around 130 species are identified in this park only. The mysterious Sumatran tigers, elephants, rhinos, Siamang monkeys, macaques, clouded leopards, reptiles, fish, and around 325 species of birds are among the endemic wildlife known to inhibit the park. Surely the trek to the inner park is more than just a great adventure to the last zoo you visited. 
+					</p>
+            </div>
+            
+            <img src="images/place/aceh_tsunami_museum1.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Aceh Tsunami Museum</h3>
+            <p>It was built in 2009 and opened by the president, Susilo Bambang Yudhoyono. It is a symbolic monument of the earthquake and tsunami disaster in 2004. It also served as disaster checkpoint if a tsunami ever happened again. The museum contains simulation of earthquake and tsunami in 2004, photos of the victims, and testimony.</p>
+            
+        </div>
+        
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

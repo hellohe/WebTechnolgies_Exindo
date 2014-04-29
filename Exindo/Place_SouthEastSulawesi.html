@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Southeast Sulawesi | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> Aceh </h1>
+            <img src="images/place/Wakatobi National Marine Park.jpg" />
+            <div style="margin-left:250px;">
+            	<h3>Wakatobi National Marine Park</h3>
+            
+            	<p>Legendary underwater explorer and conservationist, Jacques Cousteau is said to have called the Wakatobi islands – then known as the Tukangbesi islands:  an “Underwater Nirwana”
+Now a National Marine Park covering the entire Waktobi District, it comprises a total of 1.4 million hectares, of which 900,000 hectares are decorated with different, colourful species of tropical coral reefs. For Wakatobi is widely recognized as having the highest number of reef and fish species in the world.   The islands are also famous as the largest barrier reef in Indonesia, second only to the Great Barrier Reef in Australia.  Here can be found fringing, atolls and barrier reefs and offer more than 50 spectacular dive sites easily accessible from the major islands.  This is the habitat of large and small fish species, the playground of dolphins, turtles and even whales. 
+The island group comprises 143 larger and smaller islands where only 7 are inhabited counting a total population of around 100,000, while the others remain uninhabited. Most notable are the Bajo communities, the seafaring nomads who inhabit many of Indonesia’s remote islands.
+Located right in the heart of the Asia-Pacific Coral Triangle, in the province of South East Sulawesi, the Wakatobi Islands offer crystal clear pristine waters and a rich bio-diverse underwater life, a true paradise for Divers, as this is one of 3 hearts in the World Coral Triangle that stretches from the Solomon Islands in the Pacific to Wakatobi, and North to the Philippines.  Wakatobi alone is said to have 942 fish species and 750 coral reef species from a total of 850 of world's collection, which, comparing with the two world's famous diving centers, the Caribbean Sea  owns only 50 species with 300 coral reef species in the Red Sea, in Egypt.
+Situated  at the end of the south eastern “petal’ of the orchid shaped island of Sulawesi and separated by the deep Banda Sea to its north and east and the Flores sea to its south,  the name Wakatobi is in fact an acronym of  its four main islands, which are :  Wangi-wangi (WA), Kaledupa (KA), Tomia (TO)  and Binongko (BI).
+Due to its magnificent underwater life, Wakatobi is fast gaining worldwide attention for its quality dives that can be made by beginners to professionals. Small wonder, therefore, that many liveaboards make this one of their main ports of sojourn.  Aside from its dive sites, Wakatobi has many superb beaches.
+The conservation group “Operation Wallacea” is very active in this marine park, conducting underwater research and conservation. During the Sail Wakatobi 2011 in August, the Marine Laboratory on Hoga Beach by Kaledupa is to be officially inaugurated. (For information visit: www.opwall.com)
+The District capital of Wakatobi is Wanci on Wangi-Wangi. Since the opening of the Matohara Airport on Wangi-Wangi, these remote islands are now more accessible and can be reached by flights from Jakarta or Makassar.  There is also another landing strip on Tomia island, which receives charters from Bali. 
+</p>
+			</div>
+            
+            <img src="images/place/Buton Fort Palace.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Buton Fort Palace</h3>
+            <p>Indonesia archipelago should be proud because it has a tourist attraction which is said to be the largest fort in the world. The object is located in the City Baubau, Southeast Sulawesi Province. The fort that was built to protect the royal palace in the past Buton is also known as the Thousand Fort.
+The fort stands strong at the top of the hill. That said, the fortress built in the 16th century is the largest in the world. The extent reached around 22.8 hectares of land with a wall along the 2,740 meters.
+Built with mountain rocks bonded with sand and limestone, the fortress’ height varies between 1-8 meters with thickness between 0.5-2 meters.
+
+The fort has 12 doors and 16 defense posts. At every door and corner mounted a cannon fort. There are total 100 cannons.
+In the area surrounded by fortress walls, there are many small fort. Therefore, Buton Fort Palace was also known as the Thousand Forts. Small forts became the main fort supporter. And each castle is connected with a secret path.
+Among the those small forts, the most famous is the Sorawolio fort. It is said, that the fort served as the last defense and royal family hiding-place if the enemy occupied the main castle.
+
+The other is the Baadia that serves as surveillance fortress. It’s positioned higher than the surrounding valley.
+There is also Katobengke fort. Captured enemies are executed in it.
+Historic sites are also found in the fort, such as popaua stone (inauguration stone for king/sultan), malige (traditional house), masigi (mosque), and sulana tombi (flagpole). Sulana Tombi located on the right masigi used to to fly the flag / banner of the Sultanate of Buton.
+The 21 meters high flagpole was built in 1712 during the reign of the 4th Sultan Dayanu Iksanuddin and the 5th Sultan La Balawo known as Sultan Abdul Wahab or Watole yi Mosabuna. Sulana tombi is now supported by 4 pillars because it’s aged and worn.
+The Teak wooden pole had been struck by lightning, but still stuck and have been waving a lot of flag. First, the Buton Palace’s, the Netherland’s, Japans’ and lastly the Indonesia’s Red and White.
+
+					</p>
+            </div>
+            
+            <img src="images/place/Liwutongkidi Island.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Liwutongkidi Island</h3>
+            <p>The Island is located in District Katadua and Siompu, Buton, Southeast Sulawesi, Indonesia . Liwutongkidi Island is one of the islands contained in Buton. Island covering approximately 1000 sq km is has a tropical climate with an average rainfall 1000 mm per year. 
+
+Liwutongkidi Island by the local government of Buton regency included as one integrated area development Batauga Basilica, Siompu, Liwutongkidi, and Kadatua). The goal is to develop marine tourism object (submarine) in the district with a rich variety of attractions that marine. Hopefully, by the region's Basilica, the excitement of the tourists to visit the Buton Regency increases.
+
+Although the island is not very large compared to other islands in Buton Island, the island is capable of providing unique nuances through the beauty and charm of the beach below the sea. Shoreline along the island is filled with stunning stretch of white sand and nuances become more beautiful when combined with the pounding of ocean waves that comb the sand. In addition, under the sea's natural wealth of the island is also interesting to visit. Biotic diversity of coral reefs and underwater regularly chime in symphony of nature's under water beauty of the panorama.
+
+For tourists who come from out of town and wanted to stay, not to worry. In  Bau-Bau city, which is not so far from the island Liwutongkidi, many available hotels for a comfortable stay. The same with food and drinks, the tourists can choose a suitable place for dining fun because along the way at the Bau-Bau there are food stalls and restaurants serving diverse cuisine menu of delicacies.
+
+To reach the site as a tourist attraction can be done in two stages of the journey from the city of Kendari (Southeast Sulawesi capital) First, from the town of Kendari, Bau-Bau to be able to use pioneering aircraft or ships. If using aircraft pioneer, The journey time approximately 1 hour and about 4 hours if using two sea boats, we travel to the island Liwutongkidi using sea transport with travel time approximately 15 minutes.
+</p>
+            
+        </div>
+        
+        
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Gorontalo | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> Gorontalo </h1>
+            <img src="images/place/DSC01099.JPG" />
+            <div style="margin-left:250px;">
+            	<h3>Pentadio Resort</h3>
+            
+            	<p>One of mainstays tour object in Gorontalo, Sulawesi isPentadio Resort. Pentadio itself comes from Gorontalo language, which means beach-lake. It located in the edge of the wonderful Limboto Lake which is also one of tour object in Gorontalo. Pentadio Resort has 14 hectares wide and has been inaugurated by the Dutch government in 1928. This thing can be seen from the stone monument which is in the hot water bathing place in Pentadio Resort area. Since then, local people has made it into tour object.Tour object
+There’s spraying hot water bathing place in Pentadio Resort which contains sulfur. This hot water usually used by the visiting tourist to cure skin problems. Pentadio Resort also has some other facilities and activities you can find here such as swimming pool, warm water bathing place, fishing, water bike, and many others. There’s also pub and family karaoke for family occasion or with friends.
+Location
+Pentadio Resort is located near Limboto Lake, precisely in Pentadio village, Telagabiru, Gorontalo province.
+<br />
+<br />
+<br />
+ </p>
+			</div>
+            
+            <img src="images/place/2011_08_01_999_9.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Bolihutuo Beach </h3>
+            <p>During your visit to Gorontalo, in the north of Sulawesi, take time to slide westward toward one of its natural, picturesque beaches with its beautiful view and relaxing atmosphere. This beach is Pantai Bolihutuo, which is located in the Boalemo District about 120 km from Gorontalo City. Facing the  Bay of Tomini. 
+
+Also known as Pantai Boalemo Indah, or Beautiful Boalemo Beach, the coast is famous among local and international tourists for its natural beauty. This beach offers fascinating and charming scenery with views of white sandy shores, lined with giant pine and palm trees. It is one of the main tourist attractions in the Boalemo District.
+
+On your way there, you will pass through the green landscape of the Boalemo district accompanied by the cool air and hilly valleys. Palm trees scatter among the green hilly terrain and lining the shore, giving the area a very relaxing and laid-back atmosphere. This is a great place to come if you’re looking for some relaxation and a break from the busy routine of daily city life.
+
+The beauty of Pantai Bolihutuo is simple and still relatively untouched by modernity. The rolling waves touching the shoreline add to beautiful natural ambience. The white sand along the beach is surrounded by dozens of giant pine trees, which serve as useful and welcome shade and have created a cool and calm atmosphere along this beach. The water has a greenish blue hue which adds to the exotic freshness of this spot. If you are looking for a weekend of reprieve from the stress of day to day city life, Pantai Bolihutuo is a wonderful option for a weekend visit. Experience something apart from the regular scheduled activities, and come back rested and refreshed.
+
+					</p>
+            </div>
+            
+            <img src="images/place/walea.jpg" />
+            <div style="margin-left:250px;">
+            <h3>Tomini Bay and Olele Beach</h3>
+            <p>There are just so many things that make Gorontalo perfect for holiday, the beauty of its nature, the culture and not forget to mention, the friendly people. General information about Gorontalo, stated at North Sulawesi. Mountains, hills, shore line are the main characteristic of Gorontalo and it makes the island perfect for marine tourism.
+Most of diving site take you just a few minute from town, Diving in Gorontalo mean diving within the richness of biodiversity, health and unique coral and reefs.
+Lots of beautiful places could be found here. Tomini Bay, for instance, is famous for under water habitat and undefined creatures. There is several number of unsettled small islands. Tomini Bay is a heaven for divers, because the geographic position of Tomini Bay itself, which is crossed by the equator line, has naturally presented various kinds of sea creature inside.
+Desa Olele or Olele Village is well known as the wild diving spot among world class diver. Olele beach is a gate to underwater paradise. The amazing beauty of underwater life on this area has been recognize and proofed by the enthusiasm of the divers who come to Olele beach. The divers called Olele as Traffic Jam dive spot.
+In Tomini Bay and Olele Beach, you can find some or maybe the most amazing underwater creatures such as:
+•	Giant Reef (Petrosia Sp.)
+•	School of Gobi Fish (Bryaninops erythrops)
+•	Salvador Dali reef (Petrosia lignose)
+•	Kipas Laut Biru (Acanthogorgia Sp.). There are only 3 acanthogorgia Sp. In Gorontalo
+•	Anemon Koralimorf (Discosoma Sp.)
+•	Nemo
+•	Ikan Behang (plectorhinchus chaetodonoides), some people call it cha-cha fish caused they dance and swim around the coral.
+•	Blenni (Escenius Caeruliventris)
+•	Cardinal Fish, damsel, platax pinnatus, scorpaenopsis, oxycephala, goropa fish, butterfly fish, pusillus, cockatoo fish, Randal fish, parapterois hetururus, Bothus Sp " half face fish, frog fish, celebes
+•	Not forget to mention that Gorontalo is the Kingdom of Nudibrancia
+•	Seahorses and pigmy seahorses
+</p>
+            
+        </div>
+        
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>
