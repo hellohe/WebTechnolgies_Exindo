@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bengkulu | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -145,8 +155,8 @@
                 <div style="margin-left:250px;">
                   <h3>Bagar Hiu (Shark Curry)</h3>
                   <p>Shark meat is one of the fish meat that has a very pungent fishy aroma. Therefore, processing shark meat special tricks. To eliminate the fishy smell of shark meat, shark meat first first cleaned with a banana leaf that has been kneaded to throw a fishy smell pungent. So that the fishy smell is completely gone, shark meat should be cleaned repeatedly. Once cleaned using a squeeze of banana leaves, it would be nice anymore shark meat given lime juice and salt. After cleaning the shark meat, you need a variety of spices typical of Indonesia such as galangal, turmeric, nutmeg, lemongrass, sour Java, clove, nutmeg, onion, and garlic. Spices are mashed and then sauteed until fragrant. Next enter the shark meat and coconut that has been roasted and ground. Typical spices will be very strongly felt on your tongue when tasting the marinade. Shark meat is not as tender catfish, but the texture of the meat is quite tender when touched our tongue.</p>
-              </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/LepekBinti.png" />
@@ -155,7 +165,8 @@
                     <p>A snack in Bengkulu which is similar to riceball. To make the inside, mix the meat with the seasoning and cook until it’s cooked and dried. To make the skin, mix glutinous rice with salt and coconut milk while it’s heated and knitted until smooth. Take the skin dough and flatten it. Shape it round and wrap it with banana leaves then shape it square. Steam it for 15 minutes .</p>
                 </div>
             </div>
-        
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

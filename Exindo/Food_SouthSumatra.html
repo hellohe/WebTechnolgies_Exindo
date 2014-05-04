@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>South Sumatra | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -147,8 +157,8 @@
                   <h3>Tempoyak</h3>
                   <p>Tempoyak is a dish which originated from fermented durian. Tempoyak is usually consumed as a side dish of rice. Tempoyak can also be eaten directly but is rarely done, because the acidity and aroma of tempoyak itself. Tempoyak can also used to be some ingredient for cooking.
 </p>
-              </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/Pindang Ikan Patin.jpg" />
@@ -163,9 +173,10 @@
                 <div style="margin-left:250px;">
                   <h3>Mie Celor</h3>
                     <p>Mie Celor is a noodle dish served in coconut milk soup, ebi (dried shrimp) broth, boiled egg, and sprinkled with sliced fresh celery, scallion, and fried shallot. The dish is originated from Palembang, South Sumatra, Indonesia, and together with Pempek it has become Palembang specialty. It is made from rather large yellow noodle, with the size similar of Japanese buckwheat noodle.</p>
-              </div>
-          </div>
-        
+				</div>
+			</div>
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

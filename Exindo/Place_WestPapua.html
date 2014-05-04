@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>West Papua | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,61 +141,34 @@
                       
         <div class="contents">         	   
             <h1> West Papua </h1>
-            <img src="images/place/Manokwari.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Manokwari</h3>
             
-            	<p>The town of Manokwari is located right on the top of the Bird’s Head Peninsula in Papua, otherwise known as West New Guinea or West Irian. During World War II, Manokwari was the stronghold of the Japanese army against the Allied Forces and the US under the command of General MacArthur, who was headquartered at Hollandia--today called Jayapura--on the north coast of Papua. But by 1944, Manokwari and the entire north coast yielded to the Allied Forces.
-Manokwari stretches around Doreri Bay, and is attractively set among low hills dominated by the Arfak mountains to the south. Manokwari is the town from where Christianity spread in Papua, started by two German missionaries C.W.Ottow and G.G. Geissler who landed here on 5 February 1855.
-The remains of these pioneer missionaries now lie at the Koawi Church under a monument just outside of town on the way towards Pasir Putih. Further down at Pasir Putih--or the White Sand Beach, there is a shallow coral bank where one can go snorkeling and see a variety of reef fishes.
-</p>
-			</div>
-            
-            <img src="images/place/Cendrawasih Bay National Park.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Cendrawasih Bay National Park</h3>
-            <p>•	The large Cendrawasih Bay National Park in the north of the island of Papua, otherwise known as Teluk Cenderawasih, includes Indonesia’s largest marine national park, and is one of the best dive-sites in the archipelago.
-•	Here are magnificent vertical drops, picturesque hard coral gardens, sponge life and myriads of fish
-•	This is the playground of one of the world’s largest animals: the spotted whaleshark or rhincodon typus. If elsewhere in the world divers consider themselves lucky to meet one or a couple, here they come in pods and divers can swim along with them quite unharmed except to beware not to be hit by one of their powerful fins.
-•	Scientist Dr. Gerald Allen calls the Cendrawasih Bay: “The Galapagos of Indonesia’s Reefs”.
-Whalesharks are migratory animals, and are known to grow to 18 meters in length or more. Biologists tell us that they are an acient species originating some 60 million years ago, and are usually found in the open sea. They have a lifespan of 70 years. A 7 meter whaleshark can weigh up to 22 tonnes. Unbelievably these huge animals are docile since they live only on plankton, clouds of egg roe and small fish, which in Indonesia are called “ikan teri”.
-In the village of Kwatisore near the town of Nabire, these giant fish usually gather by the floating platforms, called bagan, where fishermen haul in their catch of small fry.
-Kwatisore can be reached from Nabire in around three hours by boat with two 40pk outboard motors.The only accommodation available in this village are simple rooms at the SD Imanuel Primary School in Kwatinsore.  
-Here the local government trains 20 students to become dive guides and to develop facilities in Kwatisore to serve more tourists.
-Comprising land and coastal areas, islands, coral reefs and pristine seas, the Cendrawasih Park covers a total area of 1,453,500 hectares.
-The Cendrawasih Bay Park combines coral reef ecosystems with mangrove, islands and terrestrial tropical forest ecosystems. Here are colonies of black coral, blue coral and soft coral. The Park is famous for the 209 fish species that make this Park their habitat, among which are the butterfly fish, the damselfish and parrotfish, and, of course the whaleshark, while mollusks found here include the trumpet triton, the great clam and the cone shell.
-Best time to visit is between May through October.
-
-					</p>
+            <div class="article">            
+                <img src="images/place/Cendrawasih Bay National Park.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Cendrawasih Bay National Park</h3>
+                <p>The large Cendrawasih Bay National Park in the north of the island of Papua, otherwise known as Teluk Cenderawasih, includes Indonesia’s largest marine national park, and is one of the best dive-sites in the archipelago.</p>
+                <p>Here are magnificent vertical drops, picturesque hard coral gardens, sponge life and myriads of fish. This is the playground of one of the world’s largest animals: the spotted whaleshark or rhincodon typus. If elsewhere in the world divers consider themselves lucky to meet one or a couple, here they come in pods and divers can swim along with them quite unharmed except to beware not to be hit by one of their powerful fins.</p>
+                <p>Scientist Dr. Gerald Allen calls the Cendrawasih Bay: “The Galapagos of Indonesia’s Reefs”.</p>
+                <p>Whalesharks are migratory animals, and are known to grow to 18 meters in length or more. Biologists tell us that they are an acient species originating some 60 million years ago, and are usually found in the open sea. They have a lifespan of 70 years. A 7 meter whaleshark can weigh up to 22 tonnes. Unbelievably these huge animals are docile since they live only on plankton, clouds of egg roe and small fish, which in Indonesia are called “ikan teri”.</p>
+                <p>In the village of Kwatisore near the town of Nabire, these giant fish usually gather by the floating platforms, called bagan, where fishermen haul in their catch of small fry. Kwatisore can be reached from Nabire in around three hours by boat with two 40pk outboard motors.The only accommodation available in this village are simple rooms at the SD Imanuel Primary School in Kwatinsore.</p>
+                <p>Here the local government trains 20 students to become dive guides and to develop facilities in Kwatisore to serve more tourists.Comprising land and coastal areas, islands, coral reefs and pristine seas, the Cendrawasih Park covers a total area of 1,453,500 hectares.</p>
+                <p>The Cendrawasih Bay Park combines coral reef ecosystems with mangrove, islands and terrestrial tropical forest ecosystems. Here are colonies of black coral, blue coral and soft coral. The Park is famous for the 209 fish species that make this Park their habitat, among which are the butterfly fish, the damselfish and parrotfish, and, of course the whaleshark, while mollusks found here include the trumpet triton, the great clam and the cone shell.</p>
+                <p>Best time to visit is between May through October.</p>
+                </div>
             </div>
             
-            <img src="images/place/Raja Ampat.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Raja Ampat</h3>
-            <p>The roaring engines fixed to a large wooden boat are finally quiet. Nothing can be heard but the rifting little waves, lapping against the vibrant paint on the sides of the vessel that gracefully slows down. Native birds hop on the tip of a small tree in one of the deserted islands in the distance.
-Raja Ampat or ‘Four Kings’, is the name given to these islands and comes from a local myth. The four major islands found here are Waigeo, Misool (which is home to ancient rock paintings), Salawati, and Batanta.
-Underwater enthusiasts flock to this region because it offers the world’s best marine sights. Two days earlier, some of these travelers had been at a deafening corner of a tourist trap in Bali. Once they took their flight to the bird head of the island of Papua everything changed as they embarked on a diving tour of a lifetime. In the Raja Ampat islands, divers can explore vertical underwater walls. The thrill of drift diving is another great challenge. These are the awesome experiences you will find in Raja Ampat.
-Meanwhile, on this tour several divers were well equipped and looked advanced. The territory within the islands of the Four Kings is enormous, covering 9.8 million acres of land and sea, home to 540 types of corals, more than 1,000 types of coral fish and 700 types of mollusks. This makes it the most diverse living library for world's coral reef and underwater biota. According to a report developed by The Nature Conservancy and Conservation International, around 75% of the world's species live here. When divers first arrive here their excitement is palpable. It's common to hear people praise God as they take in the remarkable scenery. Others prefer to remain in silence taking in the overwhelming sight of so many islands with crystal clear water that softly brushes over the white sandy beaches.
-"Disini bagus!", says the friendly local guide who had been appointed by the tour operator who runs an eco-lodge in Raja Ampat, indicating that they have arrived at one of the most fantastic diving sites. On other days, this guide is just a simple fisherman. The local fishermen here are accustomed to foreigners and are friendly, especially when offered pinang (betel nuts) or some sweet candies. These are very popular and offering these sweets is considered polite and a good way to win an instant smile. The fishermen usually eat this snack during Para-para Pinang, or social chatting and exchanging funny stories while chewing Pinang. In many respects, like nature, culture, and history, these fishermen are closer to the Moluccas.
-"No doubt about it, Raja Ampat is definitely the richest place for fish that I have ever been." -
--Dr G.R. Allen
-"I was like a five-year-old, seeing a reef for the very first time. I was awestruck, held by the incredible power of this richest reef. We must, with all available resources, preserve the beauty of Raja Ampat. This may be the last frontier." --Michael Aw
-"I love the people, I love the diving, it's super! I've never been for a second time to the same dive destination but now I'm thinking about going back for the third time! Should I say more?" --Peter van Dalen
-(These testimonials are taken from www.iriandiving.com)
-While the landscape may look like a dream, this is not an illusion. As you embark on your dive, the phrase "Attention to detail" takes on new meaning as pigmy seahorses swim around your fingers. Manta Rays and wobbegongs will glide right by you. Tuna fish, giant trevallies, snappers, and even barracudas are there to complete your underwater "meeting list". Not to mention the friendly assistant of the dugong, and a busy colleague, the turtle.  Natural and untouched beauty is the main attraction here. With no unnecessary adages, the sky, the lush islands, the sea, and everything above and under it is genuinely saying "Welcome to Raja Ampat Islands; your personal Disneyland of diving sites".
-More facts about the Raja Ampat Conservation Area:*
-This area is home to 1,511 species of reef fish in the Bird’s Head Seascape;
-1,320 species of reef fish in Raja Ampat;
-75% of all known coral species in the world;
-10 times the number of hard coral species found in the entire Caribbean;
-In the Birds Head Seascape there 600 species of hard coral recorded;
-5 species of endangered sea turtles;
-57 species of Mantis Shrimp;
-13 species of Marine Mammals;
-And 27 species of endemic reef fish found only in that area
-</p>
-            
-        </div>
+            <div class="article">
+                <img src="images/place/Raja Ampat.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Raja Ampat</h3>
+                <p>The roaring engines fixed to a large wooden boat are finally quiet. Nothing can be heard but the rifting little waves, lapping against the vibrant paint on the sides of the vessel that gracefully slows down. Native birds hop on the tip of a small tree in one of the deserted islands in the distance.</p>
+                <p>Raja Ampat or ‘Four Kings’, is the name given to these islands and comes from a local myth. The four major islands found here are Waigeo, Misool (which is home to ancient rock paintings), Salawati, and Batanta.</p>
+                <p>Underwater enthusiasts flock to this region because it offers the world’s best marine sights. Two days earlier, some of these travelers had been at a deafening corner of a tourist trap in Bali. Once they took their flight to the bird head of the island of Papua everything changed as they embarked on a diving tour of a lifetime. In the Raja Ampat islands, divers can explore vertical underwater walls. The thrill of drift diving is another great challenge. These are the awesome experiences you will find in Raja Ampat.</p>
+                <p>Meanwhile, on this tour several divers were well equipped and looked advanced. The territory within the islands of the Four Kings is enormous, covering 9.8 million acres of land and sea, home to 540 types of corals, more than 1,000 types of coral fish and 700 types of mollusks. This makes it the most diverse living library for world's coral reef and underwater biota. According to a report developed by The Nature Conservancy and Conservation International, around 75% of the world's species live here. When divers first arrive here their excitement is palpable. It's common to hear people praise God as they take in the remarkable scenery. Others prefer to remain in silence taking in the overwhelming sight of so many islands with crystal clear water that softly brushes over the white sandy beaches.</p>
+                <p>"Disini bagus!", says the friendly local guide who had been appointed by the tour operator who runs an eco-lodge in Raja Ampat, indicating that they have arrived at one of the most fantastic diving sites. On other days, this guide is just a simple fisherman. The local fishermen here are accustomed to foreigners and are friendly, especially when offered pinang (betel nuts) or some sweet candies. These are very popular and offering these sweets is considered polite and a good way to win an instant smile. The fishermen usually eat this snack during Para-para Pinang, or social chatting and exchanging funny stories while chewing Pinang. In many respects, like nature, culture, and history, these fishermen are closer to the Moluccas.</p>
+				</div>
+			</div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

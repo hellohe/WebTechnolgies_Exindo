@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>West Nusa Tenggara | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1>West Nusa Tenggara</h1>
+            
+            <div class="article">
+                <img src="images/food/ayam taliwang.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Ayam Taliwang</h3>
+                  <p>Ayam Taliwang is a spicy Indonesian ayam bakar (grilled chicken) dish from Lombok. Ayam Taliwang physically appears similar to regular grilled or fried chicken, with a covering of sambal. Its taste is sweet and spicy, with traces of shrimp paste. It can be served with a side of water spinach (plecing) and eggplant (beberuk) covered with chili sauce.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/pelecing kangkung.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Pelecing Kangkung</h3>
+                  <p>Plecing kangkung is a spicy water spinach dish made from Lombok island, Indonesia. Plecing kangkung made from blanchedkangkung leaf (Ipomoea aquatica) served cold with plecing sambal, made from ground red chili pepper, shallots, garlic, burned bird's eye chili, candlenut, kaffir lime, burned shrimp paste, a pinch of salt and sugar. As a side dish for Lombok Ayam taliwang dish, plecing kangkung usually also served with additional vegetables such as bean sprouts, string beans, fried peanuts and urap's grated spicy coconut dressing. Outside of Lombok, plecing kangkung is also commonly served in neighboring island Bali.</p>
+				</div>
+			</div>
+        </div>
+		
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

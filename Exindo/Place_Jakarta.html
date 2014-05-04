@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Jakarta | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,75 +141,76 @@
                       
         <div class="contents">         	   
             <h1> Jakarta </h1>
-            <img src="images/place/National-Monument-Jakarta-Indonesia.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>National Monument</h3>
-            
-            	<p>The main Sudirman-Thamrin avenues in Jakarta lead to the Merdeka Square, where in its center stands the National Monument (also known as Monas--Monumen Nasional) which houses the first red-and-white flag flown at the Proclamation of Independence on 17 August 1945. This flag has now become threadbare, and so nowadays on Independence Day ceremonies, the original flag is taken out but only to accompany the replica flag to be flown in front of the Merdeka Palace. The 137 meter tall National Monument is obelisk shaped, and is topped with a 14.5 meter bronze flame coated with 32 kilograms gold leaf. Within the pedestal is a museum depicting in diorama Indonesia’s fight for Independence as well as the original text of the Proclamation of Independence. A lift takes visitors up to the look-out platform at the base of the flame for a grand view of Jakarta.
+            <div class="article">
+            	<img src="images/place/National Monument.jpg" />
+	            <div style="margin-left:250px;">
+					<h3>National Monument</h3>            
+					<p>The main Sudirman-Thamrin avenues in Jakarta lead to the Merdeka Square, where in its center stands the National Monument (also known as Monas--Monumen Nasional) which houses the first red-and-white flag flown at the Proclamation of Independence on 17 August 1945. This flag has now become threadbare, and so nowadays on Independence Day ceremonies, the original flag is taken out but only to accompany the replica flag to be flown in front of the Merdeka Palace. The 137 meter tall National Monument is obelisk shaped, and is topped with a 14.5 meter bronze flame coated with 32 kilograms gold leaf. Within the pedestal is a museum depicting in diorama Indonesia’s fight for Independence as well as the original text of the Proclamation of Independence. A lift takes visitors up to the look-out platform at the base of the flame for a grand view of Jakarta.</p>
 
-Surrounding the Monument is now a park with a musical fountain, enjoyed by the Jakarta public on Sundays for sports and recreation. Deer roam among the shady trees in the park. 
-
-Merdeka Square is the center of most important government buildings. During Dutch colonial days here was the center of government, known as Koningsplein or the King’s Square. The north side is dominated by the Merdeka Palace once the home of the Dutch Governor Generals, which now also houses the office of the President and the Cabinet. To the South is the office of Indonesia’s Vice President, Jakarta’s Governor and provincial parliament building, as also the American Embassy , while to the West is the National Museum, the Constitutional Court, the Ministry for Culture and Tourism and the Indosat building, Indonesia’s first international telecommunications company.
-</p>
-			</div>
-            
-            <img src="images/place/DSC02949.JPG" />
-            <div style="margin-left:250px;">
-            <h3>Taman Mini Indonesia Indah</h3>
-            <p>Taman Mini Indonesia Indah or Beautiful Indonesia in Miniature Park is an extensive culture-based park, the prime showcase of Indonesia’s rich cultural and natural diversity located in East Jakarta.
-Popularly known as Taman Mini, the core of the Park are 26 exclusive replicas of traditional houses of chieftains found throughout the Indonesian archipelago from Aceh to Kalimantan, Sulawesi, Java and Papua. These are pavilions displaying the history, arts and crafts and traditions of each of the provinces.  Built for education and family fun, Taman Miini has large areas for family recreation, a number of flora and fauna parks, various museums, performing theatres, an Imax theatre and accommodation facilities.
-To further express Indonesia’s tolerance and peaceful coexistence among the different religions in the archipelago here stand in a row the different houses of worship that are still actively used:  a mosque, a Hindu temple, a Buddhist temple, a Catholic church and a Protestant church.
-Nearby is a large lake with islands in the shapes of the original Indonesian archipelago. From the sky lift that passes over the lake visitors can see clearly the entire map of Indonesia in the lake.     
-Taman Mini is the brainchild of the late Ibu Tien Soeharto, former Indonesian First Lady.  Construction of Taman Mini began in 1971 and it was officially inaugurated on April 20, 1975.
-The Park has as chief mission the preservation and development of the various Indonesian cultures as a media to strengthen the nation’s unity and integrity and to instill these values especially in the young generation.  
-For visitors who have little time to explore the Indonesian islands, Taman Mini is a good introduction to what this country has to offer in diversity and culture. During weekends and holidays Taman Mini is an ideal theme park for families to become more acquainted with other regional cultures.
-
-					</p>
+					<p>Surrounding the Monument is now a park with a musical fountain, enjoyed by the Jakarta public on Sundays for sports and recreation. Deer roam among the shady trees in the park. </p>
+					
+					<p>Merdeka Square is the center of most important government buildings. During Dutch colonial days here was the center of government, known as Koningsplein or the King’s Square. The north side is dominated by the Merdeka Palace once the home of the Dutch Governor Generals, which now also houses the office of the President and the Cabinet. To the South is the office of Indonesia’s Vice President, Jakarta’s Governor and provincial parliament building, as also the American Embassy , while to the West is the National Museum, the Constitutional Court, the Ministry for Culture and Tourism and the Indosat building, Indonesia’s first international telecommunications company.</p>
+				</div>
             </div>
             
-            <img src="images/place/kotatua_1_1 (1).jpg" />
-            <div style="margin-left:250px;">
-            <h3>Old Batavia</h3>
-            <p>In its heydays in the 16th century, Batavia was known as “The Queen of the East” and “the Jewel of Asia”. Its Sunda Kelapa harbour was abuzz with merchant vessels from Europe, China, India and from throughout the Indonesian archipelago, loading in and sailing away with precious nutmegs, pepper, tea, coffee, ceramics, cloths and other exotic products of the time. The warehouses were stacked with spices, tin and copper. The successful trade in Batavia filled the coffers of the Netherland’s Treasury. .  
-Center of the VOC Dutch East India Company’s administration was the Stadthuiswith its wide front plaza, around which were the Court of Justice, banks and other important buildings.
-Today, the Sunda Kelapa Harbour is an inter-island harbour, where one can mostly find Bugis phinisi schooners at anchor. Nearly are the old warehouses, which are now converted into a Maritime Museum.This museum houses models of old Dutch ships and the many types of boats used in the archipelago.
-Center of the Old Batavia is the former municipal building or Stadthuis, which is now a Museum depicting Jakarta’s long history, called Museum Fatahillah, while the square is called the Fatahillah Square.
-The Fatahillah Museum is built in classical baroque architecture consisting of a main building with two wings on its east and west, acomplementary building used as an office, a court room, and an underground prison. These frightening prison cells contain heavy iron balls used to shackle prisoners and slaves.  
-Around the square are the Fine Art and Ceramic Museum, one time Court of Justice, which houses splendid paintings of the romantic maestro Raden Saleh, and expressionist Affandi. There is also a collection of ceramics from many parts of Asia.
-There is also the Wayang Museum, the Bank Indonesia and Bank Mandiri Museums, housing artefacts related to the banking world.
-In the vicinity are the Sion Protestant Church, built in 1695 and still in use until today, the Pasar Ikan – or Fish market, the Kota Intan Drawbridge – a reminder of canals and bridges in Holland, and the old Jakarta Kota Station, also still operational today.
-In its heydays in the 16th century, Batavia was known as “The Queen of the East” and “the Jewel of Asia”. Its Sunda Kelapa harbour was abuzz with merchant vessels from Europe, China, India and from throughout the Indonesian archipelago, loading in and sailing away with precious nutmegs, pepper, tea, coffee, ceramics, cloths and other exotic products of the time. The warehouses were stacked with spices, tin and copper. The successful trade in Batavia filled the coffers of the Netherland’s Treasury. 
-Center of the VOC Dutch East India Company’s administration was the Stadthuis with its wide front plaza, around which were the Court of Justice, banks and other important buildings.
-Later the city expanded to the west bank of the Ciliwung river, where the Dutch built a fortress, a city wall and canals, outside which was Chinatown and the homes of the indigenous people.This entire area, covering 1.3 square kilometers is today called the Old Batavia, present day part of North and West Jakarta.
-Before this, in 1526, Prince Fatahillah of Banten invaded the harbour of Sunda Kelapa of the West Javanese kingdom of Pajajaran, On 22 June 1527 he renamed the town Jayakarta meaning victorious city.  Until today, Jakarta bases its founding on this date.
-In 1619, however, Dutch Governor Jan Pieterszoon Coen destroyed the town, upon which he built the new town of Batavia – naming it to the ancestors of the Dutch, the Batavieren.
-Today many of the original buildings are still intact, The government has designated the Old Batavia as conservation area and plans are afoot to revive the entire neighbourhood into a tourst destination.
-</p>
+            <div class="article">
+                <img src="images/place/tmii.JPG" />
+                <div style="margin-left:250px;">
+					<h3>Taman Mini Indonesia Indah</h3>
+					<p>Taman Mini Indonesia Indah or Beautiful Indonesia in Miniature Park is an extensive culture-based park, the prime showcase of Indonesia’s rich cultural and natural diversity located in East Jakarta.</p>
+					<p>Popularly known as Taman Mini, the core of the Park are 26 exclusive replicas of traditional houses of chieftains found throughout the Indonesian archipelago from Aceh to Kalimantan, Sulawesi, Java and Papua. These are pavilions displaying the history, arts and crafts and traditions of each of the provinces.  Built for education and family fun, Taman Miini has large areas for family recreation, a number of flora and fauna parks, various museums, performing theatres, an Imax theatre and accommodation facilities.</p>
+					<p>To further express Indonesia’s tolerance and peaceful coexistence among the different religions in the archipelago here stand in a row the different houses of worship that are still actively used:  a mosque, a Hindu temple, a Buddhist temple, a Catholic church and a Protestant church.</p>
+					<p>Nearby is a large lake with islands in the shapes of the original Indonesian archipelago. From the sky lift that passes over the lake visitors can see clearly the entire map of Indonesia in the lake.</p>
+					<p>Taman Mini is the brainchild of the late Ibu Tien Soeharto, former Indonesian First Lady.  Construction of Taman Mini began in 1971 and it was officially inaugurated on April 20, 1975.</p>
+					<p>The Park has as chief mission the preservation and development of the various Indonesian cultures as a media to strengthen the nation’s unity and integrity and to instill these values especially in the young generation.</p>
+					<p>For visitors who have little time to explore the Indonesian islands, Taman Mini is a good introduction to what this country has to offer in diversity and culture. During weekends and holidays Taman Mini is an ideal theme park for families to become more acquainted with other regional cultures.</p>
+                </div>
+            </div>
             
-        </div>
-        <img src="images/place/ancol-atlantis-water-adventures-101.jpg" />
-        <div style="margin-left:250px;">
-        <h3>Ancol</h3>
-        <p>
-        This is Jakarta's largest and most popular recreation park, more popularly known as "Ancol Dreamland". The Ancol Dreamland has an extensive range of attractions that include a Seaworld,  a water park with artificial waves, an  lagoon for fishing and boating,  exciting rides such as the Torpedo and the Hysteria, an art center, a convention hall and hotels.
- 
-In the Ancol complex are also a marina, the Dunia Fantasi (Fantasy World),  a drive-in theatre. The 'Pasar Seni' or art market has a varied collection of Indonesian handicraft, paintings and souvenirs on sale. An open-air theatre features live performances by local artists.
-
-        </p>
-        </div>
+            <div class="article">
+                <img src="images/place/kota tua.jpg" />
+                <div style="margin-left:250px;">
+					<h3>Old Batavia</h3>
+					<p>In its heydays in the 16th century, Batavia was known as “The Queen of the East” and “the Jewel of Asia”. Its Sunda Kelapa harbour was abuzz with merchant vessels from Europe, China, India and from throughout the Indonesian archipelago, loading in and sailing away with precious nutmegs, pepper, tea, coffee, ceramics, cloths and other exotic products of the time. The warehouses were stacked with spices, tin and copper. The successful trade in Batavia filled the coffers of the Netherland’s Treasury.</p>
+					<p>Center of the VOC Dutch East India Company’s administration was the Stadthuiswith its wide front plaza, around which were the Court of Justice, banks and other important buildings.</p>
+					<p>Today, the Sunda Kelapa Harbour is an inter-island harbour, where one can mostly find Bugis phinisi schooners at anchor. Nearly are the old warehouses, which are now converted into a Maritime Museum.This museum houses models of old Dutch ships and the many types of boats used in the archipelago.</p>
+					<p>Center of the Old Batavia is the former municipal building or Stadthuis, which is now a Museum depicting Jakarta’s long history, called Museum Fatahillah, while the square is called the Fatahillah Square.</p>
+					<p>The Fatahillah Museum is built in classical baroque architecture consisting of a main building with two wings on its east and west, acomplementary building used as an office, a court room, and an underground prison. These frightening prison cells contain heavy iron balls used to shackle prisoners and slaves.</p>
+					<p>Around the square are the Fine Art and Ceramic Museum, one time Court of Justice, which houses splendid paintings of the romantic maestro Raden Saleh, and expressionist Affandi. There is also a collection of ceramics from many parts of Asia.</p>
+					<p>There is also the Wayang Museum, the Bank Indonesia and Bank Mandiri Museums, housing artefacts related to the banking world.</p>
+					<p>In the vicinity are the Sion Protestant Church, built in 1695 and still in use until today, the Pasar Ikan – or Fish market, the Kota Intan Drawbridge – a reminder of canals and bridges in Holland, and the old Jakarta Kota Station, also still operational today.</p>
+					<p>In its heydays in the 16th century, Batavia was known as “The Queen of the East” and “the Jewel of Asia”. Its Sunda Kelapa harbour was abuzz with merchant vessels from Europe, China, India and from throughout the Indonesian archipelago, loading in and sailing away with precious nutmegs, pepper, tea, coffee, ceramics, cloths and other exotic products of the time. The warehouses were stacked with spices, tin and copper. The successful trade in Batavia filled the coffers of the Netherland’s Treasury. </p>
+					<p>Center of the VOC Dutch East India Company’s administration was the Stadthuis with its wide front plaza, around which were the Court of Justice, banks and other important buildings.</p>
+					<p>Later the city expanded to the west bank of the Ciliwung river, where the Dutch built a fortress, a city wall and canals, outside which was Chinatown and the homes of the indigenous people.This entire area, covering 1.3 square kilometers is today called the Old Batavia, present day part of North and West Jakarta.</p>
+					<p>Before this, in 1526, Prince Fatahillah of Banten invaded the harbour of Sunda Kelapa of the West Javanese kingdom of Pajajaran, On 22 June 1527 he renamed the town Jayakarta meaning victorious city.  Until today, Jakarta bases its founding on this date.</p>
+					<p>In 1619, however, Dutch Governor Jan Pieterszoon Coen destroyed the town, upon which he built the new town of Batavia – naming it to the ancestors of the Dutch, the Batavieren.</p>
+					<p>Today many of the original buildings are still intact, The government has designated the Old Batavia as conservation area and plans are afoot to revive the entire neighbourhood into a tourst destination.</p>               
+				</div>
+			</div>
         
-        <img src="images/place/The-Thousand-Islands.jpg" />
-        <div style="margin-left:250px;">
-        <h3>The Thousand Islands</h3>
-        <p>As your plane slowly descends for its approach to Jakarta’s Soekarno-Hatta international airport, you can see a large number of large and small islands dotting the sea in the Bay of Jakarta. These are known as the Thousand Islands, or Kepulauan Seribu. In fact they are a cluster of 76 coral islands with more appearing and disappearing with the tide.
-Located 45 km north from the city, this part of Jakarta offers a huge change in pace and experience from the hustle and bustle of the city, but is near enough for residents and visitors to enjoy the exhilarating marine environment within just one day excursion.
-Here are diving, snorkeling and fishing opportunities, or just good for lazing in the sun with nothing to disturb one’s mind except the chirping of birds amidst the gentle lapping of the waves.
-The idyllic Thousand Islands are in fact a marine nature conservation area. Here are a wealth of sea biota species which form part of its coral reef ecosystem, there are 144 species of fish, 2 species of giant clam, sea worms of various colours and 17 species of coastal birds.
-The Park is a hatching site for hawksbill turtles and green turtles. The hawksbill turtle is an endangered species, rarely found in other waters. They are primarily bred on the island of Pramuka. Most of the islands are ringed by coconut palms and mangrove forests, where iguanas, golden ring snakes and pythons can be found.
-The islands of  Pramuka, Semak Daun, Kelapa, and Panggang are interesting for turtle breeding, animals observations and marine tours, while for wreck diving the best places are at Pramuka, Opak and Karang Congkak. With Laga, Kotok, Gosong, and Koja Karang islands best for diving and snorkeling.
-
-        </p>
-        </div>
+			<div class="article">
+				<img src="images/place/ancol.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Ancol</h3>
+					<p>This is Jakarta's largest and most popular recreation park, more popularly known as "Ancol Dreamland". The Ancol Dreamland has an extensive range of attractions that include a Seaworld,  a water park with artificial waves, an  lagoon for fishing and boating,  exciting rides such as the Torpedo and the Hysteria, an art center, a convention hall and hotels.</p>     
+					<p>In the Ancol complex are also a marina, the Dunia Fantasi (Fantasy World),  a drive-in theatre. The 'Pasar Seni' or art market has a varied collection of Indonesian handicraft, paintings and souvenirs on sale. An open-air theatre features live performances by local artists.</p>
+				</div>
+			</div>
+			
+			<div class="article">
+				<img src="images/place/The Thousand Islands.jpg" />
+				<div style="margin-left:250px;">
+					<h3>The Thousand Islands</h3>
+					<p>As your plane slowly descends for its approach to Jakarta’s Soekarno-Hatta international airport, you can see a large number of large and small islands dotting the sea in the Bay of Jakarta. These are known as the Thousand Islands, or Kepulauan Seribu. In fact they are a cluster of 76 coral islands with more appearing and disappearing with the tide.</p>
+					<p>Located 45 km north from the city, this part of Jakarta offers a huge change in pace and experience from the hustle and bustle of the city, but is near enough for residents and visitors to enjoy the exhilarating marine environment within just one day excursion.</p>
+					<p>Here are diving, snorkeling and fishing opportunities, or just good for lazing in the sun with nothing to disturb one’s mind except the chirping of birds amidst the gentle lapping of the waves.</p>
+					<p>The idyllic Thousand Islands are in fact a marine nature conservation area. Here are a wealth of sea biota species which form part of its coral reef ecosystem, there are 144 species of fish, 2 species of giant clam, sea worms of various colours and 17 species of coastal birds.</p>
+					<p>The Park is a hatching site for hawksbill turtles and green turtles. The hawksbill turtle is an endangered species, rarely found in other waters. They are primarily bred on the island of Pramuka. Most of the islands are ringed by coconut palms and mangrove forests, where iguanas, golden ring snakes and pythons can be found.</p>
+					<p>The islands of  Pramuka, Semak Daun, Kelapa, and Panggang are interesting for turtle breeding, animals observations and marine tours, while for wreck diving the best places are at Pramuka, Opak and Karang Congkak. With Laga, Kotok, Gosong, and Koja Karang islands best for diving and snorkeling.</p>
+				</div>
+			</div>
+		</div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

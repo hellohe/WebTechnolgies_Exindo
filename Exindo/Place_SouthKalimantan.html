@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>South Kalimantan | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,45 +141,45 @@
                       
         <div class="contents">         	   
             <h1> South Kalimantan </h1>
-            <img src="images/place/river1.JPG" />
-            <div style="margin-left:250px;">
-            	<h3>Mahakam River</h3>
-            
-            	<p>Mahakam river is the biggest river in East Kalimantan province. This 920 km long river flows from its upper stream in Kutai Barat to its lower stream in Kutai Kartanegara and Samarinda.
-
-Mahakam is very important for most inhabitants in the province as some areas are only accessible by river. Transportation of goods also relies on this transportation means. This river empties itself in Tenggarong, Belayan and Lawa rivers.<br /><br /><br />
- </p>
-			</div>
-            
-            <img src="images/place/banjarmasin.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Banjarmasin</h3>
-            <p>Banjarmasin is the capital and the pulsating heart of the province of South Kalimantan. The largest and most beguiling city of Kalimantan - the Indonesian territory on Borneo – it rests gingerly over a labyrinth of canals thus giving it its illustrious nickname as the city of a thousand rivers.  Like any other major city in the country, Banjarmasin is abuzz with business and traffic. However the city has its own distinct charm that makes it the best place to absorb Kalimantan’s urban culture, both on land as on the waters.
-Located on a delta near the junction of the Barito and Martapura rivers, Banjarmasin, together with its neighboring city, Banjarbaru, form the center of the ninth largest metropolitan city in Indonesia, named Banjar Bakula, which together comprise the area covering  the Banjar Regency,  the Barito Kuala Regency, and Tanah Laut Regency. From ancient times and up to this day, Banjarmasin has remained an important harbor town on Kalimantan.
-The most notable of the river markets is the Muara Kuin Floating Market located on the Barito River, on the estuary of the Kuin River. Starting as early as 04.00 am, the floating market  is the place to see the traffic of all kinds of boats laden with bananas, shrimps, fish, yams, spinach, coconut, incandescent spices and chilies, buckets of fuzzy rambutans, and whatever other fruit are in season. Maneuvering their boats with dexterity and precision, since the boats are constantly wobbled by the river’s waves,  traders exchange goods and money. This unique frenzy is usually over by 09.00 am. 
-The Banjarese have a unique way of building their houses and other structures to be in harmony with nature. There are at least 12 types of traditional Banjarese houses, with some still standing handsomely today. In Kampung Kraton are still remnants of the old Banjarmasin Palace which was destroyed by the Dutch colonial government.  There is also the Sultan Suriansyah Mosque which is known as the first mosque built in South Kalimantan where the royal tombs are laid. Another fascinating structure is the Museum Waja Sampai Ka Puting which houses some of the historical collections in the struggle of the people against Dutch colonialism. The building of the Museum itself is an old and genuine Banjarese traditional house in the "Bubungan Tinggi" style (one of the 12 styles and the most representative).
-To most Indonesians, Banjarmasin is synonymous with diamonds and precious stones from Martapura. If you are interested in precious stones then Banjarmasin is the city to head to. They also have the cheaper agates that are made into brooches, necklaces, bracelets and other accessories.
-					</p>
+            <div class="article">
+                <img src="images/place/mahakam river.JPG" />
+                <div style="margin-left:250px;">
+                    <h3>Mahakam River</h3>                
+                    <p>Mahakam river is the biggest river in East Kalimantan province. This 920 km long river flows from its upper stream in Kutai Barat to its lower stream in Kutai Kartanegara and Samarinda. Mahakam is very important for most inhabitants in the province as some areas are only accessible by river. Transportation of goods also relies on this transportation means. This river empties itself in Tenggarong, Belayan and Lawa rivers.<br /><br /><br /></p>
+                </div>
             </div>
             
-            <img src="images/place/Pendulangan Intan dan Permata Cempaka 2.JPG" />
-            <div style="margin-left:250px;">
-            <h3>The Cempaka Diamond Fields</h3>
-            <p>The land of South Kalimantan is blessed with some of the most sparkling treasures that mother earth provides, especially those that radiate the most exquisite glow, namely:  Diamonds. Sending out its beautiful glow all around the world, these sparkling gems are unearthed from various diamond fields in the province, but the most notable are found at the Cempaka Diamond Fields, by the town of Banjarbaru, in South Kalimantan.
-
-Situated some 47Km from Banjarmasin, capital of South Kalimantan, or about 7 Km from downtown Banjarbaru, the sub district of Cempaka is the place where diamonds and gold are still mined using traditional means and methods. The diamond fields of Cempaka are spread mostly around Sungai Tiung county with two of the most renowned fields being Pumpung and Ujung Murung.
- 
-Here one can observe how diggers at the bottom of a shaft spend the entire day up to their neck in water, passing up baskets full of silt that is washed away to sift for gold specks, diamonds or agate. The mining bore-holes can reach a depth of 15 meters and are made using traditional pan -shaped tools made from wood or woven rattan, and simple crowbars. To draw water and wash the finds, electric water pumps are used. Diggers usually work in teams of 10 to 15, digging one day, sluicing the next.
- 
-There are certain taboos in mining the diamonds here in Cempaka, one of the most interesting is that it is taboo to mention the word “intan” or diamond in Bahasa Indonesia, instead they must call it “Galuh”. They believe that the very mention of the word “diamond” will drive the precious stones away.
- 
-On 26 August 1965 Cempaka drew worldwide attention when an amazing 166.75carat sparkling diamond was unearthed here, almost the size of a pigeon’s egg. The diamond was given the name a “Tri Sakti” or “Thrice Sacred” by Ir.Soekarno, Indonesia’s first President.  An 20 carat diamond was earlier found here in 1846, and another 106.7- carat diamond in 1850.
- 
-There are no official records that reveal when Diamond mining began in Cempaka, however many believe it was initiated in Dutch Colonial times which has then been passed down the generations ever since. Another version suggests that diamonds and other precious gems have been mined here as early as the 9th century.
-</p>
+            <div class="article">
+                <img src="images/place/banjarmasin.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Banjarmasin</h3>
+                    <p>Banjarmasin is the capital and the pulsating heart of the province of South Kalimantan. The largest and most beguiling city of Kalimantan - the Indonesian territory on Borneo – it rests gingerly over a labyrinth of canals thus giving it its illustrious nickname as the city of a thousand rivers.  Like any other major city in the country, Banjarmasin is abuzz with business and traffic. However the city has its own distinct charm that makes it the best place to absorb Kalimantan’s urban culture, both on land as on the waters.</p>
+                    <p>Located on a delta near the junction of the Barito and Martapura rivers, Banjarmasin, together with its neighboring city, Banjarbaru, form the center of the ninth largest metropolitan city in Indonesia, named Banjar Bakula, which together comprise the area covering  the Banjar Regency,  the Barito Kuala Regency, and Tanah Laut Regency. From ancient times and up to this day, Banjarmasin has remained an important harbor town on Kalimantan.</p>
+                    <p>The most notable of the river markets is the Muara Kuin Floating Market located on the Barito River, on the estuary of the Kuin River. Starting as early as 04.00 am, the floating market  is the place to see the traffic of all kinds of boats laden with bananas, shrimps, fish, yams, spinach, coconut, incandescent spices and chilies, buckets of fuzzy rambutans, and whatever other fruit are in season. Maneuvering their boats with dexterity and precision, since the boats are constantly wobbled by the river’s waves,  traders exchange goods and money. This unique frenzy is usually over by 09.00 am. </p>
+                    <p>The Banjarese have a unique way of building their houses and other structures to be in harmony with nature. There are at least 12 types of traditional Banjarese houses, with some still standing handsomely today. In Kampung Kraton are still remnants of the old Banjarmasin Palace which was destroyed by the Dutch colonial government.  There is also the Sultan Suriansyah Mosque which is known as the first mosque built in South Kalimantan where the royal tombs are laid. Another fascinating structure is the Museum Waja Sampai Ka Puting which houses some of the historical collections in the struggle of the people against Dutch colonialism. The building of the Museum itself is an old and genuine Banjarese traditional house in the "Bubungan Tinggi" style (one of the 12 styles and the most representative).</p>
+                    <p>To most Indonesians, Banjarmasin is synonymous with diamonds and precious stones from Martapura. If you are interested in precious stones then Banjarmasin is the city to head to. They also have the cheaper agates that are made into brooches, necklaces, bracelets and other accessories.</p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">            
+                <img src="images/place/Pendulangan Intan dan Permata Cempaka 2.JPG" />
+                <div style="margin-left:250px;">
+                    <h3>The Cempaka Diamond Fields</h3>
+                    <p>The land of South Kalimantan is blessed with some of the most sparkling treasures that mother earth provides, especially those that radiate the most exquisite glow, namely:  Diamonds. Sending out its beautiful glow all around the world, these sparkling gems are unearthed from various diamond fields in the province, but the most notable are found at the Cempaka Diamond Fields, by the town of Banjarbaru, in South Kalimantan.</p>
         
+                    <p>Situated some 47Km from Banjarmasin, capital of South Kalimantan, or about 7 Km from downtown Banjarbaru, the sub district of Cempaka is the place where diamonds and gold are still mined using traditional means and methods. The diamond fields of Cempaka are spread mostly around Sungai Tiung county with two of the most renowned fields being Pumpung and Ujung Murung.</p>
+                     
+                    <p>Here one can observe how diggers at the bottom of a shaft spend the entire day up to their neck in water, passing up baskets full of silt that is washed away to sift for gold specks, diamonds or agate. The mining bore-holes can reach a depth of 15 meters and are made using traditional pan -shaped tools made from wood or woven rattan, and simple crowbars. To draw water and wash the finds, electric water pumps are used. Diggers usually work in teams of 10 to 15, digging one day, sluicing the next.</p>
+                     
+                    <p>There are certain taboos in mining the diamonds here in Cempaka, one of the most interesting is that it is taboo to mention the word “intan” or diamond in Bahasa Indonesia, instead they must call it “Galuh”. They believe that the very mention of the word “diamond” will drive the precious stones away.</p>
+                     
+                    <p>On 26 August 1965 Cempaka drew worldwide attention when an amazing 166.75carat sparkling diamond was unearthed here, almost the size of a pigeon’s egg. The diamond was given the name a “Tri Sakti” or “Thrice Sacred” by Ir.Soekarno, Indonesia’s first President.  An 20 carat diamond was earlier found here in 1846, and another 106.7- carat diamond in 1850.</p>
+                     
+                    <p>There are no official records that reveal when Diamond mining began in Cempaka, however many believe it was initiated in Dutch Colonial times which has then been passed down the generations ever since. Another version suggests that diamonds and other precious gems have been mined here as early as the 9th century.</p>              
+				</div>
+			</div>
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

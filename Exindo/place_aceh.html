@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Aceh | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,6 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-			
 			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
@@ -56,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -132,29 +141,34 @@
                       
         <div class="contents">         	   
             <h1> Aceh </h1>
-            <img src="images/place/Grand Mosque of Baiturrahman.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Grand Mosque of Baiturrahman</h3>
             
-            	<p>Grand Mosque Baiturrahman (or Masjid Raya Baiturrahman in Bahasa) is the symbol of religious, courage, and nationalism of the people in Aceh. It was built in 1600s. At that time, this mosque is a famous religious center. Many people from overseas such as Iraq, India, etc came here to deepen their religious knowledge. It was used as defenses headquarter during Aceh War or Dutch war (1873 – 1904). The mosque was burnt down in 1873 by Dutch soldiers. In 1879, it was rebuilt and remains until now. Grand Mosque Baiturrahman has undergone 5 renovations and enlargements. It was used It survived the devastating earthquake and tsunami in 2004, with only a few cracks, along with Aceh citizens inside it. </p>
-			</div>
-            
-            <img src="images/place/aceh-leuser.gif" />
-            <div style="margin-left:250px;">
-            <h3>Mount Leuser National Park </h3>
-            <p>Mount Leuser National Park, named after its highest peak, Mount Leuser (3,381 m), is one of the largest and the most diverse national parks in Indonesia, covering an area of 7,927 square kilometer in the northern tip of Sumatera, Indonesia. Embracing various ecosystems, the national park is in fact a cluster of various nature reserves and forests: Gunung Leuser Nature Reserve, Kappi Nature Reserve, Kluet Nature Reserve, Sikundur-Langkat Wildlife Reserve, Ketambe Research Station, Singkil Barat, and Dolok Sembilin.
-The park is so extensive, it covers mangroves, beach and swamp forest, lowland rainforest, moss forest, and up to subalpine forest. When traversing its extraordinary landscape, enthusiastic adventurer like you will not be disappointed.
-The Mount Leuser National Park, which is Taman Nasional Gunung Leuser in Bahasa, encompasses more than 100 kilometers of the Bukit Barisan Mountains, known for its steep, almost inaccessible mountainous terrains. The altitude ranges from beach area in Kluet (South Aceh), to 3,381 meter on top of the Gunung Leuser (Southeast Aceh). The breathtaking Alas River cuts the park into an eastern and western half, where your tropical thirst for adrenaline will be captivatingly fulfilled.
-Around 130 species are identified in this park only. The mysterious Sumatran tigers, elephants, rhinos, Siamang monkeys, macaques, clouded leopards, reptiles, fish, and around 325 species of birds are among the endemic wildlife known to inhibit the park. Surely the trek to the inner park is more than just a great adventure to the last zoo you visited. 
-					</p>
+            <div class="article">
+                <img src="images/place/Grand Mosque of Baiturrahman.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Grand Mosque of Baiturrahman</h3>                
+                    <p>Grand Mosque Baiturrahman (or Masjid Raya Baiturrahman in Bahasa) is the symbol of religious, courage, and nationalism of the people in Aceh. It was built in 1600s. At that time, this mosque is a famous religious center. Many people from overseas such as Iraq, India, etc came here to deepen their religious knowledge. It was used as defenses headquarter during Aceh War or Dutch war (1873 – 1904). The mosque was burnt down in 1873 by Dutch soldiers. In 1879, it was rebuilt and remains until now. Grand Mosque Baiturrahman has undergone 5 renovations and enlargements. It was used It survived the devastating earthquake and tsunami in 2004, with only a few cracks, along with Aceh citizens inside it. </p>
+                </div>
             </div>
             
-            <img src="images/place/aceh_tsunami_museum1.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Aceh Tsunami Museum</h3>
-            <p>It was built in 2009 and opened by the president, Susilo Bambang Yudhoyono. It is a symbolic monument of the earthquake and tsunami disaster in 2004. It also served as disaster checkpoint if a tsunami ever happened again. The museum contains simulation of earthquake and tsunami in 2004, photos of the victims, and testimony.</p>
+            <div class="article">
+                <img src="images/place/leuser.gif" />
+                <div style="margin-left:250px;">
+                    <h3>Mount Leuser National Park </h3>
+                    <p>Mount Leuser National Park, named after its highest peak, Mount Leuser (3,381 m), is one of the largest and the most diverse national parks in Indonesia, covering an area of 7,927 square kilometer in the northern tip of Sumatera, Indonesia. Embracing various ecosystems, the national park is in fact a cluster of various nature reserves and forests: Gunung Leuser Nature Reserve, Kappi Nature Reserve, Kluet Nature Reserve, Sikundur-Langkat Wildlife Reserve, Ketambe Research Station, Singkil Barat, and Dolok Sembilin.</p>
+        			<p>The park is so extensive, it covers mangroves, beach and swamp forest, lowland rainforest, moss forest, and up to subalpine forest. When traversing its extraordinary landscape, enthusiastic adventurer like you will not be disappointed.</p>
+        			<p>The Mount Leuser National Park, which is Taman Nasional Gunung Leuser in Bahasa, encompasses more than 100 kilometers of the Bukit Barisan Mountains, known for its steep, almost inaccessible mountainous terrains. The altitude ranges from beach area in Kluet (South Aceh), to 3,381 meter on top of the Gunung Leuser (Southeast Aceh). The breathtaking Alas River cuts the park into an eastern and western half, where your tropical thirst for adrenaline will be captivatingly fulfilled.</p>
+        			<p>Around 130 species are identified in this park only. The mysterious Sumatran tigers, elephants, rhinos, Siamang monkeys, macaques, clouded leopards, reptiles, fish, and around 325 species of birds are among the endemic wildlife known to inhibit the park. Surely the trek to the inner park is more than just a great adventure to the last zoo you visited. </p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">
+                <img src="images/place/aceh tsunami museum.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Aceh Tsunami Museum</h3>
+                    <p>It was built in 2009 and opened by the president, Susilo Bambang Yudhoyono. It is a symbolic monument of the earthquake and tsunami disaster in 2004. It also served as disaster checkpoint if a tsunami ever happened again. The museum contains simulation of earthquake and tsunami in 2004, photos of the victims, and testimony.</p>            
+        		</div>
+            </div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Riau | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,39 +141,35 @@
                       
         <div class="contents">         	   
             <h1> Riau </h1>
-            <img src="images/place/Candi-MUARO-TAKUS.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Muara Takus Temple</h3>
             
-            	<p>Located some 122 from Pekanbaru, capital of the province of Riau, the Muara Takus temple complex (or Candi Muara Takus) is built by the Kampar Kanan river. Muara Takus has the largest brick buildings on Sumatra found remotely in a jungle clearing. 
-The main Candi Mahligai is a tall stupa flanked by ruins of several other brick sanctuaries. Its tall shape differs from the normally bell-shaped Buddhist stupas found on Java. The temple is constructed of river boulders, sandstone and earthen bricks and was restored in 1980.
-The complex is surrounded by a 74m x 74 m wall, with another earthen rampart of 1.5km x 1.5 km surrounding this, stretching to the edge of the Kampar Kanan river. Within the walls are found the Candi Tua, Candi Bungsu, the Mahligai stupa and the Palangka. In the complex is also found a mound believed to be the place for cremations.   
-These Buddhist remains pose an enigma to archaeologists as to the date that they were actually built, which they estimate to have been constructed either in the 2nd, 4th 7th or 9th century. 
-It is, however, known that during the 10th century, the kingdom of Crivijaya located further south near present-day Palembang was a thriving learning center for Buddhism, where even Chinese pilgrims were said to study on Sumatra first before proceeding to India. 
-It is said that the Muara Takus bricks were made in the village of Ponkai above the temple complex, where inhabitants carried the bricks, handing these over to one another in a long line all the way to the complex. This means that the temples were built jointly with the inhabitants. 
-The Muara Takus complex is the only temple complex found in Riau, evidence that Buddhism had spread here during the early centuries.
- </p>
-			</div>
-            
-            <img src="images/place/66_big.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Great Mosque of An-nur</h3>
-            <p>Great Mosque of An-nur is Pekanbaru`s Islamic Center. It is said as the biggest mosque in Sumatera. This big mosque are frequently visited by towns people and tourists every day, either for religious activities, morning or afternoon exercise, taking picture or browsing the internet because it is equipped with free WiFi (Wireless Fidelity). It is not a complete journey to Riau if doesn’t come by to Agung An Nur Mosque. This huge mosque is a combination of Malay, Arabic, and Turkish architecture, and is growing to be an “icon” or “landmark” of Pekanbaru. The Agung An Nur Mosque is equipped with various facilities such as education facility starting from playgroup, kindergarten, elementary, high school even a complete library, roomy hall and Islamic organization offices.
-					</p>
+            <div class="article">
+                <img src="images/place/muara takus.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Muara Takus Temple</h3>            
+                    <p>Located some 122 from Pekanbaru, capital of the province of Riau, the Muara Takus temple complex (or Candi Muara Takus) is built by the Kampar Kanan river. Muara Takus has the largest brick buildings on Sumatra found remotely in a jungle clearing. The main Candi Mahligai is a tall stupa flanked by ruins of several other brick sanctuaries. Its tall shape differs from the normally bell-shaped Buddhist stupas found on Java. The temple is constructed of river boulders, sandstone and earthen bricks and was restored in 1980.</p>
+                    <p>The complex is surrounded by a 74m x 74 m wall, with another earthen rampart of 1.5km x 1.5 km surrounding this, stretching to the edge of the Kampar Kanan river. Within the walls are found the Candi Tua, Candi Bungsu, the Mahligai stupa and the Palangka. In the complex is also found a mound believed to be the place for cremations. </p>
+                    <p>These Buddhist remains pose an enigma to archaeologists as to the date that they were actually built, which they estimate to have been constructed either in the 2nd, 4th 7th or 9th century. It is, however, known that during the 10th century, the kingdom of Crivijaya located further south near present-day Palembang was a thriving learning center for Buddhism, where even Chinese pilgrims were said to study on Sumatra first before proceeding to India. </p>
+                    <p>It is said that the Muara Takus bricks were made in the village of Ponkai above the temple complex, where inhabitants carried the bricks, handing these over to one another in a long line all the way to the complex. This means that the temples were built jointly with the inhabitants. The Muara Takus complex is the only temple complex found in Riau, evidence that Buddhism had spread here during the early centuries.</p>
+                </div>
             </div>
             
-            <img src="images/place/alam mayang riau 1.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Mayang Nature Park</h3>
-            <p>Natural park Mayang is one favorite attraction for residents in the city of Pekanbaru . This park has a vast pool Fishing , Mayang Nature Park is visited on holidays , such as Sunday , Eid , new year , Christmas and other holidays . Alam Mayang Fishing Swimming is indeed prepared as one of the prime tourist destinations Pekanbaru , Alam Mayang Fishing Park located in Suburb Pekanbaru on Jl . Hope Kingdom / Priest Jojo Pekanbaru. Besides being a tourist spot for families , Alam Mayang also menyuguhan natural atmosphere , almost at any location that is filled with natural mayang trees that shade the clean condition and very well maintained better.</p>
-            
+            <div class="article">
+                <img src="images/place/annur.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Great Mosque of An-nur</h3>
+                <p>Great Mosque of An-nur is Pekanbaru`s Islamic Center. It is said as the biggest mosque in Sumatera. This big mosque are frequently visited by towns people and tourists every day, either for religious activities, morning or afternoon exercise, taking picture or browsing the internet because it is equipped with free WiFi (Wireless Fidelity). It is not a complete journey to Riau if doesn’t come by to Agung An Nur Mosque. This huge mosque is a combination of Malay, Arabic, and Turkish architecture, and is growing to be an “icon” or “landmark” of Pekanbaru. The Agung An Nur Mosque is equipped with various facilities such as education facility starting from playgroup, kindergarten, elementary, high school even a complete library, roomy hall and Islamic organization offices.</p>
+                </div>
+            </div>
+        
+            <div class="article">
+                <img src="images/place/siak palace.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Siak Palace</h3>
+                <p>Siak empire is an empire the largest Muslim Malay Riau , there Srindrapura Siak , with a mileage of about 2-3 hours from the city of Pekanbaru . Siak kingdom reached its heyday in the 16th century until the 20th century . In genealogy sultans kingdom of Siak Sri Indrapura started in 1725 with the 12 sultans who once reigned . Now , as historical evidence of the greatness of the Malay Islamic kingdom in Riau , we can see the form of the kingdom of Siak Royal Palace complex built by Sultan Syarif Hasyim Abdul Jalil Assyaidis Syaifuddin in 1889 under the name ASSIRAYATUL HASYIMIAH kingdom complete with equipment . Now the Royal Palace of Siak Sri Indrapura became the repository for a collection of royal objects </p>
+                </div>
+            </div>
         </div>
         
-        <img src="images/place/download (2).jpg" />
-        <div style="margin-left:250px;">
-        <h3>Siak Palace</h3>
-        <p>Siak empire is an empire the largest Muslim Malay Riau , there Srindrapura Siak , with a mileage of about 2-3 hours from the city of Pekanbaru . Siak kingdom reached its heyday in the 16th century until the 20th century . In genealogy sultans kingdom of Siak Sri Indrapura started in 1725 with the 12 sultans who once reigned . Now , as historical evidence of the greatness of the Malay Islamic kingdom in Riau , we can see the form of the kingdom of Siak Royal Palace complex built by Sultan Syarif Hasyim Abdul Jalil Assyaidis Syaifuddin in 1889 under the name ASSIRAYATUL HASYIMIAH kingdom complete with equipment . Now the Royal Palace of Siak Sri Indrapura became the repository for a collection of royal objects </p>
-        </div>
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

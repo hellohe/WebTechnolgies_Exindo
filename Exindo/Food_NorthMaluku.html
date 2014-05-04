@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>North Maluku | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1>North Maluku</h1>
+            
+            <div class="article">
+                <img src="images/food/gohu ikan.jpeg" />
+                <div style="margin-left:250px;">
+                  <h3>Gohu Ikan</h3>
+                  <p>Fish gohu made from tuna (yellow fin tuna = Thunnus albacares). When the tuna is hard earned, cakalang fish can also be used as a substitute for tuna even though its texture not as soft as tuna fish. How to cook fish gohu is not too difficult. Fresh tuna meat cut in small size, washed, and then greased with salt and lemon juice (a kind of fragrant lemon and orange yellow inside), then mixed with coarse sliced of Basil leaves. Onion and cayenne pepper chopped coarsely then it is stir fried with a little coconut oil. Heat coconut oil with onion and cayenne pepper then poured onto a piece of raw tuna. Then it is sprinkled with peanut fried that crushed roughly. In Hawaii, maybe you can find dishes like this. However there did not use cayenne pepper and fried peanuts. In Hawaii, basil leaves are replaced with seaweed. This famous dish in Hawaii called onopoke.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/gatang kenari.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Gatang Kenari</h3>
+                  <p>Talk about Ternate culinary, most people would immediately mention Gatang Kanari. Main ingredient of Gatang Kanari is crab that came from sea in Ternate. Now, crabs are listed as protected wildlife so everyone can not kill the crab in vain. But for the sake of tourism needs, some restaurants in Ternate got special permission to serve cuisine from crabs. The price of crab is quite expensive. For large Gatang Kenari (the weight of crabs about 2 pounds when they living), sold at a price approximately 350 thousand rupiah. Most crabs caught in nature on Halmahera, and then sold to some specialty restaurants in Ternate. Crabs are terrestrial animals that clever picking and peeling coconuts and make coconut as their penchant food. Therefore,  kanari crabs are considered more savory and deliciouse than crabs.</p>
+				</div>
+			</div>
+        </div>
+		
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

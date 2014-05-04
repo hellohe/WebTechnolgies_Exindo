@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bengkulu | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,33 +141,36 @@
                       
         <div class="contents">         	   
             <h1> Bengkulu </h1>
-            <img src="images/place/download (4).jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Fort Marlborough</h3>
             
-            	<p>Fort Marlborough. The British or ‘Raffles’ Fort, was built between 1714 and 1719 and was famous as the second-strongest fort built by British in Asia, Fort George in Madras, India being the first. It was restored and opened to the public.<br /><br /><br /><br /><br /></p>
-			</div>
-            
-            <img src="images/place/Soekarno's exiled residence in Bengkulu.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Soekarno’s Exile Home</h3>
-            <p>Most Indonesians have learned in school about the exile of Soekarno (affectionately known as Bung Karno, meaning Brother Karno) Indonesia’s first president and leader of the country’s struggle for Independence from the late 1930s. In the midst of this struggle, to prevent Soekarno from making political speeches against the Dutch colonial policy, the Dutch Governor-General sentenced Soekarno to exile without trial. In 1934, Bung Karno and his family were first shipped to Ende, a town on the island of Flores. Due to a malaria outbreak in 1938, Dutch authorities then moved political prisoners to the city of Bengkulu in Southwest Sumatera, where they remained until the Japanese invasion in 1942.
-During his exile in Bengkulu, Sukarno met Fatmawati, a young woman from Bengkulu, whom he later married. Fatmawati later became the first Indonesian First Lady. The airport of the city of Bengkulu is also named after her. During these hard times Farmawati was accredited to have personally sewn by hand the first Red and White Flag of Indonesia. 
-Bung Karno’s exile home in the town of Bengkulu measures roughly 162 square meters. It is a simple, rectangular house with plain walls, a high pyramid-shaped roof and a spacious yard. The main doors are double leaf with ornate window grills. It is not known when the house was first constructed, but it is estimated to have been built in the early 20th century.
-Today, the building is maintained by the Bengkulu Provincial Government, and is named Persada Bung Karno. It now serves as a museum, library, meeting room and theater. Within the house is a collection of objects of high historical value, such as Soekarno’s strategy outlines during his struggle in exile. 
-Bung Karno’s exile home is located on Jalan Jeruk – later renamed JalanSoekarno-Hatta, in the Gading Cempaka District, Bengkulu City.
-					</p>
+            <div class="article">
+                <img src="images/place/Marlborough.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Fort Marlborough</h3>            
+                    <p>Fort Marlborough. The British or ‘Raffles’ Fort, was built between 1714 and 1719 and was famous as the second-strongest fort built by British in Asia, Fort George in Madras, India being the first. It was restored and opened to the public.<br /><br /><br /><br /><br /></p>
+                </div>
             </div>
             
-            <img src="images/place/PANTAI PANJANG BENGKULU.jpg" />
-            <div style="margin-left:250px;">
-            <h3>The Long Beach of Bengkulu</h3>
-            <p>Pantai Panjang, translated to mean Long Beach, boasts a coastline of fine, white sands that stretches 7 kilometers. As the beach has no reefs, its width expands to 500 meters when the tide is low.The beach area is a central tourism district and is lined with restaurants, hotels, cottages and shops. Pantai Panjang is located just 15 minutes from downtown Bengkulu, Southwest of the island of Sumatera.
-Unlike many beaches, Pantai Panjang has no coconut or palm trees, but is dominated by Spruces and Pines which create a lovely shelter for beach-goers to rest and relax under. As a prime tourist area, a variety of facilities are positioned along the beach such as restaurants, cafes, accommodations, a children’s playground as well as sports facilities. 
-The Bengkulu community also uses the beach as a place for jogging in the mornings and evenings.
-</p>
+            <div class="article">
+                <img src="images/place/Soekarno's exiled residence.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Soekarno’s Exile Home</h3>
+                    <p>Most Indonesians have learned in school about the exile of Soekarno (affectionately known as Bung Karno, meaning Brother Karno) Indonesia’s first president and leader of the country’s struggle for Independence from the late 1930s. In the midst of this struggle, to prevent Soekarno from making political speeches against the Dutch colonial policy, the Dutch Governor-General sentenced Soekarno to exile without trial. In 1934, Bung Karno and his family were first shipped to Ende, a town on the island of Flores. Due to a malaria outbreak in 1938, Dutch authorities then moved political prisoners to the city of Bengkulu in Southwest Sumatera, where they remained until the Japanese invasion in 1942.</p>
+                    <p>During his exile in Bengkulu, Sukarno met Fatmawati, a young woman from Bengkulu, whom he later married. Fatmawati later became the first Indonesian First Lady. The airport of the city of Bengkulu is also named after her. During these hard times Farmawati was accredited to have personally sewn by hand the first Red and White Flag of Indonesia. </p>
+                    <p>Bung Karno’s exile home in the town of Bengkulu measures roughly 162 square meters. It is a simple, rectangular house with plain walls, a high pyramid-shaped roof and a spacious yard. The main doors are double leaf with ornate window grills. It is not known when the house was first constructed, but it is estimated to have been built in the early 20th century.</p>
+                    <p>Today, the building is maintained by the Bengkulu Provincial Government, and is named Persada Bung Karno. It now serves as a museum, library, meeting room and theater. Within the house is a collection of objects of high historical value, such as Soekarno’s strategy outlines during his struggle in exile. </p>
+                    <p>Bung Karno’s exile home is located on Jalan Jeruk – later renamed JalanSoekarno-Hatta, in the Gading Cempaka District, Bengkulu City.</p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">
+                <img src="images/place/PANTAI PANJANG BENGKULU.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>The Long Beach of Bengkulu</h3>
+                    <p>Pantai Panjang, translated to mean Long Beach, boasts a coastline of fine, white sands that stretches 7 kilometers. As the beach has no reefs, its width expands to 500 meters when the tide is low.The beach area is a central tourism district and is lined with restaurants, hotels, cottages and shops. Pantai Panjang is located just 15 minutes from downtown Bengkulu, Southwest of the island of Sumatera.</p>
+                    <p>Unlike many beaches, Pantai Panjang has no coconut or palm trees, but is dominated by Spruces and Pines which create a lovely shelter for beach-goers to rest and relax under. As a prime tourist area, a variety of facilities are positioned along the beach such as restaurants, cafes, accommodations, a children’s playground as well as sports facilities. The Bengkulu community also uses the beach as a place for jogging in the mornings and evenings.</p>            
+        		</div>
+       		</div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

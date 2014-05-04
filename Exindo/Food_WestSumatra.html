@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>West Sumatera | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -163,9 +173,10 @@
                 <div style="margin-left:250px;">
                   <h3>Nasi Kapau</h3>
                     <p>Nasi Kapau is a Minang steamed rice topped with various choices of dishes originated from Nagari Kapau, Bukittinggi, a  culinary hotspot town in West Sumatra, Indonesia.A Nasi Kapau food stall usually consists of stages and rows of large bowls, plates or saucepans filled with various dishes. In these stalls, after the customer is seated, he or she is asked which dishes they desire. The waiter then prepared steamed hot rice on plate with cubadak (unripe jackfruit gulai), and boiled cassava leaf, and sambal. The chosen dishes will be put directly — using long serving spoon — upon the steamed rice or in separate small plates. Nasi kapau eating establishments usually insist on using high quality fragrant rice. In Minang food establishments, it is common to eat with one's hands. They usually provide kobokan, a bowl of tap water with a slice of lime in it to give a fresh scent. This water is used to wash one's hands before and after eating. If a customer does not wish to eat with bare hands, it is acceptable to ask for a spoon and fork.</p>
-              </div>
-          </div>
-        
+				</div>
+			</div>
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

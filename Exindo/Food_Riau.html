@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Riau | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -146,8 +156,8 @@
                   <h3>Ikan Selais Asap (Smoked Selais Fish)</h3>
                   <p>Indonesia is rich in fish wealth, and its distribution in Indonesian waters. Each region has a distinctive fish. Riau is knows for its distinct fish, LAIS (Cryptopterus limpok). They preserve these fishes by drying using the smoke. For other regions or other parts of the world can now enjoy these smoked fish with good quality because it comes directly from the center of dried fish, not stored in a warehouse for a long time.
 </p>
-              </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/asam pedas baung.jpg" />
@@ -156,7 +166,8 @@
                     <p>It is typically a catfish served with sour and spicy flavor. The blend of fiery hot and sour is perfect. </p>
                 </div>
             </div>
-        
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

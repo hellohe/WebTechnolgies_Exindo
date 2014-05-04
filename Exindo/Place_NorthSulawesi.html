@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>North Sulawesi | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,94 +141,52 @@
                       
         <div class="contents">         	   
             <h1> North Sulawesi </h1>
-            <img src="images/place/bunakentrip1.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Bunaken</h3>
             
-            	<p>Ever fancy yourself being a mermaid? Being able to swim along with other creatures of the sea , moving to the rhythm of the waves? In the Bunaken Marine Park, you will encounter a real “mermaid”, and you can also get a glimpse of sea life here.
-
-Bunaken is an 8.08 km² island in the Bay of Manado, situated in the north of the island of Sulawesi, Indonesia. Bunaken forms part of the administrative city of Manado , capital of North Sulawesi. The marine Park around Bunaken is part of the  National Park that also includes the ocean around the island of  Manado Tua – or Old Manado, Siladen and Mantehage.   
-
-Within the Bunaken Marine Park, visitors can see various strange and colourful marine life along its sea bed. To reach this park, you can take a motorboat. The journey from Manado takes around 40 minutes.  Entrance fee is 25,000 rupiahs per person per visit. 
-
-The translucent waters of the Bunaken seas enable people to clearly view numerous sea biota. There are 13 species of coral reefs in this park, dominated by edge ridges and block ridges of rocks. The most attractive view is the steep vertical sloppy coral reef that plunges down as deep as 25-50 meters.
-
-Feast your eyes on 91 types of fish found in the Bunaken National Park, amongst which are the locally known gusimi horse fish (Hippocampus), the white oci (Seriola rivoliana), yellow-tailed lolosi (Lutjanus kasmira), goropa (Ephinephelus spilotoceps and Pseudanthias hypselosoma), ila gasi (Scolopsis bilineatus) and others.
-
-Divers may also meet mollusk like the giant kima (Tridacna gigas), goat head (Cassis cornuta), nautilus (Nautilus pompillius) and tunikates/ascidian.
-
-For those who enjoy scuba diving, this is a great place to be. With about 20 dive spots to choose from, divers will have the chance to swim below the sea, and frolic joyfully while admiring the sea creatures.
-
-Make sure to visit Bunaken during its best season between May to August. That way you can explore the Park  to its fullest.
-</p>
-			</div>
-            
-            <img src="images/place/tondano3.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Lake Tondano</h3>
-            <p>Lake Tondano is a famous tourist destination in the province of North Sulawesi. It is located 600 meters above sea level and covers an area of 4,278 hectares (or about 10,571 acres). This lake is situated by the village of Remboken, some 3 kilometers from Tomohon city or some 30 km from Manado.
-
-Lake Tondano  is surrounded by mountains of 700 meters high, which are the Lembena, the Kaweng, the Tampusu and Masarang. The lake covers three sub-districts, these are Eris, Kakas and Remboken. From the lake side, you can see clearly Mount Kaweng.
-
-Lake Tondano has a  tourist attraction called "Sumaru Endo" Remboken, and the Tourist Resort of Bukit Pinus (from Tondano towards Toliang Oki). From the lake side at Toliang Oki, and Tondano Pante you can see as far as the beautiful Maluku sea, beyond the Lembean hill. Entry fee to this tourist attraction is Rp 4.000  plus for insurance.
-
-					</p>
+            <div class="article">
+                <img src="images/place/bunaken.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Bunaken</h3>                
+                    <p>Ever fancy yourself being a mermaid? Being able to swim along with other creatures of the sea , moving to the rhythm of the waves? In the Bunaken Marine Park, you will encounter a real “mermaid”, and you can also get a glimpse of sea life here.</p>
+    
+                    <p>Bunaken is an 8.08 km² island in the Bay of Manado, situated in the north of the island of Sulawesi, Indonesia. Bunaken forms part of the administrative city of Manado , capital of North Sulawesi. The marine Park around Bunaken is part of the  National Park that also includes the ocean around the island of  Manado Tua – or Old Manado, Siladen and Mantehage.</p>
+                    
+                    <p>Within the Bunaken Marine Park, visitors can see various strange and colourful marine life along its sea bed. To reach this park, you can take a motorboat. The journey from Manado takes around 40 minutes.  Entrance fee is 25,000 rupiahs per person per visit. </p>
+                    
+                    <p>The translucent waters of the Bunaken seas enable people to clearly view numerous sea biota. There are 13 species of coral reefs in this park, dominated by edge ridges and block ridges of rocks. The most attractive view is the steep vertical sloppy coral reef that plunges down as deep as 25-50 meters.</p>
+                    
+                    <p>Feast your eyes on 91 types of fish found in the Bunaken National Park, amongst which are the locally known gusimi horse fish (Hippocampus), the white oci (Seriola rivoliana), yellow-tailed lolosi (Lutjanus kasmira), goropa (Ephinephelus spilotoceps and Pseudanthias hypselosoma), ila gasi (Scolopsis bilineatus) and others.</p>
+                    
+                    <p>Divers may also meet mollusk like the giant kima (Tridacna gigas), goat head (Cassis cornuta), nautilus (Nautilus pompillius) and tunikates/ascidian.</p>
+                    
+                    <p>For those who enjoy scuba diving, this is a great place to be. With about 20 dive spots to choose from, divers will have the chance to swim below the sea, and frolic joyfully while admiring the sea creatures. Make sure to visit Bunaken during its best season between May to August. That way you can explore the Park  to its fullest.</p>
+                </div>
             </div>
             
-            <img src="images/place/tomohon1_ambil.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Flower City of Tomohon</h3>
-            <p>Tomohon is a hill resort located some 22 kilometers east of Manado, the capital city of North Sulawesi province.  Tomohon consists of 35 villages in five sub-districts, namely West, East, Central, South and North Tomohon.
-
-Its land contour, cool weather and fertile soil encourage the local community to cultivate various kinds of flowers and vegetables. This city is known as a producer of flowers.  When in season,  the  flower gardens of the local inhabitants look very beautiful.
-
-Annually the Tomohon Flower Festival is held here in  June and July. During this event, watch the flower floats parade through the town.  A flower tournament is also held during this Festival where participants from 94 cities in Indonesia take part at the Inspiration Hill.
-</p>
+            <div class="article">
+                <img src="images/place/tondano.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Lake Tondano</h3>
+                    <p>Lake Tondano is a famous tourist destination in the province of North Sulawesi. It is located 600 meters above sea level and covers an area of 4,278 hectares (or about 10,571 acres). This lake is situated by the village of Remboken, some 3 kilometers from Tomohon city or some 30 km from Manado.</p>
+        
+                    <p>Lake Tondano  is surrounded by mountains of 700 meters high, which are the Lembena, the Kaweng, the Tampusu and Masarang. The lake covers three sub-districts, these are Eris, Kakas and Remboken. From the lake side, you can see clearly Mount Kaweng.</p>
+                    
+                    <p>Lake Tondano has a  tourist attraction called "Sumaru Endo" Remboken, and the Tourist Resort of Bukit Pinus (from Tondano towards Toliang Oki). From the lake side at Toliang Oki, and Tondano Pante you can see as far as the beautiful Maluku sea, beyond the Lembean hill. Entry fee to this tourist attraction is Rp 4.000  plus for insurance. </p>
+                </div>
+            </div>
             
+            <div class="article">
+                <img src="images/place/tomohon.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Flower City of Tomohon</h3>
+                    <p>Tomohon is a hill resort located some 22 kilometers east of Manado, the capital city of North Sulawesi province.  Tomohon consists of 35 villages in five sub-districts, namely West, East, Central, South and North Tomohon.</p>
+        
+                    <p>Its land contour, cool weather and fertile soil encourage the local community to cultivate various kinds of flowers and vegetables. This city is known as a producer of flowers.  When in season,  the  flower gardens of the local inhabitants look very beautiful.</p>
+                    
+                    <p>Annually the Tomohon Flower Festival is held here in  June and July. During this event, watch the flower floats parade through the town.  A flower tournament is also held during this Festival where participants from 94 cities in Indonesia take part at the Inspiration Hill.</p>                
+            	</div>
+            </div>
         </div>
         
-         <img  src="images/place/Tangkoko Rainforest.jpg" />
-            <div style="margin-left:250px;">
-            <h3>The Tangkoko Nature Reserve</h3>
-            <p>The Tangkoko Nature Reserve is a flora and fauna conservation area on Mount Tangkoko in the district of Bitung in the province of North Sulawesi, about one hour’s drive from Manado.  The reserve is particularly attractive for its unique wildlife that can be observed roaming free in the forest.   
-The tarsiers, the black macaque monkeys, maleo birds, cuscus and the hornbills make this their habitat.
-Tarsiers are the smallest primates in the world – only about a fist size – who make Tangkoko their last refuge and are found only in Sulawesi. Tarsiers (tarsius spectrum) look particularly cute because of their big saucer eyes. Locals know them as: tangkasi . Since these are nocturnal animals they can be observed only at night.
-The crested black macaques (macaca nigra), endemic to Sulawesi, usually come in large social groups, and can be seen playing, fighting or grooming themselves. While the cuscus, a pouched animal can be seen among the trees when one is particularly lucky.   
-Located about an hour’s drive from Manado, you will first pass the Batuputih Nature Park that lies between Batuputih Bawah sub district and the Tangkoko Nature Reserve at Batuangus.
-
-Covering an area of 615 hectares, the Batuputih Nature Park is a savanna suitable for camping, outbound activities and relaxing by the beach.  Since Batuputih is mostly visited by tourists, it is therefore also the most well known, although it is only one of four conservation areas at Tangkoko.
-
-In addition to the Batuputih Park, theTangkoko Reserve  covers a total area of 3,196 hectares ,  where the Batuangus Nature Reserve has  635 hectares (located between the Tangkoko Nature Reserve and Pinangunian village), while the Duasaudara Nature Reserve covers  4,299 hectares (which includes Mount Duasaudara and its surrounding areas),
-
-</p>
-            
-        </div>
-        
-        <img src="images/place/bukit-kasih2.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Bukit Kasih</h3>
-            <p>Bukit Kasih – or the Hill of Love is located in the village of Kanonang at Kawangkoan, some 55 kilometers from Manado, North Sulawesi. It was built in 2002  as a spiritual center where religious followers from various faiths can gather, meditate and worship side by side  in this lush and misty tropical hill.
-This hill is called the Hill of Love because it is where people from different religions can gather and worship side by side as a symbol of religious and peaceful harmony. Five houses of worship are here, a Catholic Church, a Christian church, a temple, a mosque and Hindu temple  built on the second peak. On the first peak is a 53 meter tall white cross which can be seen even from the Boulevard beach in Manado. In addition, this place is believed to be the original place where lived original ancestors of the Minahasa tribe, Toar and Lumimuut. Their faces are carved on the hillside beneath the second peak.
-
-</p>
-            
-        </div>
-        
-        <img src="images/place/download (9).jpg" />
-            <div style="margin-left:250px;">
-            <h3>Waruga Sawangan</h3>
-            <p>Waruga are stone sarcophagi used by the Minahasa tribes to place their dead in a squatting position. The Waruga park is located in the village of Sawangan, and at the Airmadidi sub-district, some 40 kilometers from Manado. 
- 
-Based on local belief, these graves are made of carved stone that are shaped like a house, a tradition kept since 1600AD. The graves vary, depending on the profession or social status of the person buried.
- 
-There are 144 “dotu” or clans gathered together at the waruga park in Sawangan, whose original locations were previously spread out throughout several villages in the Minahasa district, but these have now been gathered in the waruga compound at Sawangan and nearby Airmadidi. 
-
-Since this heritage which originates from the  megalitic era is notable, several heads of state  have come to view them , among others Queen Jualiana and Prince Bernard, as well as Queen Beatrix  of the Netherlands and many more.
-
-
-</p>
-            
-        </div>
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

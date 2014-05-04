@@ -11,7 +11,7 @@
     <script type="text/javascript" src="js/jquery.rss.js"></script>
     <script type="text/javascript" src="js/parallaxslider.js"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
-	
+    
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//initialize slider
@@ -101,19 +101,23 @@
 			});
 		});
 		
-		function goSearch()
+         function goSearch()
          {
-            var val = document.getElementById("searchBar").value;
+            var searchVal = document.getElementById("searchBar").value;	
+			if(searchVal == "aceh"){
+				window.location = "Place_Aceh.html";
+			}
          }
+		 		
 		</script>
 </head>
 
 <body>
     <div class="container" id="container">
         <div class="header">
-            <img src="images/logo.png" alt="logo" />
+            <img src="images/logo.png" alt="logo" />            
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
-			<input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search here..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
+            <input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search here..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -156,10 +160,12 @@
             <div class="pxs_loading">Loading images...</div>
             <div class="pxs_slider_wrapper">
                 <ul class="pxs_slider">
-                    <li><img src="images/museum tsunami aceh 2.jpg"/></li>
-                    <li><img src="images/masjid agung annur 3.jpg"/></li>
-                    <li><img src="images/Pantai Teupin Layeu Aceh.jpg"/></li>
-                    <li><img src="images/Pantai Teupin Layeu Aceh 2.jpg"/></li>
+                    <li><a href="Place_Bali.html"><img src="images/place/kuta beach.jpg" title="Kuta Beach, Bali"/></a></li>
+                    <li><a href="Place_Jakarta.html"><img src="images/place/National Monument.jpg" title="National Monument, Jakarta"/></a></li>
+                    <li><a href="Food_Jakarta.html"><img src="images/food/nasi tumpeng.jpg" title="Nasi Tumpeng, Jakarta"/></a></li>
+                    <li><a href="Food_WestSumatra.html"><img src="images/food/masakan padang.jpg" title="Padang food, West Sumatra"/></a></li>
+                    <li><img src="images/culture/gamelan.jpg" title="Gamelan, Java"/></li>
+                    <li><img src="images/culture/Kecak Dance.jpg" title="Kecak Dance, Bali"/></li>
                 </ul>
                 <div class="pxs_navigation">
                     <span class="pxs_next"></span>
@@ -176,7 +182,7 @@
             <div class="video">
             	<h2>&nbsp;&nbsp;Videos</h2><hr />
                 <iframe width="390" height="300" src="http://www.youtube.com/embed/N-oSBKWFlys" frameborder="0" allowfullscreen></iframe>
-                <p align="center"><a href="#"><em><strong>Show more videos...</strong></em></a></p>
+                <p align="center"><a href="video.html"><em><strong>Show more videos...</strong></em></a></p>
             </div>
             
             <div class="socialmedia">

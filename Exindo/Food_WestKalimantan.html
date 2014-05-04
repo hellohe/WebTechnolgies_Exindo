@@ -55,6 +55,17 @@
 				});
 			}
 			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
 				// Getting the variable's value from a link and show
@@ -145,8 +156,8 @@
                   <h3>Pisang Goreng Pontianak</h3>
                   <p>Pisang goreng (fried banana) is a snack found throughout Indonesia. These are often served as mid-afternoon snacks. In Singapore and some parts of Malaysia it is known as "goreng pisang". In Indonesia, pisang goreng is often sold by street vendors as well as in stores. The brand "Pisang Goreng Pontianak" is widely popular in Indonesia. <br /><br />The banana is battered and then deep fried. Most street vendors will then sell it as is. Restaurants that serve pisang goreng are more sophisticated and present it in various ways, such as with cheese, jam, condensed milk, or chocolate.
 </p>
-           	  </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/ikan asam pedas.jpg" />
@@ -155,6 +166,7 @@
                   <p>Fish is cooked with sour and spicy flavour. The blend of fiery hot and sour taste makes it a perfect combination for the dish.</p>
            	  </div>
           </div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Yogyakarta | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,85 +141,74 @@
                       
         <div class="contents">         	   
             <h1> Yogyakarta </h1>
-            <img src="images/place/Prambanan-Temple.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Prambanan Temple</h3>
             
-            	<p>As the largest Hindu temple in Southeast Asia, the beautiful and graceful temple of Prambanan is a magnificent spectacle and an icon of Indonesia’s cultural heritage. 
-
-Located not far from the Buddhist Borobudur temple, the proximity of the two temples tells us that on Java, Buddhism and Hinduism lived peacefully next to one another. 
-
-Prambanan is known locally as Roro Jonggrang, coming from the legend of the ‘slender virgin’. According to the legend once upon a time, there was a young and powerful man named Bandung Bondowoso.  He wanted to marry a beautiful princess named Roro Jonggrang. Her father, the king, agreed and forced her to marry Bandung Bondowoso. Butm Sita did not love him yet could not refuse him.
- 
-After careful consideration, she thought of a way to refuse Bondowoso, whose magical power was well-known.  She decided she would agree but only if Bondowoso built 1,000 temples in one night before the break of dawn. 
-
-She insisted that the work must be completed before the rooster crowed, something she believed was impossible. But with the help of genies and his own magical powers, Bondowoso managed to complete 999 temples. Panicked, Jonggrang told the women of her village to start pounding rice so that the rooster would wake up and begin to crow.  When Bondowoso heard this he was deeply disappointed and wildly enraged. When he found out that Roro Jonggrang had made the roosters crow, he turned her into stone, The statue of a slender virgin graces the main Prambanan temple, while a group of temples nearby is called the Candi Sewu or the Thousand Temples. 
-
-The  temples at Prambanan were built in the 9th century. The biggest temple is dedicated to Shiva – the destroyer, and the two smaller ones which sit on its right and left are dedicated to Brahma -¬ the creator and Wisnhu – the sustainer.  The tallest temple of Prambanan is a staggering 47 meters high. Its peak visible from far away and rises high above the ruins of the other temples. 
-
-After hundreds of years of neglect, the Prambanan temple was rediscovered by CA Lons, a Dutchman, in 1733. Since then, this temple has been revitalized and today is widely regarded as the most beautiful and graceful Hindu temple in Indonesia.
-
-The grandeur, complexity, and integrated architectural concept of Prambanan makes this a truly amazing structure. As a unique cultural and architectural marvel, Prambanan was declared a World Heritage site in 1991 by UNESCO.
-</p>
-			</div>
-            
-            <img src="images/place/malioboro-1.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Malioboro</h3>
-            <p>Malioboro is the most famous street in Yogyakarta. Located in the heart of Yogya, this is the city’s main street, and was once the ceremonial avenue for the Sultan to pass through on his way to and from the Keraton. During such occasions Malioboro would be festively decorated with flowers. Some say that the name Malioboro” derives from the name of the British governor Marlborough from the era when Britain ruled the archipelago, between 1811-1816.
-Near the north gate of the Keraton or palace are grand Dutch colonial buildings that are now the Central Post Office and the Bank Dagang Negara. Walking further north is the well laid out State Guest House, which was once the home of the Dutch Resident, but which after Independence became the presidential palace when Yogya was the capital of the young Republic. President Soekarno stayed here between 1946-1949.
-Across the road is the Vredenburg fort, which used to be the barracks of Dutch soldiers and is now a center for arts and painting exhibitions. 
-On the same side of the road is Beringharjo market, Yogya’s crowded main market, where you can buy batik and souvenirs at cheap prices.  
-On Malioboro you will also find Yogyakarta’s oldest hotel, the Garuda Hotel, built in Dutch colonial architecture.    
-While steeped in history, today, Malioboro is the place to come to shop. It packed with shops selling curiosities, and street vendors offering souvenirs at affordable prices, so you’re bound to find something of interest in this street.
-If you’re after some batik to take home as a souvenir, then Malioboro is the right place for you. From house dresses to formal batik wear, this street has them all. Batik can also be made into bags, table cloths, bed sheets, pillow covers, curtains, and a whole lot more.
-
-					</p>
+            <div class="article">
+                <img src="images/place/Prambanan Temple.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Prambanan Temple</h3>
+                
+                    <p>As the largest Hindu temple in Southeast Asia, the beautiful and graceful temple of Prambanan is a magnificent spectacle and an icon of Indonesia’s cultural heritage.</p> 
+    
+                    <p>Located not far from the Buddhist Borobudur temple, the proximity of the two temples tells us that on Java, Buddhism and Hinduism lived peacefully next to one another. </p>
+                    
+                    <p>Prambanan is known locally as Roro Jonggrang, coming from the legend of the ‘slender virgin’. According to the legend once upon a time, there was a young and powerful man named Bandung Bondowoso.  He wanted to marry a beautiful princess named Roro Jonggrang. Her father, the king, agreed and forced her to marry Bandung Bondowoso. Butm Sita did not love him yet could not refuse him.</p>
+                     
+                    <p>After careful consideration, she thought of a way to refuse Bondowoso, whose magical power was well-known.  She decided she would agree but only if Bondowoso built 1,000 temples in one night before the break of dawn. </p>
+                    
+                    <p>She insisted that the work must be completed before the rooster crowed, something she believed was impossible. But with the help of genies and his own magical powers, Bondowoso managed to complete 999 temples. Panicked, Jonggrang told the women of her village to start pounding rice so that the rooster would wake up and begin to crow.  When Bondowoso heard this he was deeply disappointed and wildly enraged. When he found out that Roro Jonggrang had made the roosters crow, he turned her into stone, The statue of a slender virgin graces the main Prambanan temple, while a group of temples nearby is called the Candi Sewu or the Thousand Temples. </p>
+                    
+                    <p>The  temples at Prambanan were built in the 9th century. The biggest temple is dedicated to Shiva – the destroyer, and the two smaller ones which sit on its right and left are dedicated to Brahma -¬ the creator and Wisnhu – the sustainer. The tallest temple of Prambanan is a staggering 47 meters high. Its peak visible from far away and rises high above the ruins of the other temples. </p>
+                    
+                    <p>After hundreds of years of neglect, the Prambanan temple was rediscovered by CA Lons, a Dutchman, in 1733. Since then, this temple has been revitalized and today is widely regarded as the most beautiful and graceful Hindu temple in Indonesia. The grandeur, complexity, and integrated architectural concept of Prambanan makes this a truly amazing structure. As a unique cultural and architectural marvel, Prambanan was declared a World Heritage site in 1991 by UNESCO.</p>
+                </div>
             </div>
             
-            <img src="images/place/parangtritis.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Parangtritis Beach</h3>
-            <p>Escape from the city for a while and take the short drive from Yogya to the mystical Parangtritis beach where dramatic jagged cliffs meet a glistening volcanic black sand beach. Located around 28 km (17 miles) from Yogya this is the ideal distance to come for a day trip to take a break out of the city and soak up the roar of the waves and the astounding atmosphere. Here you’ll see some incredibly green lush hills set against the backdrop of a raging ocean. 
-
-With raging surf and salty sea breezes it will be hard not to feel rejuvenated and refreshed as soon as you arrive here. At night, the star light on the silvery-black dunes give the beach a mystical feeling, and it won’t be hard to understand why there are many local myths about this area. This whole region is filled with beaches, caves, lakes, paths and gravesites, each with their own mystical story. 
-
-What makes Parangtritis particularly special is that it is not only an enchanting holiday spot, it’s also a sacred place. According to legend, when you come here you are entering the domain of Kanjeng Ratu Kidul, Queen of the Southern Ocean who is not known for being welcoming to newcomers. For this reason the Javanese will not wear green, especially yellow-green around here as it’s believed that this attracts the Queen. 
-
-People here hold great respect for the power of the Queen. Each year at Parangkusumo, 1 km. west of Parangtritis, the Sultan of Yogya makes ceremonial offerings to the Queen, believed to be the Sultan’s mystical consort. Other Javanese may also give offerings when they are asking the Queen for aid, guidance or blessings.
-</p>
+            <div class="article">
+                <img src="images/place/malioboro.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Malioboro</h3>
+                <p>Malioboro is the most famous street in Yogyakarta. Located in the heart of Yogya, this is the city’s main street, and was once the ceremonial avenue for the Sultan to pass through on his way to and from the Keraton. During such occasions Malioboro would be festively decorated with flowers. Some say that the name Malioboro” derives from the name of the British governor Marlborough from the era when Britain ruled the archipelago, between 1811-1816.</p>
+                <p>Near the north gate of the Keraton or palace are grand Dutch colonial buildings that are now the Central Post Office and the Bank Dagang Negara. Walking further north is the well laid out State Guest House, which was once the home of the Dutch Resident, but which after Independence became the presidential palace when Yogya was the capital of the young Republic. President Soekarno stayed here between 1946-1949.</p>
+                <p>Across the road is the Vredenburg fort, which used to be the barracks of Dutch soldiers and is now a center for arts and painting exhibitions. On the same side of the road is Beringharjo market, Yogya’s crowded main market, where you can buy batik and souvenirs at cheap prices. On Malioboro you will also find Yogyakarta’s oldest hotel, the Garuda Hotel, built in Dutch colonial architecture.</p>    
+                <p>While steeped in history, today, Malioboro is the place to come to shop. It packed with shops selling curiosities, and street vendors offering souvenirs at affordable prices, so you’re bound to find something of interest in this street. If you’re after some batik to take home as a souvenir, then Malioboro is the right place for you. From house dresses to formal batik wear, this street has them all. Batik can also be made into bags, table cloths, bed sheets, pillow covers, curtains, and a whole lot more.</p>
+                </div>
+            </div>
             
+            <div class="article">
+                <img src="images/place/parangtritis.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Parangtritis Beach</h3>
+                <p>Escape from the city for a while and take the short drive from Yogya to the mystical Parangtritis beach where dramatic jagged cliffs meet a glistening volcanic black sand beach. Located around 28 km (17 miles) from Yogya this is the ideal distance to come for a day trip to take a break out of the city and soak up the roar of the waves and the astounding atmosphere. Here you’ll see some incredibly green lush hills set against the backdrop of a raging ocean. </p>
+    
+                <p>With raging surf and salty sea breezes it will be hard not to feel rejuvenated and refreshed as soon as you arrive here. At night, the star light on the silvery-black dunes give the beach a mystical feeling, and it won’t be hard to understand why there are many local myths about this area. This whole region is filled with beaches, caves, lakes, paths and gravesites, each with their own mystical story. </p>
+                
+                <p>What makes Parangtritis particularly special is that it is not only an enchanting holiday spot, it’s also a sacred place. According to legend, when you come here you are entering the domain of Kanjeng Ratu Kidul, Queen of the Southern Ocean who is not known for being welcoming to newcomers. For this reason the Javanese will not wear green, especially yellow-green around here as it’s believed that this attracts the Queen. </p>
+                
+                <p>People here hold great respect for the power of the Queen. Each year at Parangkusumo, 1 km. west of Parangtritis, the Sultan of Yogya makes ceremonial offerings to the Queen, believed to be the Sultan’s mystical consort. Other Javanese may also give offerings when they are asking the Queen for aid, guidance or blessings.</p>                
+				</div>
+			</div>
+			
+			<div class="article">
+				<img src="images/place/Kraton Yogyakarta.jpg" />
+					<div style="margin-left:250px;">
+					<h3>Kraton Yogyakarta</h3>
+					<p>The palace of Yogyakarta, known as the Keraton (also spelled kraton or karaton), is a grand complex that was meticulously planned to reflect  the Javanese cosmos. This splendid example of traditional Javanese architecture has no equal. Designed and built in stages, the Keraton was completed in 1790. </p>
+		
+					<p>This elegant complex of pavilions was constructed entirely on ancient beliefs and each feature of the complex, from the courtyards to the trees, has a special symbolic meaning related to sophisticated Javanese world view. </p>
+					
+					<p>The Keraton is built facing directly north towards the majestic Mt. Merapi with to its south backing the Indian Ocean which is believed to be the abode of Kanjeng Ratu Loro Kidul, the Queen of the South Seas and the mystical consort of the Sultan. Malioboro road was originally used as the ceremonial route, not unlike London’s Pall Mall, and forms a straight line drawn from the Sultan’s palace to the Merapi volcano.</p>
+					
+					<p>A green square called alun-alun  fronting the palace, has a large banyan tree in its center, while behind the palace is another similar square. When a sultan dies, the cortege leaves by the southern gate on its way to the cemetery of kings at Imogiri. </p>
+					 
+					<p>This palace was designed to be more than just a royal residence. It was built to be a focal point of the Sultan’s entire kingdom. Today, the Keraton is a piece of living history and tradition. It continues to be used, both as a home of the Sultan as well as for other important ceremonial and cultural  functions of the Yogya court.</p>
+					
+					<p>The present Sultan Hamengku Buwono X of Yogyakarta retains the title of Sultan although Yogya has become one of the provinces of the Republic of Indonesia. The Sultan of Yogya,is also the governor of the province, and is still considered the cultural head of this region, and is greatly loved by his subjects. </p>
+					
+					<p>Even with Yogya’s modernization, the Keraton of Yogya continues to be respected by the people of Yogya, steeped as it is in mysticism and philosophy. In the afternoons, after the palace is closed to visitors, women in traditional costume can be seen respectfully sprinkling water and flowers on the pillars, lighting incense to “cleanse” the keraton from evil spirits.</p>                
+				</div>
+			</div>
         </div>
-        
-        <img src="images/place/Kaliurang.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Kaliurang Resort</h3>
-            <p>If you want to take a break from crowds and cities and immerse yourself in some natural beauty, then Kaliurang resort may be the place for you. Lying on the southern slopes of the majestic Mt Merapi, the quiet highland resort of Kaliurang is a peaceful escape from the heat and chaos of city life. This is a place to come to relax and rejuvenate and be energized by the fresh air. Visitors can spend days here unwinding, swimming and exploring. Kaliurang is famous for its green mountain scenery, forest air and adventurous hiking tracks. <br /><br />
-</p>
-            
-        </div>
-        
-        <img src="images/place/Kraton_Yogyakarta_Pagelaran.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Kaliurang Resort</h3>
-            <p>The palace of Yogyakarta, known as the Keraton (also spelled kraton or karaton), is a grand complex that was meticulously planned to reflect  the Javanese cosmos. This splendid example of traditional Javanese architecture has no equal. Designed and built in stages, the Keraton was completed in 1790. 
-
-This elegant complex of pavilions was constructed entirely on ancient beliefs and each feature of the complex, from the courtyards to the trees, has a special symbolic meaning related to sophisticated Javanese world view. 
-
-The Keraton is built facing directly north towards the majestic Mt. Merapi with to its south backing the Indian Ocean which is believed to be the abode of Kanjeng Ratu Loro Kidul, the Queen of the South Seas and the mystical consort of the Sultan. Malioboro road was originally used as the ceremonial route, not unlike London’s Pall Mall, and forms a straight line drawn from the Sultan’s palace to the Merapi volcano.
-
-A green square called alun-alun  fronting the palace, has a large banyan tree in its center, while behind the palace is another similar square. When a sultan dies, the cortege leaves by the southern gate on its way to the cemetery of kings at Imogiri. 
- 
-This palace was designed to be more than just a royal residence. It was built to be a focal point of the Sultan’s entire kingdom. Today, the Keraton is a piece of living history and tradition. It continues to be used, both as a home of the Sultan as well as for other important ceremonial and cultural  functions of the Yogya court.   
-
-The present Sultan Hamengku Buwono X of Yogyakarta retains the title of Sultan although Yogya has become one of the provinces of the Republic of Indonesia. The Sultan of Yogya,is also the governor of the province, and is still considered the cultural head of this region, and is greatly loved by his subjects.   
-
-Even with Yogya’s modernization, the Keraton of Yogya continues to be respected by the people of Yogya, steeped as it is in mysticism and philosophy. In the afternoons, after the palace is closed to visitors, women in traditional costume can be seen respectfully sprinkling water and flowers on the pillars, lighting incense to “cleanse” the keraton from evil spirits.
-
-</p>
-            
-        </div>
-        
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

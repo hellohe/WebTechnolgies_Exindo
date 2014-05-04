@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Riau Archipelago | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,40 +141,28 @@
                       
         <div class="contents">         	   
             <h1> Riau Archipelago </h1>
-            <img src="images/place/bintan-island.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Bintan Island</h3>
             
-            	<p>Bintan is the largest island in the Riau Archipelago, which comprises almost 3,000 large and small islands, immediately across Singapore and Johor Bahru, Malaysia. The islands stretch from the Straits of Malacca all the way to the South China Sea. The town of Tanjung Pinang is the capital of this province, located on the south western shore of Bintan.   
-Bintan’s chief tourist attraction today is Bintan Resorts, a spectacular beach holiday destination in the north of the island, covering 23,000 hectares along the entire sandy white coast that faces the South China Sea.  The island itself also has interesting historic remains in Tanjung Pinang and Penyengat, and offers plenty opportunities for surfing, adventure and ecotours for schools and family, but is also ideal for relaxation and wellness.   
-While, for dive enthusiasts the Anambas archipelago in the South China Sea offer pristine dive sites, reachable from Tanjung Pinang airport. Whereas,the Natuna islands are reachable from Batam.  
-Strategically located south of the Malay peninsula at the mouth of the Straits of Malacca, the Riau islands were, ever since the first century AD, the favourite holding area for Indian and Chinese trading ships to find shelter and wait out typhoons that raged in the South China Sea and the Indian Ocean. Already in 1202 Marco Polo, the famous Venetian world traveller, told of his voyage to the island of Bintan.
-It is small wonder, therefore, that in the 18th century, European merchants, - the Portuguese, Dutch and the British - fought each other and the local sultanates as well as the Malay and Bugis mariners in these waters for hegemony over this strategic shipping channel.  
-At the time, this part of the Malay Peninsula was ruled by the Johor-Riau Sultanate, whose seat alternated between Johor – in present day Malaysia - and Bintan Island, in present day Indonesia.  
-In the past decades, with cordial relations between Indonesia and Singapore, an agreement was signed between the two governments to develop the Riau islands cooperatively to benefit both countries in the designated Free Trade Zone of Batam, Bintan and Karimun islands.
-A first feature of this agreement was the development of the Bintan Resort, a beach holiday destination, covering 23,000 hectares along the entire sandy white coast of Bintan that faces the South China Sea.
-</p>
-			</div>
-            
-            <img src="images/place/masjid1.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Sultan Riau Mosque</h3>
-            <p>Sultan Riau Grand Mosque is a famous historical tourist site on Penyengat Island, Tanjung Pinang, Kepulauan Riau province.  This mosque was built when the island was the residence of Engku Puteri Raja Hamidah, wife of the Riau ruler, Sultan Mahmudsyah (1761—1812).  Initially, this mosque was a simple wooden building with brick floors and about 6 meter tall towers.
-
-Sultan Abdurrahman then invited participation from his people to help build a bigger mosque. People from many places around the Riau Lingga area came to the island to donate their materials, food and manpower.
-
-Some said that due to abundant food supplies of rice, vegetables and eggs, workers were so bored eating eggs that they only ate the yolks and used the whites as adhesive material.  The egg whites were mixed with sand and limestone to make this mosque which still stands strong today.
-Today, many visitors come to pray in this historical building. If you're more interested in the architecture, here are some details. The walls of this mosque are 50 cm thick and the mosque is the only one remaining from the Riau-Lingga kingdom that is intact.  The total size of this mosque compound is about 54.4 x 32.2 meters.  The size of its main building is 29.3 x 19.5 meters, and is supported by four pillars. This mosque has thirteen domes and four sharp towers as high as 18.9 meters that were previously used by muadzin to call for prayers.  Its floor is made of clay bricks.  In its yard, there are two Sotoh houses for travelers and meetings.  There are also two halls where local people place food during parties or fast breaking sessions in the evenings during the holy month of Ramadan.
-					</p>
+            <div class="article">
+                <img src="images/place/bintan island.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Bintan Island</h3>            
+                    <p>Bintan is the largest island in the Riau Archipelago, which comprises almost 3,000 large and small islands, immediately across Singapore and Johor Bahru, Malaysia. The islands stretch from the Straits of Malacca all the way to the South China Sea. The town of Tanjung Pinang is the capital of this province, located on the south western shore of Bintan. </p>
+                    <p>Bintan’s chief tourist attraction today is Bintan Resorts, a spectacular beach holiday destination in the north of the island, covering 23,000 hectares along the entire sandy white coast that faces the South China Sea.  The island itself also has interesting historic remains in Tanjung Pinang and Penyengat, and offers plenty opportunities for surfing, adventure and ecotours for schools and family, but is also ideal for relaxation and wellness.</p>
+                    <p>While, for dive enthusiasts the Anambas archipelago in the South China Sea offer pristine dive sites, reachable from Tanjung Pinang airport. Whereas,the Natuna islands are reachable from Batam. Strategically located south of the Malay peninsula at the mouth of the Straits of Malacca, the Riau islands were, ever since the first century AD, the favourite holding area for Indian and Chinese trading ships to find shelter and wait out typhoons that raged in the South China Sea and the Indian Ocean. Already in 1202 Marco Polo, the famous Venetian world traveller, told of his voyage to the island of Bintan.</p>
+                    <p>It is small wonder, therefore, that in the 18th century, European merchants, - the Portuguese, Dutch and the British - fought each other and the local sultanates as well as the Malay and Bugis mariners in these waters for hegemony over this strategic shipping channel. At the time, this part of the Malay Peninsula was ruled by the Johor-Riau Sultanate, whose seat alternated between Johor – in present day Malaysia - and Bintan Island, in present day Indonesia. </p>
+                    <p>In the past decades, with cordial relations between Indonesia and Singapore, an agreement was signed between the two governments to develop the Riau islands cooperatively to benefit both countries in the designated Free Trade Zone of Batam, Bintan and Karimun islands. A first feature of this agreement was the development of the Bintan Resort, a beach holiday destination, covering 23,000 hectares along the entire sandy white coast of Bintan that faces the South China Sea.</p>
+                </div>
             </div>
-            
-            <img src="images/place/nh01-620x350.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Nagoya Superblock Area</h3>
-            <p>If you like shopping, you should visit the shopping complex at Nagoya Super Block in Batam, Kepulauan Riau province.  It offers products in several modern shopping malls within one compound. In this pedestrian area, there are 450 kiosks and 170 shops with a Hypermarket on Nagoya Hill.  The Nagoya area is located at Sudirman and Yos Sudarso Streets, Jodoh sub-district, Batam, Indonesia.</p>
-            
+                  
+            <div class="article">      
+				<img src="images/place/nagoya.jpg" />
+					<div style="margin-left:250px;">
+					<h3>Nagoya Superblock Area</h3>
+					<p>If you like shopping, you should visit the shopping complex at Nagoya Super Block in Batam, Kepulauan Riau province.  It offers products in several modern shopping malls within one compound. In this pedestrian area, there are 450 kiosks and 170 shops with a Hypermarket on Nagoya Hill.  The Nagoya area is located at Sudirman and Yos Sudarso Streets, Jodoh sub-district, Batam, Indonesia.</p>
+				</div>
+       		</div>
         </div>
-        
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

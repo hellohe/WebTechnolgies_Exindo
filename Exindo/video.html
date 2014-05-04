@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Videos | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> Videos </h1>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/34QPASaoBWg" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Taste of Indonesia - Asian Food Channel</h3>
+                    <p style="padding-right:70px;">Nobody knows Indonesian food as well as self-proclaimed foodie, Bondan Winarno! Passionate about Indonesian food and willing to travel to the ends of the earth to find the perfect Rendang or Opor Ayam, follow Bondan and his daughter, Gwen as they travel far and wide across Indonesia, in search of the best cuisine available! No matter how treacherous the terrain, Bondan and Gwen will get you there and make sure that you are well fed!</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/YWSs05RPwEo" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>The Taste of Indonesia</h3>
+                    <p style="padding-right:70px;">These are the Tourist's Comments about Indonesia</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/VcQMhi5dW8g" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Indonesian Food / Street food</h3>
+                    <p style="padding-right:70px;">Recently I was asked by children from an English school - What do Indonesians eat? - and this is my video reply!</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/7Gj-6vgsWco" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Gudeg Food Tour in Yogyakarta, Indonesia</h3>
+                    <p style="padding-right:70px;">Gudeg is a traditional food from Yogyakarta, Indonesia. Made from young Nangka (jack fruit) that is boiled for several hours with palm sugar, and coconut milk. Typically served with white rice, chicken, hard-boiled egg, tofu and/or tempeh, and a stew made of crisp beef skins (sambal goreng krecek). It is a tasty spicy dish that is a must try if visiting Indonesia.
+While in Yogyakarta I had a behind the scenes tour in the kitchen of the largest Gudeg seller, Gudeg Yu Djum in the city.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/fLakrIOQpkg" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Andrew Zimmarmen Bizzard Foods Visit Sulawesi, Indonesia</h3>
+                    <p style="padding-right:70px;">Andrew Zimmarmen Bizzard foods visit Sulawesi, Indonesia and eat COTO Makasar</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/xR3J3Y6HJ3o" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Bali Most Interesting Places</h3>
+                    <p style="padding-right:70px;">We invite you to explore the beauty of the Island of Gods with world class standard of services. We are pleased to serve you better, greater and more professional during your holiday in Bali-Indonesia.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/I9U5TqqGgBA" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>11th Most Romantic Places in Indonesia (Visit Indonesia 2010)</h3>
+                    <p style="padding-right:70px;">These are 11th most romantic places in Indonesia. The best places for honeymoon.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/9PZpJzR9NUc" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>10 Beautiful Places in Indonesia</h3>
+                    <p style="padding-right:70px;">These are the 10 Beautiful Places in Indonesia</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/HGrS_D7KZyo" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Top 5 Attractions Bali - Travel Guide Indonesia</h3>
+                    <p style="padding-right:70px;">Take a tour of Top 5 Travel Attractions of Bali, Indonesia - part of the World's Greatest Attractions series by GeoBeats.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/dHJMlo43GBg" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Wonderful Indonesia | North Sumatra</h3>
+                    <p style="padding-right:70px;">North Sumatra | Sumatra Utara.<br />
+Home to a diverse array of cultures and a fascinating kaleidescope of Indonesian life, the region of North Sumatra has many wonders to explore. North Sumatra's specacular natural beauty spreads from the magnificent Lake Toba, the biggest lake in Southeast Asia, to the jungle of Bukit Lawang which organgutans make their home. The natural and cultural wonders here make this is a region to come and have a true adventure</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/JohULLJwWU0" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Culture of Indonesia</h3>
+                    <p style="padding-right:70px;">The various culture of Indonesia, we have to keep our culture forever</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/EZOe6m6iKBQ" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>The Culture of Indonesia</h3>
+                    <p style="padding-right:70px;">The culture of Indonesia has been shaped by long interaction between original indigenous customs and multiple foreign influences. Indonesia is centrally-located along ancient trading routes between the Far East and the Middle East, resulting in many cultural practices being strongly influenced by a multitude of religions, including Hinduism, Buddhism, Confucianism, Islam and Christianity, all strong in the major trading cities. The result is a complex cultural mixture very different from the original indigenous cultures.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/Z1s3jcPAu3c" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Sumbawa Island Culture, Indonesia</h3>
+                    <p style="padding-right:70px;">Sumbawa is an Indonesian island, located in the middle of the Lesser Sunda Islands chain, with Lombok to the west, Flores to the east, and Sumba further to the southeast. It is in the province of West Nusa Tenggara.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/xKHh_-YEJI4" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Indonesia History and Java Culture</h3>
+                    <p style="padding-right:70px;">This video covers the history and diverse cultural heritage of the island of Java in Indonesia, up to the present era. It is an interview with Professor Walter L. Williams, based on his book JAVANESE LIVES: WOMEN AND MEN IN MODERN INDONESIAN SOCIETY, published by Rutgers University Press.</p>
+                </div>            
+            </div>
+            
+            <div class="article">
+            	<div class="videos">
+                	<iframe width="390" height="300" src="http://www.youtube.com/embed/Yn0VXAiBTT8" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div>
+                    <h3>Culture of Indonesia Compared to US Culture (BYU Hawaii)</h3>
+                    <p style="padding-right:70px;">The purpose of this short video is to improve cross cultural understanding and communication between Indonesians and other cultures. Anyone interested in learning more about Indonesian Culture, or Indonesians interested in learning more about USA culture will enjoy this video.</p>
+                </div>            
+            </div>
+            
+        </div>
+		
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

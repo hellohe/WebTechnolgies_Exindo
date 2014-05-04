@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jakarta | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1>Jakarta</h1>
+            
+            <div class="article">
+                <img src="images/food/ketoprak.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Ketoprak</h3>
+                  <p>Ketoprak Jakarta consists of lontong (rice steamed in a banana leaf), tofu, sliced cabbage, mihun (thin rice noodles), sprouts, chips and a sauce made from ground peanut and palm sugar made into a thick paste, mixed with chilli, salt, garlic and also sweet soybean ketchup. It is sold in individual portions from small stalls or carts along the street. Customers may request that the dish be mild, medium or spicy. The price is about IDR 5.000 to 10.000 according to ingredients included.</p>
+				  <p>Ketoprak is a typical street-food/dish. It was originally popular around the Jakarta area but has spread throughout Java. It is nearly similar to Lotek and Karedok from West Java, Gado-gado from Jakarta and also Pecel from Central Java, although the ingredients in the peanut sauces are different. Gado-gado and Karedok use only brown sugar for sweetening, but sweet soy sauce is used for additional sweetener in ketoprak, and garlic is added. The seller prepares the ingredients at home and mixes them in front of the customers as they place their orders.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/kerak telor.jpeg" />
+                <div style="margin-left:250px;">
+                  <h3>Kerak Telor</h3>
+                  <p>Kerak telor (English: Egg crust) is a Betawi traditional spicy omelette dish in Indonesian cuisine. It is made from glutinous rice cooked with egg and served with serundeng (fried shredded coconut), fried shallots and dried shrimp as topping.[1] It is considered as a snack and not as a main dish. The vendors of kerak telor are easily the most ubiquitous during annual Jakarta Fair and it has also become a must-have menu item for visitors at the event.</p>
+				</div>
+			</div>
+            
+            <div class="article">
+                <img src="images/food/gado gado.jpeg" />
+                <div style="margin-left:250px;">
+                  <h3>Gado-gado</h3>
+                    <p>Gado-gado (Indonesian or Betawi), also known as lotek (Sundanese and Javanese), is an Indonesian salad of slightly boiled vegetables and hard-boiled eggs served with a peanut sauce dressing.</p>
+                    <p>Gado-gado in Indonesian literary means "mix-mix" since it is made of rich mixture of vegetables such as potatoes, string beans, bean sprouts, spinach, chayote, bitter gourd, corn and cabbage, with tofu, tempeh and hard-boiled eggs, all mixed in peanut sauce dressing, sometimes also topped with krupuk and sprinkles of fried shallots. Gado-gado is different from lotek atah or karedok which uses raw vegetables. Another similar dish is the Javanese pecel.</p>
+                    <p>Formerly, gado-gado sauce was generally made to order, sometimes in front of the customers to suit their personal preference for the amount of chili pepper included. However, particularly in the West, gado-gado sauce is often prepared ahead of time and in bulk, Gado-gado sauce is also available in dried form, which simply needs to be rehydrated by adding hot water. Gado-gado sauce is not to be confused with satay sauce, which is also a peanut sauce.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/nasi tumpeng.jpg"/>
+                <div style="margin-left:250px;">
+                  <h3>Nasi Tumpeng</h3>
+                  <p>Tumpeng is a cone-shaped rice dish like mountain with its side dishes (vegetables and meat). Traditionally featured in the slamatan (Grateful) ceremony, the cone shape of rice is made by using cone-shaped weaved bamboo container. The rice itself could be plain steam rice, uduk rice (cooked with coconut milk), or yellow rice (uduk rice colored with kunyit (turmeric)). What makes this dish special is that the festive feeling everytime it waserved. Since it is only served for special occasion that's involved many guests.</p>
+				</div>
+			</div>
+            
+            <div class="article">
+                <img src="images/food/ketupat sayur.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Ketupat Sayur</h3>
+                  <p>Ketupat (in Indonesian and Malay) or Kupat (in Javanese and Sundanese) is a type of dumpling made from rice packed inside woven palmleaf pouch. It is commonly found in Indonesia, Malaysia, Brunei, Singapore, and the Philippines (where it is known by the name pusô in Cebuano, bugnóy in Hiligaynon, patupat in Kapampangan and Pangasinan, or ta'mu in Tausug). It is commonly described as "packed rice", although there are other types of similar packed rices such as lontong and bakchang.</p>
+				</div>
+			</div>
+            
+            <div class="article">
+                <img src="images/food/nasi uduk.jpeg" />
+                <div style="margin-left:250px;">
+                  <h3>Nasi Uduk</h3>
+                    <p>Nasi uduk is an Indonesian style steamed rice cooked in coconut milk dish originally from Jakarta, which can be widely found across the country. Nasi uduk is made by cooking rice soaked in coconut milk instead of water, along with clove, cassia bark, and lemongrass to add aroma. Sometimes knotted pandan leaves are thrown into the rice while steaming to give it more fragrance. The coconut milk and spices gave oily rich tastes to the cooked rice. The bawang goreng (fried shallots) sprinkled on the top of the rice prior to serving. Assortments of dishes are usually served as side dishes. The pre-packed nasi uduk usually wrapped inside banana leaf. Nasi uduk sold in warung or other eating establishments are commonly offered with assortment of side dishes, chosen according to client's desire. However the pre-packed basic nasi uduk usually consists of tempe orek (tempeh stir fried with sweet soy sauce), teri kacang(anchovy with peanuts), and shredded omelette, with sambal kacang (peanut sambal).</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/nasi ulam.jpeg"/>
+                <div style="margin-left:250px;">
+                  <h3>Nasi Ulam</h3>
+                  <p>Nasi ulam is a steamed rice dish mixed with various herbs, especially the leaves of pegagan (Centella asiatica) or often replaced with kemangi (lemon basil), vegetables, spices and accompanied with various side dishes. This dish is a feature of Malay cuisine with many variations and is commonly found in Malaysia, Indonesia and southern Thailand. Nasi ulam in Malaysia consist of cold cooked rice that is mixed with shredded herbs such as daun kaduk (wild betelnut leaf), pucuk gajus (cashew leaf shoots), onions etc. Kerisik(pounded toasted coconut) and other spices is also added. Sometimes shredded fried fish is mixed in.</p>
+                  <p>In Indonesia, nasi ulam can be found in Betawi (native Jakartans) cuisine as well as Sumatran Malay and Bali. In Jakarta there are two types of nasi ulam, the wet (soupy) nasi ulam of northern and central Jakarta, and dry one of southern Jakarta. In Indonesia, nasi ulam usually spiced with kemangi herb, chili, sliced cucumber and sprinkled with peanuts granule, kerisik (grated and sauteed coconut) or serundeng. An array of other additional dishes are often added on top of nasi ulam, such as dendeng (beef jerky), telur dadar (omelette), perkedel (mashed potato fritter), fried tofu or tempeh, and krupuk.</p>
+				</div>
+			</div>
+            
+            <div class="article">
+                <img src="images/food/soto betawi.jpg" />
+                <div style="margin-left:250px;">
+                  <h3>Soto Betawi</h3>
+                    <p>Betawi soto, made of beef or beef offal, cooked in a whitish cow milk or coconut milk broth, with fried potato and tomato. It is somewhat similar to other types of soto unless that betawi has its characteristic. It usually has thicker soup than the typical soto and it also can be served using the beef instead of chicken.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/food/asinan betawi.jpeg"/>
+                <div style="margin-left:250px;">
+                  <h3>Asinan Betawi</h3>
+                  <p>Asinan is a pickled (through brined or vinegared) vegetable or fruit dish, commonly found in Indonesia. The term asin is Indonesianword for "salty", which refers to the process of preserving the ingredients by soaking them in a solution of salty water. Asinan is quite similar to rujak', which is usually served fresh, while asinan is preserved vegetables or fruits. The ingeriedients are preserved Chinese cabbage, cabbage, bean sprouts, tofu, and lettuce served in a thin, hot, peanut sauce with vinegar, topped with peanuts and krupuk (especially krupuk mie).</p>
+				</div>
+			</div>
+        </div>
+		
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

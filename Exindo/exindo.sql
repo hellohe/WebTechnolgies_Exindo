@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2014 at 03:48 AM
+-- Generation Time: May 04, 2014 at 10:49 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
 --
 
 INSERT INTO `rating` (`ArticleTitle`, `TotalVotes`, `TotalPoints`, `AvgVote`) VALUES
-('r1', 109, 358, '3.28'),
+('r1', 205, 717, '3.50'),
 ('r2', 10, 34, '3.40');
 
 -- --------------------------------------------------------
@@ -49,7 +49,7 @@ INSERT INTO `rating` (`ArticleTitle`, `TotalVotes`, `TotalPoints`, `AvgVote`) VA
 
 CREATE TABLE IF NOT EXISTS `registration` (
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `firstname` varchar(20) NOT NULL,
   `lastname` varchar(20) NOT NULL,
   `age` int(3) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `registration` (
 --
 
 INSERT INTO `registration` (`username`, `password`, `firstname`, `lastname`, `age`, `phone`, `email`) VALUES
-('admin', 'admin', 'admin', 'don''t need name', 999, 2147483647, 'admin@don''tneedemail.com');
+('admin', '8e8be2b03e76a0b31593906724435a81', 'admin dont need name', 'admin dont need name', 999, 1234, 'admin@gmail.com');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

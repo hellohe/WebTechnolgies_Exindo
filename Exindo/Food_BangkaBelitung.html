@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bangka Belitung | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -145,8 +155,8 @@
                 <div style="margin-left:250px;">
                   <h3>Es Jeruk Kunci</h3>
                   <p>Beverages which look like an orange juice but different type of orange is used. The oranges are called kunci. It is best to drink es jeruk kunci in a scorching hot day.</p>
-              </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/martabak bangka belitung.jpg" />
@@ -155,7 +165,8 @@
                     <p>Hok Lo Pan is a murtabak made in Belitung. To make it, mix the gist into a mixture of coconut milk and salt. Leave it for 15 minute until it become frothy. In another bowl, mix flour with egg and stir it slowly while pouring coconut milk gradually, until the dough is smooth, then add some sugar, baking soda and vanilla. Heat the murtabak which is 20cm in diameter that have been smeared by butter. Pour the mixture in 1cm thick, heat it on fire with medium heat. After the dough has holes on it, spread the nuts, sugar,or milk. Flip the murtabak, spread the outside with butter and it is ready to be served.</p>
                 </div>
             </div>
-        
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

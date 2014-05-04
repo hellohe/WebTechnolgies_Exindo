@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>East Java | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1>East Java</h1>
+            
+            <div class="article">
+                <img src="images/culture/Reog Ponorogo.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Reog Ponorogo</h3>
+                    <p>Reog ponorogo is one of the artistic culture that comes from Ponorogo, Java East. The city and this it is the real origin of Reog. Ponorogo city gate was decorated by the Warok figure and gemblak, two figures involved appear in shown Reog. Reog is an art that is still very thick with mysticism things mystical and powerful. Reog stories contained in Reog Ponorogo have Panji stories. The story revolves around the journey of King Kelana Sewandana in search of his hero, the warrior on horseback and accompanied by his faithful vizier, Bujangganong. When the choice fell on the Princess Prabu of Kediri, Dewi Sanggalangit, the goddess gives to the condition that accept his love, when Prabu willing to create a new art. Creates Reog Ponorogo. Movements in the dance, Reog Ponorogo describe the facts of the man in the way of life began was born, lived, until his death. His philosophy is very deep.</p>
+               </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/culture/Gamelan.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Gamelan</h3>
+                    <p>Gamelan comes from the word gembelan, means played by striking on it. To get the harmoniously, gamelan must be blended with another instruments, such as bonang, kendang, saron, peking, gong, gender, slenthem, ketuk, bonang penerus, siter, rebab, gambang, and suling. </p>
+					<p>The best quality of gamelan has made from bronze and stell. Some materials, such as wood, leather and rope, put on the gamelan as accessories. Some peoples says, hearing the gamelan instruments make soul feels relax and calm.</p>
+                </div>
+            </div>
+            
+              
+            <div class="article">
+                <img src="images/culture/keris.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Keris (Traditional Weaponry)</h3>
+                    <p>Keris is a iron artefacts produced by the expert who can make the weapon perfectly. The keris can be owned only by kings, army officer and the makers. The history of keris, begining from metal epoch in Indonesian at 200BC. And then the iron epoch has followed. The originated of keris has come from Java, because Java is the center of iron culture.</p>
+					<p>The technology of keris has a long history, begin from the functions until the shape of keris. A long time ago, beside keris had used as the weapons and being part of some ritual ceremonies and the religion activities, keris has also as the symbol of social and economy statue. Keris which used by the farmer in use the name of animal like Keris Dapur Kebo Lajer, Keris Dapur Kebo Selurung, Keris Dapur Kebo Teki, and used the Pamor Beras Wutah (the rice that overflowing) known as the prosperity symbol.</p>
+                </div>
+            </div>
+    
+        </div>
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

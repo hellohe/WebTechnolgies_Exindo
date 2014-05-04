@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Riau Archipelago | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -145,8 +155,8 @@
                 <div style="margin-left:250px;">
                   <h3>Epok-epok (Curry Puff)</h3>
                   <p>Epok-epok is a curry puff which can be found in many stores, it is smaller than curry puff. Other varieties of epok-epok are filled with a half boiled egg instead of chicken.</p>
-              </div>
-          </div>
+				</div>
+			</div>
             
             <div class="article">
                 <img src="images/food/asam pedas baung.jpg" />
@@ -155,7 +165,8 @@
                     <p>Otak-otak is a cake made of fish meat and spices. It is widely known across Southeast Asia, where it is traditionally served fresh, wrapped inside a banana leaf. It is also available in stores as frozen food and even canned food.</p>
                 </div>
             </div>
-        
+        </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

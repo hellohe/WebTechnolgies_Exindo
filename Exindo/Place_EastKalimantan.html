@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>East Kalimantan | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,38 +141,41 @@
                       
         <div class="contents">         	   
             <h1> East Kalimantan </h1>
-            <img src="images/place/681x454.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Derawan Archipelago</h3>
             
-            	<p>The Derawan islands must be everyone’s dream of the perfect tropical paradise: warm, isolated  islands with soft white sand beaches fringed with waving palm trees, pristine seas that change color from green to deep blue, and an amazing underwater life of giant turtles, dolphins, manta rays, dugongs and barracudas, stingless jellyfish and sometimes, whales  Derawan is indeed one of world’s richest areas in bio-diversity. Small wonder that the Derawan Islands are considered the third best dive destination in the world.
-Located just away from the mainland of East Kalimantan in the district of Berau, the Derawan archipelago comprises 31 islands, most well known among these are the islands of Derawan, Maratua, Sangalaki and Kakaban. Here is Indonesia’s largest nesting site of the rare and endangered giant green turtles and hawksbill turtles, where one can daily watch turtles lay their eggs in the sand or swim to sea with the turtles. The entire marine conservancy region covers a total area of no less than 1.27 million hectares.
-Here, you can find 460 different species of corals, ranking this area second only to the Raja Ampat Islands in West Papua. The Nature Conservancy and a team of international experts also found more than 870 species of fish here, ranging from tiny pygmy seahorses to giant manta rays. On some days, groups of up to 50 manta rays have been seen feeding together in Derawan’s waters, says the Conservancy.
-While on Kakaban, you can find the world's largest and most diverse jellyfish lake, including four unique species of stingless jellyfish one of which can swim upside down. It is for this reason that Kakaban is considered for UNESCO nomination as a World Heritage Site
-</p>
-			</div>
-            
-            <img src="images/place/balikpapan-31-july-2008-31.jpg"/>
-            <div style="margin-left:250px;">
-            <h3>Balikpapan</h3>
-            <p>Located on the south eastern coast of East Kalimantan facing the deep Makassar Straits, the town of Balikpapan is known as the Oil City of Indonesia.  Its anniversary which falls on 10th of February, in fact celebrates the first oil drilling undertaken in the area, known as the “Mathilda” drill.
-For this reason, Balikpapan, like its counterpart city of Pekanbaru in Riau on Sumatra, is better known for its oil rather than its tourist attractions. Oil and other mining industries are the reasons why nearly all domestic airlines fly to Balikpapan rather than to the provincial capital of Samarinda.  For, it is in Balikpapan where gather the oil and mining related foreign and Indonesian business communities.  Exports from Balikpapan are chiefly in oil, natural gas and coal, while agricultural produce take second place.
-Balikpapan’s Sepinggan airport is also the main transit point  inland toTanjungredep  airport in Berau, the hopping off point to the wonderful Derawan Dive Islands.
-It comes as no surprise, therefore, that Balikpapan has a number of five and four starred hotels catering to top management clientele and their VIP visitors, although more reasonable rate hotels are also available around town.
-Today, besides its oil silos and refineries, which are a must to see, although from a distance, Balikpapan has quite a number of tourist attractions in and around the city.
-Three most popular beaches here are the Kemala beach in the city limits, theManggar beach, situated some 17 km. east of Balikpapan, and the Segara Saribeach, a little further east from here. Manggar beach is equipped with a recreation park, very popular with the whole family.
-To see wildlife, there is the Wain River Protected Forest.  Covering some 10,000 hectares the reserve is habitat to a number of endangered animals, like the so-called Beruang Madu (honey bear) which are sun bears endemic to the area,orang-utans and proboscis monkeys, called Bekantan. Wain river reserve, moreover, houses a number of endangered plants.
-Near Balikpapan is also a crocodile farm called Teritip, which is interesting to visit.
-
-					</p>
+            <div class="article">
+                <img src="images/place/derawan.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Derawan Archipelago</h3>                
+                    <p>The Derawan islands must be everyone’s dream of the perfect tropical paradise: warm, isolated  islands with soft white sand beaches fringed with waving palm trees, pristine seas that change color from green to deep blue, and an amazing underwater life of giant turtles, dolphins, manta rays, dugongs and barracudas, stingless jellyfish and sometimes, whales  Derawan is indeed one of world’s richest areas in bio-diversity. Small wonder that the Derawan Islands are considered the third best dive destination in the world.</p>
+                    <p>Located just away from the mainland of East Kalimantan in the district of Berau, the Derawan archipelago comprises 31 islands, most well known among these are the islands of Derawan, Maratua, Sangalaki and Kakaban. Here is Indonesia’s largest nesting site of the rare and endangered giant green turtles and hawksbill turtles, where one can daily watch turtles lay their eggs in the sand or swim to sea with the turtles. The entire marine conservancy region covers a total area of no less than 1.27 million hectares.</p>
+                    <p>Here, you can find 460 different species of corals, ranking this area second only to the Raja Ampat Islands in West Papua. The Nature Conservancy and a team of international experts also found more than 870 species of fish here, ranging from tiny pygmy seahorses to giant manta rays. On some days, groups of up to 50 manta rays have been seen feeding together in Derawan’s waters, says the Conservancy.</p>
+                    <p>While on Kakaban, you can find the world's largest and most diverse jellyfish lake, including four unique species of stingless jellyfish one of which can swim upside down. It is for this reason that Kakaban is considered for UNESCO nomination as a World Heritage Site.</p>
+                </div>
             </div>
             
-            <img src="images/place/70030005-0dkbxasf.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Kutai National Park</h3>
-            <p>Kutai National Park (KNP) is a lowland tropical forest in East Kalimantan. KNP has an area width of 198,629 hectares. Its bio-diversity and vegetation makes it a great destination for local as well as foreign nature lovers and researchers. Iron-meranti-kapur (Dryobalanops Spp.) woods, mixed dipterocarpaceae, mangroves and kerangsa are types of vegetations found in KNP.</p>
+            <div class="article">
+                <img src="images/place/balikpapan.jpg"/>
+                <div style="margin-left:250px;">
+                <h3>Balikpapan</h3>
+                <p>Located on the south eastern coast of East Kalimantan facing the deep Makassar Straits, the town of Balikpapan is known as the Oil City of Indonesia. Its anniversary which falls on 10th of February, in fact celebrates the first oil drilling undertaken in the area, known as the “Mathilda” drill.</p>
+                <p>For this reason, Balikpapan, like its counterpart city of Pekanbaru in Riau on Sumatra, is better known for its oil rather than its tourist attractions. Oil and other mining industries are the reasons why nearly all domestic airlines fly to Balikpapan rather than to the provincial capital of Samarinda.  For, it is in Balikpapan where gather the oil and mining related foreign and Indonesian business communities. Exports from Balikpapan are chiefly in oil, natural gas and coal, while agricultural produce take second place.</p>
+                <p>Balikpapan’s Sepinggan airport is also the main transit point  inland toTanjungredep  airport in Berau, the hopping off point to the wonderful Derawan Dive Islands.</p>
+                <p>It comes as no surprise, therefore, that Balikpapan has a number of five and four starred hotels catering to top management clientele and their VIP visitors, although more reasonable rate hotels are also available around town.</p>
+                <p>Today, besides its oil silos and refineries, which are a must to see, although from a distance, Balikpapan has quite a number of tourist attractions in and around the city.</p>
+                <p>Three most popular beaches here are the Kemala beach in the city limits, theManggar beach, situated some 17 km. east of Balikpapan, and the Segara Saribeach, a little further east from here. Manggar beach is equipped with a recreation park, very popular with the whole family.</p>
+                <p>To see wildlife, there is the Wain River Protected Forest.  Covering some 10,000 hectares the reserve is habitat to a number of endangered animals, like the so-called Beruang Madu (honey bear) which are sun bears endemic to the area,orang-utans and proboscis monkeys, called Bekantan. Wain river reserve, moreover, houses a number of endangered plants.</p>
+                <p>Near Balikpapan is also a crocodile farm called Teritip, which is interesting to visit.</p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">
+                <img src="images/place/kutai.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Kutai National Park</h3>
+                    <p>Kutai National Park (KNP) is a lowland tropical forest in East Kalimantan. KNP has an area width of 198,629 hectares. Its bio-diversity and vegetation makes it a great destination for local as well as foreign nature lovers and researchers. Iron-meranti-kapur (Dryobalanops Spp.) woods, mixed dipterocarpaceae, mangroves and kerangsa are types of vegetations found in KNP.</p>
+            	</div>
+            </div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

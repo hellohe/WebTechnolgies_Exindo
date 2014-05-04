@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>West Sulawesi | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,42 +141,44 @@
                       
         <div class="contents">         	   
             <h1> West Sulawesi </h1>
-            <img src="images/place/Mamuju.JPG" />
-            <div style="margin-left:250px;">
-            	<h3>Grand Mosque of Baiturrahman</h3>
             
-            	<p>Once forming part of the vast South Sulawesi Province, the province of West Sulawesi was not officially formed until 5th October 2004. Along with the establishment of the new province, a capital was chosen as the center of government activities, which fell on the little coastal town of Mamuju, which lies most central in this tall shaped province. Not only does it serve as the center of government, Mamuju also acts as the main hub to explore the hidden beauty of West Sulawesi.
-Although it is the capital of South Sulawesi Province, the town of Mamuju is not an autonomous town and still lies under the administration of the Mamuju Regency. Situated strategically between Palu, capital of Central Sulawesi, and Makassar,capital of South Sulawesi, Mamuju has grown into an economic bridge between the two cities. Flanked by a coastal area and a mountain range, the town is highlighted with green and brownish hills to its immediate interior, and lines of fishing boats and Mandar’s distinct Sandeq sailing crafts along its shoreline.
-This small city also offers magnificent sceneries and relaxing ambience. Although having undergone reclamation, the Manakara beach still presents a beautiful view of the Karampuang Island in the distance, especially when the sun sets, creating a beautiful silhouette of the island.
-While the view of Karampuang Island is already a spectacle in itself , the island holds much more fascinating wonders below the waters surrounding it. Beautiful and pristine coral reefs and schools of colorful fishes dominate the scene right to the shallow shores, making it a perfect spot for snorkeling and diving.
-The island itself got its name from a local legend that says that the entire island magically emerged during a full moon, hence the name “Karampuang” which in local language means “The Moon”. Sharing borders with the local population who live on the island, the rocky part of the island is also completed with shelters and paved paths for visitors to enjoy the view and ambience of the island. Karampuang island is also habitat to the unique giant Coconut Crabs (Birgus latro) that are known to be able to climb trees and are active at night.
-Approximately 30Km away from downtown Mamuju, in the direction of the Ahmad Kirang Airport, one can feel the tranquilizing breeze of Bukit Jati Gentungan Recreational Park. Nestled in a fascinating natural setting, this is the best place just to lay back, relax, and absorb the refreshing atmosphere. The 4 hectares area also comes with a swimming pool for those who wish to take a dip in the refreshing water. The recreation also has 4 villas, 2 cottages, and 1 hall, for those who wish to spend the night here.
-</p>
-			</div>
-            
-            <img src="images/place/Dato Beach.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Dato Beach</h3>
-            <p>A soft white sandy beach, crystal clear water, staggering cliffs, beautiful rock formations, and swaying palm trees: one may well be mistaken to be somewhere in Bali, but it is not. Far from the spotlights of more popular destinations in other major islands, Dato Beach with all its splendor is truly a secluded beauty hidden within the Regency of Majene, The town of Majene is located on the Bay of Mandar, south of the capital Mamuju and closer to the town of Polewali in West Sulawesi.
-Located just 1KM away from Banggae, the heart of Majene Regency or about 3.5 hours drive away from Mamuju, capital of West Sulawesi, the beach is highlighted with beautiful rock formations on one side and a vast stretching white sandy beach underneath a hanging cliff on the other. Its soft white sands make it a perfect place for all sorts of fun beach games such as beach volley, football, or building sandcastles. The shoreline is also home to a lot of hermit crabs in various sizes and shells. These unique crustaceans will definitely attract the curiosity of the younger visitors.
-The waters off the coast of Dato beach are relatively calm , making it a perfect place for swimming or just to play around. Below its water, Dato Beach also offers pristine coral reefs with various colorful fish and other sea dwellers that will definitely indulge those who enjoy snorkeling and diving. Rich with various kinds of fish, these waters are also a perfect spot for fishing.
-From the rock formation on the west end of the beach, one can climb stairs leading to the top of the cliff. There, a magnificent view of the vast ocean awaits.
-
-					</p>
+            <div class="article">
+                <img src="images/place/Mamuju.JPG" />
+                <div style="margin-left:250px;">
+                    <h3>Mamuju</h3>                
+                    <p>Once forming part of the vast South Sulawesi Province, the province of West Sulawesi was not officially formed until 5th October 2004. Along with the establishment of the new province, a capital was chosen as the center of government activities, which fell on the little coastal town of Mamuju, which lies most central in this tall shaped province. Not only does it serve as the center of government, Mamuju also acts as the main hub to explore the hidden beauty of West Sulawesi.</p>
+                    <p>Although it is the capital of South Sulawesi Province, the town of Mamuju is not an autonomous town and still lies under the administration of the Mamuju Regency. Situated strategically between Palu, capital of Central Sulawesi, and Makassar,capital of South Sulawesi, Mamuju has grown into an economic bridge between the two cities. Flanked by a coastal area and a mountain range, the town is highlighted with green and brownish hills to its immediate interior, and lines of fishing boats and Mandar’s distinct Sandeq sailing crafts along its shoreline.</p>
+                    <p>This small city also offers magnificent sceneries and relaxing ambience. Although having undergone reclamation, the Manakara beach still presents a beautiful view of the Karampuang Island in the distance, especially when the sun sets, creating a beautiful silhouette of the island.</p>
+                    <p>While the view of Karampuang Island is already a spectacle in itself , the island holds much more fascinating wonders below the waters surrounding it. Beautiful and pristine coral reefs and schools of colorful fishes dominate the scene right to the shallow shores, making it a perfect spot for snorkeling and diving.</p>
+                    <p>The island itself got its name from a local legend that says that the entire island magically emerged during a full moon, hence the name “Karampuang” which in local language means “The Moon”. Sharing borders with the local population who live on the island, the rocky part of the island is also completed with shelters and paved paths for visitors to enjoy the view and ambience of the island. Karampuang island is also habitat to the unique giant Coconut Crabs (Birgus latro) that are known to be able to climb trees and are active at night.</p>
+                    <p>Approximately 30Km away from downtown Mamuju, in the direction of the Ahmad Kirang Airport, one can feel the tranquilizing breeze of Bukit Jati Gentungan Recreational Park. Nestled in a fascinating natural setting, this is the best place just to lay back, relax, and absorb the refreshing atmosphere. The 4 hectares area also comes with a swimming pool for those who wish to take a dip in the refreshing water. The recreation also has 4 villas, 2 cottages, and 1 hall, for those who wish to spend the night here.</p>
+                </div>
             </div>
             
-            <img src="images/place/Limbong Sitodo River and Indo Rannuang Waterfall.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Limbong Sitodo River and Indo Rannuang Waterfall</h3>
-            <p>Situated approximately just a mere 8Km from the heart of Polewali, capital of thePolewali Mandar Regency in West Sulawesi, nature presents some of its best features at the Indo Rannuang Waterfall and the Limbong Sitodo River that runs below. The two fascinating spots are administratively located within the Kunyi Village in the Areapi sub-district.
-Limbong Sitodo is a natural bathing area and swimming pool which takes the natural setting of the Limbong River. Here, the river flows smoothly through beautiful scenery of rocks and trees along its banks making it a perfect place to plunge and bathe away in the refreshing crystal clear waters. With a magnificent view overlooking lush green hills, added with the tranquilizing sounds of waters murmuring down the river, this is also a perfect place just to sit back, relax and enjoy what Mother Nature has to offer. At weekends or holidays, locals bring families and friends for a picnic or just to enjoy the scenery.
-If one has the stamina, spirit, and enough sense of adventure, then best follow the river upstream to its sourc, which is the Indo Rannuang Waterfall. While Limbong Sitodo may be easily reached, then Indo Rannuang Waterfall presents a slightly more adventurous challenge for those who wish to get close to nature.
-Pass the Limbong Sitodo, about 5 kilometer up the hill, one will be presented with a fascinating ambience of a traditional Mandar Village with their distinct high houses along with their various daily activities. Further up the mountain, lines of cocoa trees decorate both sides of the road. The cocoa farms, along with other fruit and vegetable gardens offer the main source of income and activities of the people living near the waterfall. Then, whether you’re on four wheels or two wheels, the road gets narrower and eventually ends. This is where the footpath and the hiking begin.
-Dense bushes and rocky paths form the main highlight of the approximately 4 Km hike to the Indo Rannuang Waterfall. Although the trip is tiring, you will be presented with a magnificent view of the Town of Polewali and the bay of Mandar along the way. As the sound of rushing water grows louder, the astonishing view of Indo Rannuang Waterfal is unveiled.
-This multi level waterfall is truly one of a kind. The top leans on a gigantic rock, creating enchanting flows of waters over it. Several levels below, natural ponds are created banking on rocks and beautiful natural setting. On the lowest level, before the fall plunges some 50 meters over the cliff, the last pond sits right at the edge of the cliff and somehow resembles the devil’s pool in the Victoria Fall of Zimbabwe. With nothing but the sound of rushing waters, a clear blue sky overhead, and an amazing view over Mandar Bay in the distance, this sensation as if one is swimming or just being here at one of the best features of nature is truly exceptional.
-</p>
+            <div class="article">
+                <img src="images/place/Dato Beach.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Dato Beach</h3>
+                <p>A soft white sandy beach, crystal clear water, staggering cliffs, beautiful rock formations, and swaying palm trees: one may well be mistaken to be somewhere in Bali, but it is not. Far from the spotlights of more popular destinations in other major islands, Dato Beach with all its splendor is truly a secluded beauty hidden within the Regency of Majene, The town of Majene is located on the Bay of Mandar, south of the capital Mamuju and closer to the town of Polewali in West Sulawesi.</p>
+                <p>Located just 1KM away from Banggae, the heart of Majene Regency or about 3.5 hours drive away from Mamuju, capital of West Sulawesi, the beach is highlighted with beautiful rock formations on one side and a vast stretching white sandy beach underneath a hanging cliff on the other. Its soft white sands make it a perfect place for all sorts of fun beach games such as beach volley, football, or building sandcastles. The shoreline is also home to a lot of hermit crabs in various sizes and shells. These unique crustaceans will definitely attract the curiosity of the younger visitors.</p>
+                <p>The waters off the coast of Dato beach are relatively calm , making it a perfect place for swimming or just to play around. Below its water, Dato Beach also offers pristine coral reefs with various colorful fish and other sea dwellers that will definitely indulge those who enjoy snorkeling and diving. Rich with various kinds of fish, these waters are also a perfect spot for fishing.</p>
+                <p>From the rock formation on the west end of the beach, one can climb stairs leading to the top of the cliff. There, a magnificent view of the vast ocean awaits.</p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">
+                <img src="images/place/Limbong Sitodo River and Indo Rannuang Waterfall.jpg" />
+                <div style="margin-left:250px;">
+                <h3>Limbong Sitodo River and Indo Rannuang Waterfall</h3>
+                <p>Situated approximately just a mere 8Km from the heart of Polewali, capital of thePolewali Mandar Regency in West Sulawesi, nature presents some of its best features at the Indo Rannuang Waterfall and the Limbong Sitodo River that runs below. The two fascinating spots are administratively located within the Kunyi Village in the Areapi sub-district.</p>
+                <p>Limbong Sitodo is a natural bathing area and swimming pool which takes the natural setting of the Limbong River. Here, the river flows smoothly through beautiful scenery of rocks and trees along its banks making it a perfect place to plunge and bathe away in the refreshing crystal clear waters. With a magnificent view overlooking lush green hills, added with the tranquilizing sounds of waters murmuring down the river, this is also a perfect place just to sit back, relax and enjoy what Mother Nature has to offer. At weekends or holidays, locals bring families and friends for a picnic or just to enjoy the scenery.</p>
+                <p>If one has the stamina, spirit, and enough sense of adventure, then best follow the river upstream to its sourc, which is the Indo Rannuang Waterfall. While Limbong Sitodo may be easily reached, then Indo Rannuang Waterfall presents a slightly more adventurous challenge for those who wish to get close to nature.</p>
+                <p>Pass the Limbong Sitodo, about 5 kilometer up the hill, one will be presented with a fascinating ambience of a traditional Mandar Village with their distinct high houses along with their various daily activities. Further up the mountain, lines of cocoa trees decorate both sides of the road. The cocoa farms, along with other fruit and vegetable gardens offer the main source of income and activities of the people living near the waterfall. Then, whether you’re on four wheels or two wheels, the road gets narrower and eventually ends. This is where the footpath and the hiking begin.</p>
+                <p>Dense bushes and rocky paths form the main highlight of the approximately 4 Km hike to the Indo Rannuang Waterfall. Although the trip is tiring, you will be presented with a magnificent view of the Town of Polewali and the bay of Mandar along the way. As the sound of rushing water grows louder, the astonishing view of Indo Rannuang Waterfal is unveiled.</p>
+                <p>This multi level waterfall is truly one of a kind. The top leans on a gigantic rock, creating enchanting flows of waters over it. Several levels below, natural ponds are created banking on rocks and beautiful natural setting. On the lowest level, before the fall plunges some 50 meters over the cliff, the last pond sits right at the edge of the cliff and somehow resembles the devil’s pool in the Victoria Fall of Zimbabwe. With nothing but the sound of rushing waters, a clear blue sky overhead, and an amazing view over Mandar Bay in the distance, this sensation as if one is swimming or just being here at one of the best features of nature is truly exceptional.</p>
+				</div>
+			</div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

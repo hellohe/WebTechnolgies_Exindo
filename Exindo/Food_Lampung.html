@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Lampung | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -135,7 +145,7 @@
             <div class="article">
                 <img src="images/food/keripik pisang lampung.jpg" />
                 <div style="margin-left:250px;">
-                  <h3>Keripik Pisang (sweet Banana Chip)</h3>
+                  <h3>Keripik Pisang (Sweet Banana Chip)</h3>
                   <p>Keripik pisang is the most familiar snack from Lampung. Everyone who has tried this snack was very delighted because delicacy that given is so great. There are so many tastes of this snack, such as original, strawberry, melon, cheese, chocolate, milk, coffee, etc.</p>
                 </div>
             </div>
@@ -155,6 +165,7 @@
                     <p>Gabing is the traditional cuisine made from coconut trunk.  The young coconut trunk is cut with a medium-size after that it is boiled with coconut milk and vegetables. The trunk of this palm is sweet and savory taste.</p>
                 </div>
             </div>
+		</div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

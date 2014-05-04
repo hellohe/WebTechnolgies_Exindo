@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>East Java | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -13,7 +12,7 @@
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,63 +141,60 @@
                       
         <div class="contents">         	   
             <h1> East Java </h1>
-            <img src="images/place/61110-004-1D3CA74D.jpg"/>
-            <div style="margin-left:250px;">
-            	<h3>Mount Bromo </h3>
             
-            	<p>Located some 4 hours drive from Surabaya, the capital of East Java, Mount Bromo is a part of the Bromo Tengger Semeru National Park that covers a massive area of 800 square kilometres. While it may be small when measured against other volcanoes in Indonesia, the magnificent Mt Bromo will not disappoint with its spectacular views and dramatic landscapes. At 2392 meters tall, Mt Bromo is not among the tallest of Indonesia’s mountains but its stunning beauty lies in its incredible setting. 
-
-From a vantage point on Mount Penanjakan (2,770 meters above sea level), 2.5 hours from Malang. visitors from around the world come to see the sunrise over Mt Bromo. From this spot the vista is magnificent. All you will hear is the click of cameras as visitors snap their camera’s hoping to capture the incredible scene of Mt Bromo in the foreground with Mt Semeru smoking in the distance and the sun shining brightly, quickly rising in the sky.   
-
-The eerie landscape has spurned countless legends and myths. Mt Bromo has particular significance for the Tengger people who believe that this was the site where a brave prince sacrificed his life for his family. The people here appease the Gods once a year during the annual Kasada festival where offerings of vegetables, chickens and money are thrown into the crater of the volcano.
-</p>
-			</div>
-            
-            <img src="images/place/tourism2.gif" />
-            <div style="margin-left:250px;">
-            <h3>Surabaya </h3>
-            <p>This big thriving city is the crowded capital of East Java. Home to many of the nation’s fiercest independence fighters, the city is known to locals as Kota Pahlawan (City of Heroes) and around the city you will see scatered statues commemorating many heroes of the independence movement. 
-
-Historically this city used to be the trading hub for the illustrious inland empires of Java, that included Majapahit, Singosari and Kediri.  Situated on the mouth of the Brantas river, Surabaya was officially founded in 1293 on the site of a legendary battle between a shark (sura) and crocodile (baya).
-
-Today Surabaya is a modern industrial city, considered the economic and trading centre of Eastern Java as well as home to the nation’s navy. Second only to Jakarta in size, population and commerce, this is a massive city of over three million people. 
-
-With 21st century shopping malls, colonial era buildings and business high rises, this city represents a melting pot of Javanese culture with modern industrial development. 
-
-For visitors, highlights of the city include it’s zoological gardens, the immaculately presented Sampoerna museum or a visit to the island of Madura where you can experience the excitement and thrill of a local bull race. The city is also an ideal base to explore the other attractions of East Java including Mt Bromo, the cool mountain retreats of Malang and the natural beauty of Ijen Plateau.
-
-					</p>
+            <div class="article">
+                <img src="images/place/bromo.jpg"/>
+                <div style="margin-left:250px;">
+                    <h3>Mount Bromo </h3>                
+                    <p>Located some 4 hours drive from Surabaya, the capital of East Java, Mount Bromo is a part of the Bromo Tengger Semeru National Park that covers a massive area of 800 square kilometres. While it may be small when measured against other volcanoes in Indonesia, the magnificent Mt Bromo will not disappoint with its spectacular views and dramatic landscapes. At 2392 meters tall, Mt Bromo is not among the tallest of Indonesia’s mountains but its stunning beauty lies in its incredible setting. </p>
+    
+                    <p>From a vantage point on Mount Penanjakan (2,770 meters above sea level), 2.5 hours from Malang. visitors from around the world come to see the sunrise over Mt Bromo. From this spot the vista is magnificent. All you will hear is the click of cameras as visitors snap their camera’s hoping to capture the incredible scene of Mt Bromo in the foreground with Mt Semeru smoking in the distance and the sun shining brightly, quickly rising in the sky.</p>
+                    
+                    <p>The eerie landscape has spurned countless legends and myths. Mt Bromo has particular significance for the Tengger people who believe that this was the site where a brave prince sacrificed his life for his family. The people here appease the Gods once a year during the annual Kasada festival where offerings of vegetables, chickens and money are thrown into the crater of the volcano.</p>
+                </div>
             </div>
             
-            <img src="images/place/mlg.bmp" />
-            <div style="margin-left:250px;">
-            <h3>Malang</h3>
-            <p>Ninety kilometers south of Surabaya lies Malang, one of the most leisurely and attractive towns in Java. With leafy boulevards and a cooler climate, this city is a laid back destination, popular with many retirees in East Java.<br />
-<br />
-<br />
-<br /><br />
-<br />
-
- </p>
+            <div class="article">
+                <img src="images/place/surabaya.gif" />
+                <div style="margin-left:250px;">
+                <h3>Surabaya </h3>
+                <p>This big thriving city is the crowded capital of East Java. Home to many of the nation’s fiercest independence fighters, the city is known to locals as Kota Pahlawan (City of Heroes) and around the city you will see scatered statues commemorating many heroes of the independence movement.</p> 
+    
+                <p>Historically this city used to be the trading hub for the illustrious inland empires of Java, that included Majapahit, Singosari and Kediri.  Situated on the mouth of the Brantas river, Surabaya was officially founded in 1293 on the site of a legendary battle between a shark (sura) and crocodile (baya).</p>
+                
+                <p>Today Surabaya is a modern industrial city, considered the economic and trading centre of Eastern Java as well as home to the nation’s navy. Second only to Jakarta in size, population and commerce, this is a massive city of over three million people. </p>
+                
+                <p>With 21st century shopping malls, colonial era buildings and business high rises, this city represents a melting pot of Javanese culture with modern industrial development. </p>
+                
+                <p>For visitors, highlights of the city include it’s zoological gardens, the immaculately presented Sampoerna museum or a visit to the island of Madura where you can experience the excitement and thrill of a local bull race. The city is also an ideal base to explore the other attractions of East Java including Mt Bromo, the cool mountain retreats of Malang and the natural beauty of Ijen Plateau.</p>
+                </div>
+            </div>
             
-        </div>
+            <div class="article">            
+                <img src="images/place/malang.bmp" />
+                <div style="margin-left:250px;">
+                    <h3>Malang</h3>
+                    <p>Ninety kilometers south of Surabaya lies Malang, one of the most leisurely and attractive towns in Java. With leafy boulevards and a cooler climate, this city is a laid back destination, popular with many retirees in East Java.<br /><br /><br /><br /><br /><br /></p>            	
+                </div>
+            </div>
         
-                    <img src="images/place/Grajagan 1.jpg" />
-            <div style="margin-left:250px;">
-            <h3>World’s Best Surfing at G-Land</h3>
-            <p>Indonesia is a country with some of the worlds best surf spots and there are none that are better than Plengkung beach at Grajagan, East Java. Nicknamed by surfers as the ‘gland’ or G-land  – the surf here consistently produces some of the best and most well known waves in the world. 
-
-Set amongst picturesque jungle surrounds, prepare for an exhilirating experience surfing world class waves. The beach is located on the edge of a national park rich in exotic flora and fauna the ideal scenic background to your surfing odyssey. 
-
-The internationally renowned waves at this beach are famous for their extremely long length of tube time. The long perfect barrels are the stuff surfers dreams are made of. The beach is divided into three sections, Kongs, Money Tree and Speedies. Money Tree is Grajagan’s premier wave. 
-
-Despite it’s popularity in the surfing community, accomodation around Grajagan remains good value with cheap losmen and basic cottages dotted about the place. 
-
-This is one of the only places in all of Java that has such excellent surfing. In season, Grajagan probably has the most consistently rideable waves in the world. The surf here though is demanding and only recommended for professional surfers.
-
- </p>
-            
+			<div class="article">
+				<img src="images/place/Grajagan.jpg" />
+				<div style="margin-left:250px;">
+					<h3>World’s Best Surfing at G-Land</h3>
+					<p>Indonesia is a country with some of the worlds best surf spots and there are none that are better than Plengkung beach at Grajagan, East Java. Nicknamed by surfers as the ‘gland’ or G-land  – the surf here consistently produces some of the best and most well known waves in the world.</p> 
+		
+					<p>Set amongst picturesque jungle surrounds, prepare for an exhilirating experience surfing world class waves. The beach is located on the edge of a national park rich in exotic flora and fauna the ideal scenic background to your surfing odyssey. </p>
+					
+					<p>The internationally renowned waves at this beach are famous for their extremely long length of tube time. The long perfect barrels are the stuff surfers dreams are made of. The beach is divided into three sections, Kongs, Money Tree and Speedies. Money Tree is Grajagan’s premier wave. </p>
+					
+					<p>Despite it’s popularity in the surfing community, accomodation around Grajagan remains good value with cheap losmen and basic cottages dotted about the place. </p>
+					
+					<p>This is one of the only places in all of Java that has such excellent surfing. In season, Grajagan probably has the most consistently rideable waves in the world. The surf here though is demanding and only recommended for professional surfers.</p>
+				</div>
+			</div>
         </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

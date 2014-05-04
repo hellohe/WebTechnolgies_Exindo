@@ -4,16 +4,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Papua | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
-    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>>
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//initialize menu
 			cbpHorizontalMenu.init();
-
+			
 			//search for cookie
 			var allCookie = document.cookie.split(";");
 			var name;
@@ -55,6 +54,17 @@
 					}
 				});
 			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
 			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
@@ -131,64 +141,45 @@
                       
         <div class="contents">         	   
             <h1> Papua </h1>
-            <img src="images/place/Baliem Valley.jpg" />
-            <div style="margin-left:250px;">
-            	<h3>Baliem Valley</h3>
             
-            	<p>High up in the mountains of central Papua at an altitude of 1,600 meters above sea level, hemmed in by steep green mountain walls, lies the stunningly beautiful Baliem valley, home of the Dani tribe.
-Baliem valley is 72 km. long, and 15 km to 31 km wide in places. It is cut by the Baliem river, which has its source in the northern Trikora mountain, cascading into the Grand Valley, to meander down and further rushing south dropping 1,500 meters to become a large muddy river that slowly empties into the Arafura Sea.
-The first outsider to discover the valley was American Richard Archbold, who, on 23 June 1938 from his seaplane, suddenly sighted this awesome valley dotted with neat terraced green fields of sweet potatoes, set among craggy mountain peaks. This is Indonesia’s own Shangri-La.
-Only recently emerged from the Stone Age, the Dani are known as the “gentle warriors”. With their simple tools of stone and bone, they nonetheless, managed to sculpt green fields that hug the hills, where they grow root crops, and raise pigs. They have also built outposts and lookout towers to defend their valley from hostile tribes.
-Because of the fertile soil and their agricultural skills, the Dani together with the sub-tribes of the Yali and the Lani, are, therefore, the most populous in Papua, living scattered in small communities near their gardens among the steep mountain slopes. Today, they also cultivate bananas, taro and yams, ginger, tobacco and cucumbers.
-The men's and women's huts (locally called the honai) have thick thatched roofs, which keep the huts cool during the day and warm during the cold nights.
-</p>
-			</div>
-            
-            <img src="images/place/The Wamena Highlands.JPG" />
-            <div style="margin-left:250px;">
-            <h3>The Wamena Highlands </h3>
-            <p>Many have been captivated by the story of Shangri La. It is intriguing, appealing, and almost mystifying when chatting about it among travelers. Hidden among the rising 2,500-meter mountains in the Baliem Valley in central Papua, the town called Wamena, was hailed as the other Shangri La. Among advanced travelers, this is the other ultimate trekkers’ rendezvous.
-
-Here Wamena awaits as the starting point to a remarkable journey, prior to visiting the villages beyond the mists. At 1,600 meters above sea level, Wamena is the highest ground in Papua where furnished tourism facilities can still be found. Beyond this point, one has to expect less, and get more of the unexpected. Reality can be more compelling than even the best information on the internet. 
-
-Imagine yourself standing on a peak surrounded by a lush green valley, screened from the world by fuzzy peaks, while down below in the canyon flows an ever rushing river.  
-
-The beautiful Baliem valley was discovered by coincidence in an expedition spearheaded by Richard Archbold in 1938. The town of Wamena is surrounded by agricultural tribes, as recorded in travelers’ journals as early as the 19th and early 20th century. The presence of a mummy, sitting in a folding position found in a nearby village, is evidence of the longtime agricultural practices in the Baliem valley. Here, you are also encouraged to learn how salt is prepared by local women, despite the fact that the sea is on the other side of this huge island. 
-
-Wamena became known through pictures of warring stone-age tribes. However, In the Baliem valley, in the past decade tribes have made peace with one another, and have, instead decided to hold yearly mock wars to continue to maintain strength in defending their territories. These mock wars are held during the annualBaliem Festival.  Tourism has also somewhat changed the local mindset and daily life, although their indigenous knowledge and conventions are still well practiced daily. 
-
-Among the most famous villages are those of the Dani. There are three major tribes living around Wamena, they are the Dani, the Yali, and the Lani. They can be identified by the different types koteka (penis gourds) each wears. Until this very day, they still walk around wearing only a koteka, although when in town, they usually change into western clothes.  Despite this, you will still meet tribe members wearing koteka to the local market. If you wish to photograph them, be prepared that it will cost you some money. This destination is not cheap  to visit, but it’s worth all the money spent.
-
-If you don’t have all the time in the world, then visit the Dani’s first, as they are the most approachable, most decorative, and are very sociable. Here you can observe staged wars, real hot stone cooking, pork feasts, as well as visit the sweet potato farms. It is a most memorable experience that can not compare with merely watching a travel video, or having a perfect snapshot on your desktop wallpaper. You will wish, though, that you had taken more snapshots with your camera while there.
-
-					</p>
+            <div class="article">
+                <img src="images/place/Baliem Valley.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Baliem Valley</h3>                
+                    <p>High up in the mountains of central Papua at an altitude of 1,600 meters above sea level, hemmed in by steep green mountain walls, lies the stunningly beautiful Baliem valley, home of the Dani tribe.</p>
+                    <p>Baliem valley is 72 km. long, and 15 km to 31 km wide in places. It is cut by the Baliem river, which has its source in the northern Trikora mountain, cascading into the Grand Valley, to meander down and further rushing south dropping 1,500 meters to become a large muddy river that slowly empties into the Arafura Sea.</p>
+                    <p>The first outsider to discover the valley was American Richard Archbold, who, on 23 June 1938 from his seaplane, suddenly sighted this awesome valley dotted with neat terraced green fields of sweet potatoes, set among craggy mountain peaks. This is Indonesia’s own Shangri-La.</p>
+                    <p>Only recently emerged from the Stone Age, the Dani are known as the “gentle warriors”. With their simple tools of stone and bone, they nonetheless, managed to sculpt green fields that hug the hills, where they grow root crops, and raise pigs. They have also built outposts and lookout towers to defend their valley from hostile tribes.</p>
+                    <p>Because of the fertile soil and their agricultural skills, the Dani together with the sub-tribes of the Yali and the Lani, are, therefore, the most populous in Papua, living scattered in small communities near their gardens among the steep mountain slopes. Today, they also cultivate bananas, taro and yams, ginger, tobacco and cucumbers.</p>
+                    <p>The men's and women's huts (locally called the honai) have thick thatched roofs, which keep the huts cool during the day and warm during the cold nights.</p>
+                </div>
             </div>
             
-            <img src="images/place/Carstensz Pyramid (Jayawijaya Peak).jpg" />
-            <div style="margin-left:250px;">
-            <h3>Carstensz Pyramid (Jayawijaya Peak)</h3>
-            <p>Heinrich Harrer, famed author of the book Seven Years in Tibet, had always been fascinated by the Jayawijaya Peak in Papua. And so, some 12 years after returning from Tibet in 1950, Heinrich Harrer together with three friends, Temple, Kippax and Huizinga, decided to conquer the Peak,. In 1962 they became the first climbers to ever reach the top of the Carstensz (Jayawijaya) Peak, one of the 7 highest mountains in the world. 
-The Jayawijaya Peak, better known to mountaineers by its former name as the Carstensz Pyramid, is 4,844 meters above sea level, and has for centuries enticed many, especially adventurers and mountaineers to reach these eternal equatorial glaciers. In 1623, a Dutch explorer, Jan Carstensz, sighted the snow-capped mountain and named it after him. This natural phenomenon is very rare since natural ice does not normally develop along the warm equator.  Sadly, significant retreats of the glaciers have been found at several locations such as at the Trikora Peak and the Meren Glacier between 1939 and 1962 and between 1994 to the year 2000. The large eternal ice cap however, remains very awesome and most striking.  
-The climb to the peak requires special techniques, and climbing the terrain is therefore recommended only for advanced and intermediate climbers. A climbing company has rated the difficulty at 3 out of 5 difficulty points. The ascent takes fifth class rock climbing ability on an extraordinary limestone summit ridge with Tyrolean Traverse, repelling, and general rope skills. Being one of the most difficult peaks to climb in the world, and the highest peak between the Andes and the Himalayas, conquering the Carstensz Peak will fill you with triumph and pure exhilaration.
-</p>
-            
-        </div>
+            <div class="article">
+                <img src="images/place/Carstensz Pyramid (Jayawijaya Peak).jpg" />
+                <div style="margin-left:250px;">
+                <h3>Carstensz Pyramid (Jayawijaya Peak)</h3>
+                <p>Heinrich Harrer, famed author of the book Seven Years in Tibet, had always been fascinated by the Jayawijaya Peak in Papua. And so, some 12 years after returning from Tibet in 1950, Heinrich Harrer together with three friends, Temple, Kippax and Huizinga, decided to conquer the Peak,. In 1962 they became the first climbers to ever reach the top of the Carstensz (Jayawijaya) Peak, one of the 7 highest mountains in the world.</p> 
+                <p>The Jayawijaya Peak, better known to mountaineers by its former name as the Carstensz Pyramid, is 4,844 meters above sea level, and has for centuries enticed many, especially adventurers and mountaineers to reach these eternal equatorial glaciers. In 1623, a Dutch explorer, Jan Carstensz, sighted the snow-capped mountain and named it after him. This natural phenomenon is very rare since natural ice does not normally develop along the warm equator.  Sadly, significant retreats of the glaciers have been found at several locations such as at the Trikora Peak and the Meren Glacier between 1939 and 1962 and between 1994 to the year 2000. The large eternal ice cap however, remains very awesome and most striking.  </p>
+                <p>The climb to the peak requires special techniques, and climbing the terrain is therefore recommended only for advanced and intermediate climbers. A climbing company has rated the difficulty at 3 out of 5 difficulty points. The ascent takes fifth class rock climbing ability on an extraordinary limestone summit ridge with Tyrolean Traverse, repelling, and general rope skills. Being one of the most difficult peaks to climb in the world, and the highest peak between the Andes and the Himalayas, conquering the Carstensz Peak will fill you with triumph and pure exhilaration. </p>                
+                </div>
+            </div>
         
-         <img src="images/place/Lake Sentani.jpg" />
-            <div style="margin-left:250px;">
-            <h3>Lake Sentani </h3>
-            <p>Travel into inner Papua can be relaxing when commenced with a visit to Lake Sentani, a scenic beauty over glittering water located near Jayapura, capital city of Papua. The stillness of the water is most peaceful, evoking a peculiar wonder whether such a lake should indeed exist in paradise. The embracing Cyclops Mountains to the north and the lush vegetation as backdrop, securely protect the twenty four villages surrounding the lake.  The people here are friendly and creative, carving their reputation among the best craft makers in the land of Papua.
+			<div class="article">
+				<img src="images/place/Lake Sentani.jpg" />
+					<div style="margin-left:250px;">
+					<h3>Lake Sentani </h3>
+					<p>Travel into inner Papua can be relaxing when commenced with a visit to Lake Sentani, a scenic beauty over glittering water located near Jayapura, capital city of Papua. The stillness of the water is most peaceful, evoking a peculiar wonder whether such a lake should indeed exist in paradise. The embracing Cyclops Mountains to the north and the lush vegetation as backdrop, securely protect the twenty four villages surrounding the lake.  The people here are friendly and creative, carving their reputation among the best craft makers in the land of Papua.</p>
 
-To best experience the excitement of boating on the lake, rent a motorized canoe available at one of the villages. The guide who has taken you on the overnight tour from Jayapura will show you where to get one of the dugout canoes.  Experience the thrill of being caressed by the warm breeze while speeding on the lake, photograph the stilt houses, know the local, and make friends with your guide, and eventually boldly brag about it in the travel blogs.
-
-Lake Sentani and its surrounding areas was once the training field for amphibious aircraft landings. It was built by the Japanese and taken over by the US Army in 1944.  American war legend, General McArthur was said to have gazed on the lake and its 22 islets, and came up with his victorious island-hopping strategy.  
-
-Living as fish farmers, and the close location to the provincial capital, are reasons why  most of the population around the lake are open to visitors. Stilt houses with ponds and nets are common landscapes. The lake is home to at least 33 species of fish, of which almost half of them are native. The Sawfish (Pristis microdon) was once the premier host of the lake, which today is said to have become extinct. This fish is one of the indigenous ornaments found on Sentani’s woodcrafts. Hang one of these items on your wall as a mark that you have been dramatically introduced to the wilderness of Papua.
-
-</p>
-            
+					<p>To best experience the excitement of boating on the lake, rent a motorized canoe available at one of the villages. The guide who has taken you on the overnight tour from Jayapura will show you where to get one of the dugout canoes.  Experience the thrill of being caressed by the warm breeze while speeding on the lake, photograph the stilt houses, know the local, and make friends with your guide, and eventually boldly brag about it in the travel blogs.</p>
+					
+					<p>Lake Sentani and its surrounding areas was once the training field for amphibious aircraft landings. It was built by the Japanese and taken over by the US Army in 1944.  American war legend, General McArthur was said to have gazed on the lake and its 22 islets, and came up with his victorious island-hopping strategy.</p>
+					
+					<p>Living as fish farmers, and the close location to the provincial capital, are reasons why  most of the population around the lake are open to visitors. Stilt houses with ponds and nets are common landscapes. The lake is home to at least 33 species of fish, of which almost half of them are native. The Sawfish (Pristis microdon) was once the premier host of the lake, which today is said to have become extinct. This fish is one of the indigenous ornaments found on Sentani’s woodcrafts. Hang one of these items on your wall as a mark that you have been dramatically introduced to the wilderness of Papua.</p>            
+				</div>
+			</div>
         </div>
-        
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>
