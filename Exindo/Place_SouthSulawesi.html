@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>South Sulawesi | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> South Sulawesi </h1>
+            
+            <div class="article">
+            	<img src="images/place/Tana Toraja.jpg" />
+            	<div style="margin-left:250px;">
+            		<h3>Tana Toraja</h3>            
+            		<p>Safely protected beyond the lofty mountains and rugged granite cliffs of the central highlands of the island of Sulawesi, are the Toraja people who live in valleys that are lush with green rice terraces and fertile coffee plantations. "Discovered" and opened to the world from their long isolation only since the beginning of the last century, the Toraja today still adhere to their age-old beliefs, rituals and traditions, although many of her people are modernized or have embraced Christianity. When one travels to the Tana Toraja highlands, therefore, expect to be awed by the spectacular beauty of nature, at the same time experience how communities have through the ages sustained their beliefs and traditions in splendid isolation in order to survive this eternal cycle of life and death on earth.</p>
+					<p>The road from Makassar to Toraja runs along the coast for about 130 km's and then hits the mountains. After the entrance to Tana Toraja at the market village of Mebali one enters a majestic landscape of giant, gray granites and stones and blue mountains afar that form a sharp contrast with the lively green of the fertile, rain-fed terraces and the rusty red of the tropical soil. This is Tana Toraja, one of the most splendid areas in Indonesia. Here, the nobility of Toraja are believed to be descendents of heavenly beings who came down by a heavenly stairway to live here on earth in this beautiful landscape. And to keep up the energy of the land and its people, the Toraja people believe that these must be sustained through rituals that celebrate both life and death, which are attached to the agricultural seasons. Here rituals in connection with life are strictly separated from death rites. </p>
+					<p>Toraja is most well known for its elaborate funeral ceremonies that can take days and involve entire villages. These are not only moments for mourning but are moreover events to renew family ties and to ensure continued unity among villages and communities.
+Death ceremonies, however, are held only after the last rice harvest is in and cleared, which is normally between July to September, while ceremonies celebrating life are held in conjunction with the planting season which starts in October.  These timings are possible since the dead are not buried immediately but are kept for months, sometimes for years, in the ancestral house until time and funds allow for a proper funeral.
+Tourists to Toraja, therefore, are either attracted by its unique culture and  rituals, most of which are mostly centered around graves and death ceremonies. While others prefer to avoid the morbid images and go trekking through the spectacular, almost untouched Toraja countryside visiting remote villages, or exhilarate in rafting the Sa'dan river rapids.</p>
+					<p>Capital of Toraja is Makale but visitors usually head to the town of Rantepao, heart of Tana Toraja - the Land of the Toraja people. To reach Toraja take a plane to Makassar. There are daily flights from Jakarta and Bali and regular flights from Kuala Lumpur Malaysia. It takes between six to eight hours by road to reach Toraja. While the journey may be long, but you will be well awarded with the magnificent panoroma of the Toraja highlands. There are many good hotels in Makale, Ranteapo and surrounding and experienced travel agents to take you around. Toraja is ideal for those enjoyingecotours, culture and adventure.</p>
+				</div>
+            </div>
+            
+            <div class="article">
+                <img src="images/place/Losari Beach.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Losari Beach </h3>
+                    <p>Losari is right in the heart of the city of Makassar, on Jalan Penghibur, which is located to the west of the city of Makassar, South Sulawesi. Losari is an icon of the city of Makassar. First, beaches are approximately one kilometer beach was once dubbed as the world's longest dining table, because the tent stalls lined the shore embankment. Now, these stalls have been relocated to a place not far from the tourist area. </p>
+        
+                   <p>Makassar City Government has beautify beaches by making the bridge area of 100 thousand square meters, making it look more beautiful, clean, pollution-free and comfortable place to visit. Sightseeing is the most visited in the afternoon, between the hours of 5 pm to 9 pm. In addition, Losari beach crowded city residents to exercise in the morning during the holidays. </p>
+                    
+                    <p>Losari is typical icon Makassar which is one of the popular in Indonesia, situated overlooking the sea off is the most popular attractions South Sulawesi. The area beaches are flanked the location is very strategic straits and artificial platforms, buildings, five-star hotel, restaurant, cafes and a variety of places to shop. In general, the beach is often an attractive option, especially for the newcomers.</p>
+                    
+                    <p>Losari is very strategic layout, making it easy to access. Sukarno Hatta port of Makassar, the beach can be reached about 15 minutes by car or motorcycle. If departing from Hasanuddin Airport, can be reached about 45 minutes by car or motorcycle.Free of charge if it enters the area Losari. Unless paid parking for carrying vehicles. Around the attractions available various types of vehicles, such as buses, taxis, and rickshaws are available to take visitors around to enjoy the atmosphere of the city of Makassar. Along Penghibur Street also available accommodation facilities ranging from guesthouse to luxury hotels, restaurants, cafes, hospitals, coffee shops, and various other entertainment venues, and all sea facing. At Somba Opu Street, not far from the attractions, there are shopping gold crafts and souvenirs typical of Makassar.</p>
+                    
+                    <p>Before known as Losari, Makassar resident called the Fish Market. At that many indigenous merchants who sell. Early in the day used as a fish market, while in the afternoon the other merchants used to sell peanuts, bananas and snacks epe Makassar. What surprises Losari? Infrastructure has been built primarily as a major street named entertainer. On the one hand is a hedge before the water in the form of elongated concrete plaster has now expanded into the bay shore. </p>
+                    
+                    <p>Beginning in 1945, additional buildings were first made beach. Design ground floor along 910 meters of concrete was initiated by the Government of Makassar Mayor, DM van Switten (1945-1946). The days of the NICA, flooring installation is intended to protect a strategic means of multiple objects and people in the street entertainers of the swift waves Makassar Strait.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/place/Fort Rotterdam.JPG" />
+                <div style="margin-left:250px;">
+                    <h3>Fort Rotterdam</h3>
+                    <p>Standing majestically at the western coast of Makassar, Fort Rotterdam is recognized as the city’s most iconic landmark. With historical traces dating back to the Kingom of Gowa from the 16thth century to colonization by the Dutch, this Fort has silently witnessed many episodes in Makassar’s history, playing a most essential role in its development.</p>
+                    <p>Its magnificence and authenticity has always captivated those who set eyes on it. A journalist from New York Times, Barbara Crossette even described it as “the best preserved Dutch Fort in Asia”. Originally called Benteng or Fort Jumpandang or Ujung Pandang, the huge complex was first built in 1545 in the era of Imanrigau Daeng Bonto Karaeng Lakiung or Karaeng Tunipalangga Ulaweng, the tenth King of Gowa. Initially, the fort was made from a mixture of Stone and burnt clay, and took the shape of a typical square Portuguese architectural style.</p>
+                    <p>During the reign of Sultan Alauddin, the 14th king of Gowa, the fort’s construction material was replaced with black Karst, rocks from the mountain sides of the district of Maros. The fort was also expanded and took on a new shape resembling a sea turtle, thus the fort gained a new name, namely : Benteng Pannyua (Penyu) or Fort Sea turtle. The shape is not only unique, but also contains deep meaning.  For just as a sea turtle lives both on land and at sea, the glory of the Gowa Kingdom also stretched on land as well as over the seas.</p>
+                    <p>Indeed, the Bugis were then a recognized and respected power all across the Indonesian seas even to the Straits of Malacca. Between 1655 to 1669, Dutch forces attacked the Gowa Sultanate, which at the time was under the rule of Sultan Hasanuddin. The city’s strategic location made it an ideal place to fully control the spice trade passage, and to become the starting point that would eventually open up the route to the seas of Banda and Maluku, the original Spice Islands. </p>
+                    <p>Led by Dutch Governor General Admiral Cornelis Janszoon Speelman, Dutch forces launched a massive attack on Makassar for a full year. At this time, major parts of the Fort were devastated as the Dutch began to occupy the land. As a result of the defeat, the Sultan of Gowa was forced to sign the Bongaya treaty that gave the Dutch authorities full control over Makassar’s trade.</p>
+                    <p>Governor General Speelman subsequently rebuilt parts of the fort that were destroyed.  Not only applying Dutch distinct style to the structure, but Speelman added another bastion at its west side. The fort was later renamed after Speelman’s hometown: Rotterdam. The fort grew to be the center for stockpiling of spices and an important Entrepot.  Eventually this led to Makassar becoming the center of the Dutch Colonial government in Eastern Indonesia.</p>
+                    <p>In 1938 Dutch authorities established the first ever Museum in South Sulawesi, namely the Celebes Museum, located within the complex of Fort Rotterdam itself. Initially the museum occupied building no. 2 only, which was once the residence of Admiral Speelman. Its collection came from various excavations that included ceramics, currencies, gold and jewelries, and others. By the time of the Japanese occupied Makassar during World War II, the Celebes Museum already occupied three buildings of the complex. To its collection were added wooden tools, several types of ships, farming equipment, house ware, musical instruments, weaponry, and many others.</p>
+                    <p>After the War, the museum was officially re-established in 1970, bearing the name by which it is known today, namely: Museum La Galigo. La Galigo was the Pajung Lolo or Prince of the Luwu Kingdom in the 14th century who was also the son of Sawerigading Opunna Ware, a legendary Bugis hero. The name also refers to the famous I La Galigo, the world’s longest epic poem. Exhibiting various collections from the early Celebes Museum as well as other additions including the collection of the kingdom of Sawito, Wajo, Mandar, Luwu, Bone and others, the present Museum  occupies building no.2 and no.10 within the Fort Rotterdam complex.</p>        
+				</div>
+			</div>
+			
+			<div class="article">
+				<img src="images/place/Selayar.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Selayar</h3>
+					<p>Located at the most southern end of South Sulawesi, this quiet and now isolated island of Selayar, with its swathes of pristine white sand beaches and crystal clear tropical waters used to have an illustrious past.</p>
+					<p>Ancient Javanese writings in the Nagara Kertagama mention that in the 14th century there was already a thriving kingdom on Selayar. This pre-Islamic kingdom seemed to have been a hub of trade, visited by merchants from China, the Philippines and Thailand, having left evidence of its existence in the many precious artifacts excavated here. Most notable is the beautiful Dongson Kettledrum, the largest in the world, that is said to be 2,000 years old dating back to the Bronze Age. Other artifacts include delicate Chinese and Sawankholok (Thai) porcelain, which were found in abundance on the island. Islam seems to have entered Selayar in the 16th century spread by followers of the Sultan of Ternate, in Maluku.</p>
+					<p>In the 16th century Salayar was fought over for its blue-white cotton products, a favorite in the archipelago. And when the Dutch won hegemony over Selayar, they monopolized the cotton trade, forcing Selayar to send the cotton only to Fort Rotterdam in Makassar. However today, with modern fabrics the popularity of cotton waned and the people of Salayar were forced to return to living from coconut produce, relegating the island to its present isolation.</p>
+				   <p> Due to the geographical shape and location of Selayar, standing vertical on the Makassar – Moluccas trade route, - when Ternate , Tidore, Ambon and Banda were the main producers of spices and Makassar was the center of trade, - the island of Selayar became an undisputable important territory that could either contribute to or hinder the spice trade.</p>
+					<p>The 80 km. long island of Selayar is in fact gateway to the spectacular Taka Bonerate National Park that teems with colorful coral reefs, giant sponges, a wealth of fish species including dugongs and tuna, gliding past turtles and manta rays. Comprising 21 islands and atolls, Taka Bonerate is the third biggest atoll in the world after the Marshall Islands and the Maldives. Although still predominantly covered by rainforests, Selayar boasts many pristine white sand beaches</p>
+					<p>The largest town on the island is called Benteng, a bustling little town of motorbikes and trishaws. The town center is the “alun-alun” , the town square, where on one side still stands a solid old prison built by the Dutch in the 1890s. The square is the focal point of celebrations and events happening on the island.</p>
+				</div>
+			</div>
+			
+			<div class="article">    
+				<img src="images/place/Bantimurung Bulusaraung National Park.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Bantimurung Bulusaraung National Park</h3>
+					<p>In 1857, leading British naturalist, Alfred Russell Wallace discovered wonders beyond his imagination as he travelled into the interior of South Sulawesi, Indonesia. He found himself surrounded by thousands of enchanting butterflies of various sizes and colors.  Fascinated by the scene, he dubbed the area “the Kingdom of Butterflies” and later spent most of his life in this region to enjoy and examine the 150 species of butterflies not found elsewhere. Today the area is known as the Bantimurung Bulusaraung National Park, which is not only the scene of butterflies but also of magnificent caves and a stunning waterfall.</p>
+					<p>Located in the Maros regency in the province of South Sulawesi, the Bantimurung Bulusaraung National Park is a mere 50Km from Makassar or 20Km from the Sultan Hasanuddin international airport.</p>
+					<p>The Bantimurung National Park has a total area of approximately 43,750 hectares and is divided into three major types of ecosystems, namely the karst ecosystems, a lowland forest ecosystem, and a lower montane forest ecosystem.  The valleys of limestone hills and steep karts walls with tropical vegetation have made Bantimurung an ideal habitat for various rare and endemic species of butterflies,birds and insects.</p>
+					<p>Although there are not as many butterflies today as there were during Wallace’s expedition, visitors can still observe the wide variety of butterflidx within theButterfly Conservation Captivity managed by the Center for Butterfly Breeding. Among various species of butterflies found here are: the Troides halipron, Papiliio Pofites, Papiliio Satapses, Papiliio blumei and Graphium androcles. One of the rarest and biggest butterflies of the world, the papillo androcoles are also found in this National Park. This unique species has the tail similar to swallows. Within the national park, visitors can also find a butterfly museum which houses thousands of unique and rare butterflies that have and still inhabit the area. Among other fauna found in the area are: the Kuskus (Phalanger celebencis), Tarsiers (Tarsius sp.), Monkeys (Macaca Maura), hornbills (Ryticeros cassidix, Peneloppides exahartus), and Weasels (Macrogofidia mussenbraecki).</p>
+					<p>By the butterfly center, the fascinating Bantimurung waterfall draws visitors with its powerful rush of water and refreshing atmosphere. This is a favorite holiday destinaton especially on weekends.</p>
+					<p>The word Bantimurung itself is derived from two Bugis words: Benti meaning water, and Merrung meaning roaring. Therefore meaning roaring waters. Others also suggest that the name Bantimurung comes from the words Banting Murung or smashing one’s gloom, meaning that here visitors can release their sadness or depressing thoughts through  refreshing nature.</p>
+					<p>With a height of 15 meters and a 20 meters width, the Bantimurung waterfall can only be described as one of nature’s finest artwork, where waters rush down through its multi levels rocky streams, decorated by colorful surroundings.</p>
+					<p>The hills of Bantimurung-Bulusaurung National Park also hold wonders in some of its astonishing caves. The most notable of these caves are the Goa Mimpi (dream caves) and Goa Batu (the Stone Cave). Inside these caves, visitors can marvel through their interiors filled with fascinating stalactites and stalagmites. The dreamlike crystal clear stalactites and stalagmites earned the cave its popular name, the dream cave or Goa Mimpi. Among these caves are found prehistoric “hand stencils”, similar to the rock art of Australia.</p>
+					<p>Hiking through 10 meters ascending stairs, visitors can discover another amazing cave, the Stone cave, or Gua Batu. Aside from offering hiking challenges, Goa Batu also present enchanting sceneries of small waterfall, and a 30 meters long intriguing cave.</p>
+				</div>
+			</div>
+        </div>
+		
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>

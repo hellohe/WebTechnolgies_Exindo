@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>West Java | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <link href="images/logo.png" rel="shortcut icon" />
+    <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/SigninSignout.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="images/logo.png" alt="logo" />
+            <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+        </div>
+		
+		<div id="loginbox" class="loginpopup">
+			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<form name="form1" method="post" action="" class="signinform">
+			<fieldset class="textbox">
+				<label class="username">
+					<span>Username: </span>
+					<input type="text" id="username" name="username" placeholder="Username">
+				</label>
+				<label class="password">
+					<span>Password: </span>
+					<input type="password" id="password" name="password" placeholder="Password">
+				</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
+			</fieldset>
+			</form>
+		</div>
+    
+        <div class="cbp-container">	
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
+        </div>
+	  	<script src="js/cbpHorizontalMenu.js"></script>
+                      
+        <div class="contents">         	   
+            <h1> West Java </h1>
+            
+            <div class="article">
+                <img src="images/place/trans studio bandung.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Trans Studio Bandung</h3>            
+                    <p>Trans Studio Bandung Theme Park is the second indoor theme park in Indonesia after Makassar. Trans Studio Bandung is much more spectacular and exciting than Trans Studio Makassar, but both have their own uniqueness that makes Trans Studio Bandung not only the biggest in Indonesia but also one of the biggest in the world. </p>
+                    <p>Trans Studio Bandung Theme PARK has 20 rides and variety of shows. It divided into 3 different zones. Visitors will feel the experience of becoming a star also become a men behind the scene of your favorite TV programs in TRANS TV and TRANS 7, such as ‘Dunia Lain’, ‘Jelajah’, ‘Si Bolang’ and many more.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/place/Tangkuban Perahu.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Tangkuban Perahu</h3>
+                    <p>Tangkuban perahu is an active volcano, situated 30 km north of the city of Bandung in the direction of Lembang. It is the only crater in Indonesia that you can drive up to its very rim. Mount Tangkuban Perahu has a distinctive shape, and looks like an “overturned boat”. The huge crater is an astonishing view and you can walk around and explore this for around two hours. Here you will be greeted by sulfur fumes which the crater continues to emit although the volcano is not active.</p>
+        
+                    <p>Like so many of Java’s unusual geographical features, there is an interesting legend behind this fascinating mountain as expressed in the local legend of Sangkuriang. Sangkuriang was a strong young man, who had been separated from his mother, Dayang Sumbi since childhood. Yet, through God’s he came to meet her again. On the way home, he stopped by a small village where he met and fell in love with a beautiful girl, without realizing that the girl he loved was in fact his own mother, Dayang Sumbi, who had remained youthful through the years. </p>
+                    
+                    <p>When Dayang Sumbi discovered the terrible truth of her lover’s real identity, she was horrified and knew that she could never marry her own son. She, therefore, challenged him to build a dam and a huge boat during one single night before she would agree to marry him. Seeing that her son was about to complete this impossible wish, she called on God to bring up the sun early. With a wave of her magic shawl, Dayang Sumbi lit up the eastern horizon with flashes of light. Deceived by what looked like dawn, the cocks crowed and farmers rose for a new day.</p>
+                    
+                    <p>When Sangkuriang realized that his endeavor was lost, in his rage he kicked the boat that he had built turning it upside down, which was transformed into Mount Tangkuban Perahu, the name that in the local Sundanese language translates roughly to "overturned boat". Tangkuban Perahu has definitely a significant role especially in the development of the surrounding Parahyangan (land of God) Highlands. Its eruption contributed immensely to the formation and fertility of the hills north of Bandung when through its flow of lava carrying large boulders into the valleys, these formed huge cliffs over which waterfalls leapt to form the lake that today covers the Bandung plain.</p>
+                    
+                    <p>Located at the highland just at the outskirt of Bandung, Tangkuban Perahu Crater is surely a perfect place to enjoy cool air and relaxing sceneries after a series of shopping activities in some of the city's factory outlets or the popular Pasar Baru Trade Center. For a rejuvenating sensation, visitors can continue their journey to the nearby Ciater's Revitalizing Hot Springs.</p>
+                </div>
+            </div>
+            
+            <div class="article">
+                <img src="images/place/bosscha.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Bosscha Observatory</h3>
+                    <p>Bosscha Observatory is the oldest observatory in Indonesia. The observatory is located in Lembang, West Java, approximately 15 kilometers (9.3 mi) north of Bandung. It is situated on a hilly six hectares of land and is 1,310 m (4,300 ft) above mean sea level plateau. The IAU observatory code for Bosscha is 299.</p><br /><br /><br /><br />
+                </div>
+            </div>
+        	
+            <div class="article">
+                <img src="images/place/Bogor Botanic Gardens.jpg" />
+                <div style="margin-left:250px;">
+                    <h3>Bogor Botanical Garden</h3>
+                    <p>Just 60 km south, or a mere one hour by road from Jakarta lies the town of Bogor, once known as “Buitenzorg” meaning “free of care”, located at the foothills of Mt. Salak. It has a high, year-round rainfall and a much cooler climate compared to metropolitan Jakarta.  Here are spread out the 87 hectares world famous Bogor Botanical Gardens (Kebon Raya Bogor), with the impressive out-of-town Bogor Presidential Palace fronting it and soaring Mt. Salak at its background.</p>
+                    <p>Bogor Botanical Gardens boasts over 400 species of palm trees, 5,000 trees gathered from around the tropical world, and an orchid house containing 3,000 varieties. Records show that the Bogor Botanical Gardens harbours 3,504 plant species, 1,273 genus in 199 families.</p>
+                    <p>The Gardens are said to have been initiated by Sir Thomas Stamford Raffles, who, between 1811-1816, became Governor General of the East Indies during the interim reign of the British over the archipelago. With the help of botanists from London’s famed Kew Gardens, Raffles first laid out a small garden. However, the Gardens were officially established by the Dutch in 1817 under the directorship of CGC Reinwardt. A memorial to Raffles’ wife still stands in the Gardens.</p>
+                    <p>The Bogor Gardens today function as an ex situ conservation site, a research center for taxonomy and plant utilization. In horticulture the Gardens study adaptation, planting and propagation of plants and develop the science of plant growing.</p>
+                    <p>The Bogor Palace, built by Sir Stamford Raffles, was the historic site where five Asian leaders from India, Pakistan, Ceylon (Sri Lanka), Burma and Indonesia, held the preparatory meeting to decide on convening the First Asian-African Conference in Bandung in April 1955. This meeting is also known as the Bogor Conference of 1954.</p>
+                    <p>Bogor itself is a pleasant town that has grown around the Gardens. Here are Iindonesia’s Agricultural University and the Zoological Museum, where is displayed the last stuffed rhino found in the Bandung plateau.   From Bogor the road climbs up passing picturesque mountain resorts all the way to the Puncak, or the Peak.The Safari Park is located on this beautiful but winding route. Further beyond Puncak before reaching Cipanas is the Cibodas Park just at the foot of Mount Gede-Pangrango, laid out for the study of temperate plants, where Java coffee was originally cultivated. At Cipanas is another out-of-town palace that has hot water springs in its gardens.</p>
+                    <p>Today, Bogor is a favourite place to spend weekends and short holidays. Bogor is famous for its “asinan”, fresh fruit and vegetables sour salads, and oddly enough also for its apple pies and baked macaroni.</p>                
+                </div>
+            </div>
+        
+			<div class="article">
+				<img src="images/place/mekarsari.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Mekarsari Park</h3>
+					<p>Taman Wisata Mekarsari(Mekar Sari Amazing Tourism Park) is an agro-tourism destination that was built in 1990 and initially designed as a largest fruit park in Indonesia.
+	It covers total area of 265 hectares and has more than 100,000 plants which consist of 78 families, 400 species, 1,438 varieties and 37,000 trees.</p>
+					<p>Lately, to attact more visitors they improve fascinating tourism activities at Mekarsari through diversification of thematic and adventurous products such as: Environment Gathering, Eco-Schooling etc.<br /><br /><br /><br /></p>
+				</div>
+			</div>
+			
+			<div class="article">
+				<img src="images/place/pangandaran beach.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Pangandaran Beach</h3>
+					<p>Pangandaran is one of West Java’s best kept-secrets as far as international tourists are concerned. Located on a peninsula on the south coast of West Java, about 91 Km from the town of Ciamis, Pangandaran offers uniquely black and white sand, calm waved beaches and spectacular sunsets. The beach resort facing the Indian Ocean is 223 Km from Bandung and 400km from Jakarta, and lies halfway between Bandung and Yogyakarta.</p>
+					<p>This beautiful peninsula was once better known as a small fishing place; fishermen would set sail in the morning and return in the afternoon with their catch. As the fishermen return, all the locals would meet them on the beach and help them pull the nets heavy with fish to shore. This activity can still be seen today; you can also participate and experience the sensation of pulling the heavy fish nets back to shore and get to know what it is like to be a fisherman.  It also makes a swell picture. </p>
+					<p>Pananjung beach, located at the western end of the peninsula, is an ideal place for family activities. Here, the waves are relatively calm so you and your family can swim around safely. You can also bathe under the sun or simply just watch the enchanting panoramic view. Next to the beach is a forested hill which is also a natural reserve. It is the dwelling place for many monkeys, deer, buffaloes and other exotic animals. There are also a number of natural caves and some man-made caves built as bunkers by the Japanese during the Second World War. At the top of the hill is a beautiful waterfall which drops directly into the ocean. To reach it, you must first take a hike, but don’t worry, for along the way you’ll be presented with astonishing views and you will likely meet various animals. From this high location, you will also get a better view of the entire coastal area of the peninsula.</p>
+					<p>The eastern coast is a paradise for Fresh Sea Food Lovers. Here, you can take your pick among many selections of restaurants and food stalls that offers freshly caught fish, squids, crabs, prawns and others, which are displayed on their front veranda. At the south end of this restaurant line-up, is the fresh fish market where you can buy fresh caught fish and other sea food, and have them grilled or barbequed to your own liking. The East Coast is also a place for Jet Skiing and Banana Boat Rides which are surely perfect activities to release your stress and return completely revitalized.</p>
+					<p>Pangandaran also hosts many annual events. One in particular is the International Kite Festival which is held in July every year. This festival is a gathering of kite enthusiasts from all over the world and a place where all different kinds of kites are flown together under the Blue Pangandaran skies.</p>
+					<p>Pangandaran is a one stop complete experience. From swimming, snorkeling, Jet Skiing, Fishing to Hiking and hill climbing, Pangandaran has it all. It is a full package vacation, fit for every age and an ideal place to be visited at anytime of the year. So, why don’t you try Pangandaran for your next family vacation.</p>                
+				</div>
+			</div>
+			
+			<div class="article">
+			<img src="images/place/kampung naga.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Dragon Village (Kampung Naga)</h3>
+					<p>If you are tired of life in a metropolitan city with its sky scrapers, you should take a few days off to stay in the Dragon village within Neglasari village, Salawu sub-district, Tasikmalaya, West Java.</p>
+					<p>This 1.5 hectares village is still 'green' and not influenced by modernization. Some 311 people live in this village. You will have to take several hundred steps to cover the villages over 500 meters. You will see hundreds of high ebony trees, large green paddy fields and the long Ciwulang river. In addition, you will feel the cool air and sounds of river waterflows in the distance.<br /><br /></p>
+				</div>
+			</div>
+			
+			<div class="article">
+				<img src="images/place/taman safari.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Taman Safari Indonesia</h3>
+					<p>If you like to observe wild animals like tigers, lions and crocodiles in their native habitat, then Taman Safari Indonesia is just for you. Taman Safari Indonesia or the Indonesian Safari Park is a conservation center as well as a modern zoological garden with various collections of flora and fauna. In this Park, you will not only enjoy the beauty of it‘s nature, but also interact directly or watch the animals wander around freely. Visitors can also travel in this conservation area using their private car or a provided bus through these amazing wild habitats. </p>
+	   
+					<p>In Indonesia, Safari Parks are available in three provinces; Taman Safari I in Cisarua Bogor, West Java, Taman Safari II in Mount Arjuna, Prigen, East Java, and Taman Safari III (Bali Safari and Marine Park) in Serongga Gianyar, Bali. Among these three tourist sites, Taman Safari I in Bogor is the most famous site for domestic as well as foreign tourists.  It was built in 1930 and previously called Radio Safari Garden and Taman Safari Televisi Indonesia.  It is also a buffer zone for Gunung Gede Pangrango National Park and is situated 900 to 1,800 meters above sea level.</p>
+					  
+					<p>Taman Safari has a collection of animals from nearly all over the world and local animals such as komodos, rhinoceros, bisons, sun bears, white tigers, elephants, anoa, etc. There are more than 2,500 animals in Taman Safari Bogor with hundreds of species currently being maintained.</p>
+					   
+					<p>Upon entering Taman Safari Bogor, visitors will notice sensational shady trees and cool weather from Mount Gede Pangrango. It will certainly attract you to start your adventure in open nature.</p>
+					   
+					<p>Using cars, you will enter various habitats of tame and wild animals such as tigers, lions, komodo, bears and crocodiles.  Although you are not allowed to get out of your car or open your door or window, you still can see the animals activities closely.  Traveling with your children in this location will certainly be unforgetable. Don't forget to take pictures of these amazing animals.</p>
+					   
+					<p>After watching animals in their habitats, you can take your children to enjoy various animal attractions performed by orangutangs, dogs and even goats.  These attractions take  about half an hour.  You could also visit the bird park, animal education show, reptiles, baby zoo, elephant and horse riding, safari trek, and wild-wild west exhibits.</p>
+					   
+					<p>If your children like to see cowboys in action, then you could take them to the Wild-Wild West. It is a show in a cowboy-like setting. Especially if it's your children's first time to see Asian cowboys. Another interesting venue to see is Baby Zoo, where you could cuddle animal babies and take their pictures. After visiting such venues, you could eat at one of the food vender stands.  Before going home, don't forget to buy souvenirs.</p>
+				</div>
+			</div>
+        </div>
+        
+        <div class="footer">    
+            <p>&copy; Copyright 2014. All Rights Reserved.</p>
+            <p>www.excitingindonesia.com</p>
+        </div>
+    </div>
+</body>
+</html>
