@@ -4,10 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Central Sulawesi | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
+	<script type="text/javascript" src="js/Search.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -56,6 +56,17 @@
 				});
 			}
 			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
 				// Getting the variable's value from a link and show
@@ -94,6 +105,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+			<input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -133,32 +145,31 @@
             <h1>Central Sulawesi</h1>
             
             <div class="article">
-             <img src="images/culture/central sulawesi.jpg" />
-            <div style="margin-left:250px;">
-                <h3>Traditional Clothing</h3>
-                <p>Traditionally, the people of Central Sulawesi has a set of custom clothing made from bark ivo (beech Beringin) fine and high quality. This distinguished traditional clothing for men and women.
-				Elements of culture and tradition which is still owned by, among others: </p>
-				<ol>
-				<li>Traditional clothing made from bark ivo</li>
-				<li>Custom house called tambi</li>
-				<li>Traditional ceremonies</li>
-				</ol>
-				
-			</div>
+				<img src="images/culture/central sulawesi.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Traditional Clothing</h3>
+					<p>Traditionally, the people of Central Sulawesi has a set of custom clothing made from bark ivo (beech Beringin) fine and high quality. This distinguished traditional clothing for men and women.
+					Elements of culture and tradition which is still owned by, among others: </p>
+					<ul>
+						<li>Traditional clothing made from bark ivo</li>
+						<li>Custom house called tambi</li>
+						<li>Traditional ceremonies</li>
+					</ul>					
+				</div>
 			</div>
             
-             <div class="article">
-             <img src="images/culture/ebony craft.jpg" />
-            <div style="margin-left:250px;">
-                <h3>Unique Craftmanship</h3>
-					<p>In addition to customs and culture have the characteristic of the region, in Central Sulawesi also has a craft-a craft that is also unique:	</p>			
-				<ol>
-					<li>Woodcraft black (ebony)</li>
-					<li>Crafts braid</li>
-					<li>Donggala handicrafts woven fabric</li>
-					<li>Crafts leather clothing ivo</li>
-				</ol>               
-			</div>
+            <div class="article">
+				<img src="images/culture/ebony craft.jpg" />
+				<div style="margin-left:250px;">
+					<h3>Unique Craftmanship</h3>
+						<p>In addition to customs and culture have the characteristic of the region, in Central Sulawesi also has a craft-a craft that is also unique:	</p>			
+					<ul>
+						<li>Woodcraft black (ebony)</li>
+						<li>Crafts braid</li>
+						<li>Donggala handicrafts woven fabric</li>
+						<li>Crafts leather clothing ivo</li>
+					</ul>               
+				</div>
             </div> 
             
         </div>

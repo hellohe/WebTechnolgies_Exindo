@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.rss.js"></script>
     <script type="text/javascript" src="js/parallaxslider.js"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
+    <script type="text/javascript" src="js/Search.js"></script>
     
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -100,14 +101,6 @@
 				return false;
 			});
 		});
-		
-         function goSearch()
-         {
-            var searchVal = document.getElementById("searchBar").value;	
-			if(searchVal == "aceh"){
-				window.location = "Place_Aceh.html";
-			}
-         }
 		 		
 		</script>
 </head>
@@ -117,7 +110,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />            
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
-            <input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search here..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
+            <input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -188,10 +181,10 @@
             <div class="socialmedia">
             	<h2>&nbsp;&nbsp;Social Media Supports</h2><hr />
                 <div id="groupSocMed">
-                    <a href="#"><img src="images/facebook.png" title="Facebook" alt="facebook" /></a>
-                    <a href="#"><img src="images/twitter.png" title="Twitter" alt="twitter" /></a>
-                    <a href="#"><img src="images/instagram.png" title="Instagram" alt="instagram" /></a>
-                    <a href="#"><img src="images/path.png" title="Path" alt="path" /></a>
+                    <a href="https://www.facebook.com/pages/Exciting-Indonesia/704740822898653" target="_blank"><img src="images/facebook.png" title="Facebook" alt="facebook" /></a>
+                    <a href="https://twitter.com/ExcitingIndo" target="_blank"><img src="images/twitter.png" title="Twitter" alt="twitter" /></a>
+                    <a href="http://instagram.com/excitingindo" target="_blank"><img src="images/instagram.png" title="Instagram" alt="instagram" /></a>
+                    <a href="contact_us.html"><img src="images/path.png" title="Path" alt="path" /></a>
                 </div>
             </div>
         </div>

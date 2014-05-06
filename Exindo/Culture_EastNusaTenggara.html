@@ -4,10 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>East Nusa Tenggara | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
+	<script type="text/javascript" src="js/Search.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -56,6 +56,17 @@
 				});
 			}
 			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
 				// Getting the variable's value from a link and show
@@ -94,6 +105,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+			<input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -148,9 +160,9 @@
                     <h3>Jousting Pasola</h3>
                     <p>Jousting Pasola ceremony on the island of Sumba is an interesting one for you to view. Pasola is a game bunch of colorful horsemen of the javelin throw on horseback. The ceremony was held during the month of February in the village Lamboya and Kodi also in March in Gaura and Wanokaka. The ceremony started a few days after the full moon and coincides with the celebration of the capture Nyale sea worms on the beach by local people.</p>
                 </div>
-            </div>
-    
+            </div>    
         </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

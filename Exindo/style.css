@@ -264,6 +264,43 @@ img.closeBtn {
 	height:32px;
 }
 
+/*rating css */
+.rate_widget {
+    border:     1px solid #CCC;
+    overflow:   visible;
+    padding:    10px;
+    position:   relative;
+    width:      270px;
+    height:     54px;
+}
+.ratings_stars {
+    background: url('images/starEmpty.png') no-repeat;
+    float:      left;
+    height:     50px;
+    padding:    2px;
+    width:      50px;
+}
+.ratings_vote {
+    background: url('images/starFull.png') no-repeat;
+}
+.ratings_over {
+    background: url('images/starHighlight.png') no-repeat;
+}
+.total_votes {
+    background: #eaeaea;
+    top: 75px;
+    left: 0;
+    padding: 5px;
+    position: absolute; 
+}
+.prev_vote{
+	background: #eaeaea;
+    top: 100px;
+    left: 0;
+    padding: 5px;
+    position: absolute; 
+}
+
 fieldset { 
 	border:none; 
 }
@@ -375,6 +412,10 @@ form.signinform .textbox .remember{
 	color:#036;
 }
 
+.contents object{
+	padding-bottom:30px;
+}
+
 .article p{
 	font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size:18px;
@@ -444,12 +485,12 @@ form.signinform .textbox .remember{
 	padding-top:5px;
 	padding-bottom:50px;
 	padding-left:70px;
-	padding-right:30px;
+	padding-right:10px;
 }
 
 .imgContact img{
 	padding-top:10px;
-	padding-right:70px;
+	padding-right:30px;
 	width:450px;
 	height:200px;
 }

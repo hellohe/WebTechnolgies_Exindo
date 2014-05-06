@@ -7,6 +7,7 @@
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
+	<script type="text/javascript" src="js/Search.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -104,6 +105,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+			<input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -150,7 +152,8 @@
 				In the 1960s Dul Muluk was performed for seven days and nights with pauses in between. Today, a Dul Muluk performance last only two to three hours. 
 				Uniquely, although Dul Muluk is usually performed in Palembang, most Dul Muluk troupes come from Pemulutan village in a suburban area of Palembang municipality.
 				A Dul Muluk performance is about palace life. The story is told through a number of characters such as the king, a royal army commander, royal guards and royal maids. Uniquely, there are no actresses in a Dul Muluk performance. A female character in the story will be played by a male actor made up and dressed like a woman.</p>
-			</div>			
+			</div>
+			</div>
             
              <div class="article">
                 <img src="images/culture/GendingSriwijayaDance.jpg" />
@@ -179,10 +182,8 @@
                     <p>Palembang is also always held a variety of festivals every year, among others "Sriwijaya Festival" every month of June in order to commemorate Palembang Day, Bidar and Boat Festival celebrates Independence Day Ornamental, and various festivals commemorating the Hijri New Year, Month of Ramadan, and New Year's Day .</p>
                 </div>
             </div>
-            
-            
-            </div>
         </div>
+		
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

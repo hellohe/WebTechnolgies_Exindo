@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/jquery.rss.js"></script>
     <script type="text/javascript" src="js/SignUp.js"></script>
 	<script type="text/javascript" src="js/SigninSignout.js"></script>
+    <script type="text/javascript" src="js/Search.js"></script>
     
     <script type="text/javascript">
 		$(document).ready(function() {
@@ -97,6 +98,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+            <input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -119,173 +121,18 @@
 		</div>
     
         <div class="cbp-container">	
-            <div class="main">
-                <nav id="cbp-hrmenu" class="cbp-hrmenu">
-                    <ul>
-                        <li><a href="index.html"><img src="images/menubar1.png" /></a></li>
-                        <li><a href="#"><img src="images/menubar2.png" /></a>
-                            <div class="cbp-hrsub">
-                                <div class="cbp-hrsub-inner">
-                                    <div>
-                                        <h4>Sumatra</h4>
-                                        <ul>
-                                            <li><a href="#">Aceh</a></li>
-                                            <li><a href="#">North Sumatra</a></li>                                            
-                                            <li><a href="#">West Sumatra</a></li>
-                                            <li><a href="#">Jambi</a></li>
-                                            <li><a href="#">Bengkulu</a></li>
-                                            <li><a href="#">Riau</a></li>
-                                            <li><a href="#">Riau Archipelago</a></li>
-                                            <li><a href="#">Bangka Belitung</a></li>
-                                            <li><a href="#">South Sumatra</a></li>
-                                            <li><a href="#">Lampung</a></li>
-                                        </ul> 
-                                        <br />                                                                   
-                                        <h4>Kalimantan</h4>
-                                        <ul>
-                                            <li><a href="#">North Kalimantan</a></li>
-                                            <li><a href="#">East Kalimantan</a></li>
-                                            <li><a href="#">South Kalimantan</a></li>
-                                            <li><a href="#">West Kalimantan</a></li>
-                                            <li><a href="#">Central Kalimantan</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4>Java</h4>
-                                        <ul>
-                                            <li><a href="#">Banten</a></li>
-                                            <li><a href="#">DKI Jakarta</a></li>
-                                            <li><a href="#">West Java</a></li>
-                                            <li><a href="#">Central Java</a></li>
-                                            <li><a href="#">Yogyakarta</a></li>
-                                            <li><a href="#">East Java</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Nusa Tenggara</h4>
-                                        <ul>
-                                        	<li><a href="#">West Nusa Tenggara</a></li>
-                                            <li><a href="#">East Nusa Tenggara</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Bali</h4>
-                                        <ul>
-                                        	<li><a href="#">Bali</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4>Sulawesi</h4>
-                                        <ul>
-                                        	<li><a href="#">North Sulawesi</a></li>
-                                            <li><a href="#">Gorontalo</a></li>
-                                            <li><a href="#">Central Sulawesi</a></li>
-                                            <li><a href="#">West Sulawesi</a></li>
-                                            <li><a href="#">South Sulawesi</a></li>
-                                            <li><a href="#">Southeast Sulawesi</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Maluku</h4>
-                                        <ul>
-                                        	<li><a href="#">North Maluku</a></li>
-                                            <li><a href="#">Maluku</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Papua</h4>
-                                        <ul>
-                                        	<li><a href="#">West Papua</a></li>
-                                            <li><a href="#">Papua</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="#"><img src="images/menubar3.png" /></a></li>
-                        <li>
-                            <a href="#"><img src="images/menubar4.png" /></a>
-                            <div class="cbp-hrsub">
-                                <div class="cbp-hrsub-inner"> 
-                                    <div>
-                                        <h4>Sumatra</h4>
-                                        <ul>
-                                            <li><a href="#">Aceh</a></li>
-                                            <li><a href="#">North Sumatra</a></li>                                            
-                                            <li><a href="#">West Sumatra</a></li>
-                                            <li><a href="#">Jambi</a></li>
-                                            <li><a href="#">Bengkulu</a></li>
-                                            <li><a href="#">Riau</a></li>
-                                            <li><a href="#">Riau Archipelago</a></li>
-                                            <li><a href="#">Bangka Belitung</a></li>
-                                            <li><a href="#">South Sumatra</a></li>
-                                            <li><a href="#">Lampung</a></li>
-                                        </ul> 
-                                        <br />                                                                   
-                                        <h4>Kalimantan</h4>
-                                        <ul>
-                                            <li><a href="#">North Kalimantan</a></li>
-                                            <li><a href="#">East Kalimantan</a></li>
-                                            <li><a href="#">South Kalimantan</a></li>
-                                            <li><a href="#">West Kalimantan</a></li>
-                                            <li><a href="#">Central Kalimantan</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4>Java</h4>
-                                        <ul>
-                                            <li><a href="#">Banten</a></li>
-                                            <li><a href="#">DKI Jakarta</a></li>
-                                            <li><a href="#">West Java</a></li>
-                                            <li><a href="#">Central Java</a></li>
-                                            <li><a href="#">Yogyakarta</a></li>
-                                            <li><a href="#">East Java</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Nusa Tenggara</h4>
-                                        <ul>
-                                        	<li><a href="#">West Nusa Tenggara</a></li>
-                                            <li><a href="#">East Nusa Tenggara</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Bali</h4>
-                                        <ul>
-                                        	<li><a href="#">Bali</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4>Sulawesi</h4>
-                                        <ul>
-                                        	<li><a href="#">North Sulawesi</a></li>
-                                            <li><a href="#">Gorontalo</a></li>
-                                            <li><a href="#">Central Sulawesi</a></li>
-                                            <li><a href="#">West Sulawesi</a></li>
-                                            <li><a href="#">South Sulawesi</a></li>
-                                            <li><a href="#">Southeast Sulawesi</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Maluku</h4>
-                                        <ul>
-                                        	<li><a href="#">North Maluku</a></li>
-                                            <li><a href="#">Maluku</a></li>
-                                        </ul>
-                                        <br />
-                                        <h4>Papua</h4>
-                                        <ul>
-                                        	<li><a href="#">West Papua</a></li>
-                                            <li><a href="#">Papua</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li><a href="#"><img src="images/menubar5.png" /></a></li>
-                    </ul>
-                </nav>
-            </div>
+            <script>
+				$.ajax({
+					type:"GET",
+					url:"menubar.html",
+					async:false,
+					success: function(response){
+						document.getElementsByClassName('cbp-container')[0].innerHTML = response;
+					}
+				});
+			</script>
         </div>
 	  	<script src="js/cbpHorizontalMenu.js"></script>
-		<script>
-            $(function() {
-                cbpHorizontalMenu.init();
-            });
-        </script>
             
                     
         <div class="contents">

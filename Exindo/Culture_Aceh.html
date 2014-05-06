@@ -7,6 +7,7 @@
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
+	<script type="text/javascript" src="js/Search.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -104,6 +105,7 @@
         <div class="header">
             <img src="images/logo.png" alt="logo" />
             <p id="statusbox"><a href="#loginbox" class="signin">SIGN IN</a> | <a href="register.html" class="register">REGISTER</a></p>
+			<input type="search" id="searchBar" name="searchBar" size="30" placeholder="Search by province name..." onkeydown="Javascript: if (event.keyCode==13) goSearch();"/>
         </div>
 		
 		<div id="loginbox" class="loginpopup">
@@ -146,6 +148,18 @@
                 <img src="images/culture/pakaian adat aceh.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Acehnese Clothing</h3>
+                        <div class='movie_choice'>
+                        <!--change div id="r1" to article title-->
+                        <div id="r1" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Standard traditional Acehnese clothing for men includes full cut black trousers,
                     a black top with long-narrow sleeves with one button at the neck. A silk cloth (kain songket) is bounded around the waist, and a “rencong” is tucked into the belt. On the head is a “kupiah meukeutob” topped with a gold star shaped ornament (tampok kupiah).
                     It is bound with a woven square of silk.</p>

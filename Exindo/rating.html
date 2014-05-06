@@ -28,7 +28,14 @@
     left: 0;
     padding: 5px;
     position: absolute; 
-} 
+}
+.prev_vote{
+	background: #eaeaea;
+    top: 100px;
+    left: 0;
+    padding: 5px;
+    position: absolute; 
+}
 </style>
 <!-- change to local jquery-->
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -37,19 +44,33 @@
 $(document).ready(function() {
 	$('.rate_widget').each(function(i) {
 		var widget = this;
+		
+		//checks for cookie
+		var isPresent = false;
+		var ratingStar;
+		var allCookie = document.cookie.split(";");
+		for(var i = 0;i < allCookie.length; i++){
+			if(allCookie[i].split("=")[0] == $(widget).attr('id')){
+				isPresent = true;
+				ratingStar = allCookie[i].split("=")[1]
+			}
+		}
+		
 		var out_data = {
 			widget_id : $(widget).attr('id'),
 			fetch: 1
 		};
+		
 		$.post(
 			'RatingSystem.php',
 			out_data,
 			function(response) {
 				$(widget).data( 'fsr', response );
-				set_votes(widget);
+				set_votes(widget, isPresent, ratingStar);
 			},
 			'json'
 		);
+		
 	});
 	
 	//change star on hover
@@ -71,24 +92,41 @@ $(document).ready(function() {
 		var star = this;
 		var widget = $(this).parent();
 		
-		var clicked_data = {
-			clicked_on : $(star).attr('class'),
-			widget_id : $(star).parent().attr('id')
-		};
-		$.post(
-			'RatingSystem.php',
-			clicked_data,
-			function(response) {
-				widget.data( 'fsr', response );
-				set_votes(widget);
-			},
-			'json'
-		); 
+		//checks for cookie
+		var isPresent = false;
+		var allCookie = document.cookie.split(";");
+		for(var i = 0;i < allCookie.length; i++){
+			if(allCookie[i].split("=")[0] == $(star).parent().attr('id')){
+				isPresent = true;
+				break;
+			}
+		}
+		
+		if(!isPresent){
+			var clicked_data = {
+				clicked_on : $(star).attr('class'),
+				widget_id : $(star).parent().attr('id')
+			};
+			$.post(
+				'RatingSystem.php',
+				clicked_data,
+				function(response) {
+					widget.data( 'fsr', response );
+					set_votes(widget, true, response.submitted_value);
+					
+					//create cookie
+					var expireDate = new Date();
+					expireDate.setDate(expireDate.getFullYear() + 3);
+					document.cookie = $(star).parent().attr('id') + "=" + response.submitted_value + ";expires=" + expireDate.toGMTString();
+				},
+				'json'
+			);
+		}
 	});
 });
 
 //refresh the stars and vote values
-function set_votes(widget) {
+function set_votes(widget, isPresent, ratingStar) {
 	var votes = $(widget).data('fsr').number_votes;
 	var exact = $(widget).data('fsr').dec_avg;
 	var avg = Math.round(exact);
@@ -97,7 +135,10 @@ function set_votes(widget) {
 	
 	$(widget).find('.star_' + avg).prevAll().andSelf().addClass('ratings_vote');
 	$(widget).find('.star_' + avg).nextAll().removeClass('ratings_vote'); 
-	$(widget).find('.total_votes').text( votes + ' votes recorded (' + exact + ' rating)' );
+	$(widget).find('.total_votes').text(votes + " votes recorded (" + exact + " rating)" );
+	if(isPresent){
+		$(widget).find('.prev_vote').text("You had voted " + $(widget).data("fsr").widget_id + " with " + ratingStar + " stars");
+	}
 }
 </script>
 </head>
@@ -113,6 +154,7 @@ function set_votes(widget) {
         <div class="star_4 ratings_stars"></div>
         <div class="star_5 ratings_stars"></div>
         <div class="total_votes">vote data</div>
+		<div class="prev_vote"></div>
     </div>
 </div>
 </body>

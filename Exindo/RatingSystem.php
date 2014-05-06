@@ -60,7 +60,8 @@
 			$data = array(
 				"widget_id" => $articletitle,
 				"number_votes" => $totalvote,
-				"dec_avg" => $newavg
+				"dec_avg" => $newavg,
+				"submitted_value" => $match[1]
 			);
 			echo json_encode($data);
 		}
@@ -73,7 +74,8 @@
 			$data = array(
 				"widget_id" => $articletitle,
 				"number_votes" => 1,
-				"dec_avg" => $avg
+				"dec_avg" => $avg,
+				"submitted_value" => $match[1]
 			);
 			echo json_encode($data);
 		}
