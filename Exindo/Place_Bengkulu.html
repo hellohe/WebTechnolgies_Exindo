@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-  	<script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/Marlborough.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Fort Marlborough</h3>  
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="marlborough" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>          
+                    <h3>Fort Marlborough</h3>            
                     <p>Fort Marlborough. The British or ‘Raffles’ Fort, was built between 1714 and 1719 and was famous as the second-strongest fort built by British in Asia, Fort George in Madras, India being the first. It was restored and opened to the public.<br /><br /><br /><br /><br /></p>
                 </div>
             </div>
@@ -80,18 +156,6 @@
                 <img src="images/place/Soekarno's exiled residence.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Soekarno’s Exile Home</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="soekarno_exile_home" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Most Indonesians have learned in school about the exile of Soekarno (affectionately known as Bung Karno, meaning Brother Karno) Indonesia’s first president and leader of the country’s struggle for Independence from the late 1930s. In the midst of this struggle, to prevent Soekarno from making political speeches against the Dutch colonial policy, the Dutch Governor-General sentenced Soekarno to exile without trial. In 1934, Bung Karno and his family were first shipped to Ende, a town on the island of Flores. Due to a malaria outbreak in 1938, Dutch authorities then moved political prisoners to the city of Bengkulu in Southwest Sumatera, where they remained until the Japanese invasion in 1942.</p>
                     <p>During his exile in Bengkulu, Sukarno met Fatmawati, a young woman from Bengkulu, whom he later married. Fatmawati later became the first Indonesian First Lady. The airport of the city of Bengkulu is also named after her. During these hard times Farmawati was accredited to have personally sewn by hand the first Red and White Flag of Indonesia. </p>
                     <p>Bung Karno’s exile home in the town of Bengkulu measures roughly 162 square meters. It is a simple, rectangular house with plain walls, a high pyramid-shaped roof and a spacious yard. The main doors are double leaf with ornate window grills. It is not known when the house was first constructed, but it is estimated to have been built in the early 20th century.</p>
@@ -104,44 +168,11 @@
                 <img src="images/place/PANTAI PANJANG BENGKULU.jpg" />
                 <div style="margin-left:250px;">
                     <h3>The Long Beach of Bengkulu</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="long_beach_of_bengkulu" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Pantai Panjang, translated to mean Long Beach, boasts a coastline of fine, white sands that stretches 7 kilometers. As the beach has no reefs, its width expands to 500 meters when the tide is low.The beach area is a central tourism district and is lined with restaurants, hotels, cottages and shops. Pantai Panjang is located just 15 minutes from downtown Bengkulu, Southwest of the island of Sumatera.</p>
                     <p>Unlike many beaches, Pantai Panjang has no coconut or palm trees, but is dominated by Spruces and Pines which create a lovely shelter for beach-goers to rest and relax under. As a prime tourist area, a variety of facilities are positioned along the beach such as restaurants, cafes, accommodations, a children’s playground as well as sports facilities. The Bengkulu community also uses the beach as a place for jogging in the mornings and evenings.</p>            
         		</div>
        		</div>
 		</div>
-        \<div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

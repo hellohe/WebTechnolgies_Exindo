@@ -12,23 +12,22 @@ mysql_select_db("$dbName") or die("cannot select db");
 $memberUsername = $_POST['memberUsername'];
 $memberPassword = $_POST['memberPassword'];
 
-//mysql injection protection
+//mysql injection
 $memberUsername = stripslashes($memberUsername);
 $memberPassword = stripslashes($memberPassword);
 $memberUsername = mysql_real_escape_string($memberUsername);
 $memberPassword = mysql_real_escape_string($memberPassword);
-$md5pass = md5($memberPassword);
 
-$sqlquery = "select * from $tableName where username = '$memberUsername' and password = '$md5pass'";
+$sqlquery = "select * from $tableName where username = '$memberUsername' and password = '$memberPassword'";
 $result = mysql_query($sqlquery);
 
 $count = mysql_num_rows($result);
 if($count == 1){
 	session_start();
 	$_SESSION['username'] = $memberUsername;
-	$_SESSION['password'] = $md5pass;
+	$_SESSION['password'] = $memberPassword;
 	//header("location: loginSuccessful.php");
-	echo json_encode(array_values(array($memberUsername, $md5pass)));
+	echo json_encode(array_values(array($memberUsername, $memberPassword)));
 }
 else{
 	echo json_encode("empty");	

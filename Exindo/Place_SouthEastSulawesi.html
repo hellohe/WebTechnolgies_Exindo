@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/Wakatobi National Marine Park.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Wakatobi National Marine Park</h3>  
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="wakatobi_national_marine_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>          
+                    <h3>Wakatobi National Marine Park</h3>            
                     <p>Legendary underwater explorer and conservationist, Jacques Cousteau is said to have called the Wakatobi islands – then known as the Tukangbesi islands:  an “Underwater Nirwana”</p>
 					<p>Now a National Marine Park covering the entire Waktobi District, it comprises a total of 1.4 million hectares, of which 900,000 hectares are decorated with different, colourful species of tropical coral reefs. For Wakatobi is widely recognized as having the highest number of reef and fish species in the world.   The islands are also famous as the largest barrier reef in Indonesia, second only to the Great Barrier Reef in Australia.  Here can be found fringing, atolls and barrier reefs and offer more than 50 spectacular dive sites easily accessible from the major islands.  This is the habitat of large and small fish species, the playground of dolphins, turtles and even whales. </p>
                     <p>The island group comprises 143 larger and smaller islands where only 7 are inhabited counting a total population of around 100,000, while the others remain uninhabited. Most notable are the Bajo communities, the seafaring nomads who inhabit many of Indonesia’s remote islands.</p>
@@ -87,18 +163,6 @@
                 <img src="images/place/Buton Fort Palace.jpg" />
                 <div style="margin-left:250px;">
                 <h3>Buton Fort Palace</h3>
-                <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="buton_fort_palace" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                 <p>Indonesia archipelago should be proud because it has a tourist attraction which is said to be the largest fort in the world. The object is located in the City Baubau, Southeast Sulawesi Province. The fort that was built to protect the royal palace in the past Buton is also known as the Thousand Fort. The fort stands strong at the top of the hill. That said, the fortress built in the 16th century is the largest in the world. The extent reached around 22.8 hectares of land with a wall along the 2,740 meters. Built with mountain rocks bonded with sand and limestone, the fortress’ height varies between 1-8 meters with thickness between 0.5-2 meters.</p>
     
                 <p>The fort has 12 doors and 16 defense posts. At every door and corner mounted a cannon fort. There are total 100 cannons.
@@ -118,18 +182,6 @@
                 <img src="images/place/Liwutongkidi Island.jpg" />
                 <div style="margin-left:250px;">
                 <h3>Liwutongkidi Island</h3>
-                <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="liwutongkidi_island" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                 <p>The Island is located in District Katadua and Siompu, Buton, Southeast Sulawesi, Indonesia . Liwutongkidi Island is one of the islands contained in Buton. Island covering approximately 1000 sq km is has a tropical climate with an average rainfall 1000 mm per year. </p>
     
                 <p>Liwutongkidi Island by the local government of Buton regency included as one integrated area development Batauga Basilica, Siompu, Liwutongkidi, and Kadatua). The goal is to develop marine tourism object (submarine) in the district with a rich variety of attractions that marine. Hopefully, by the region's Basilica, the excitement of the tourists to visit the Buton Regency increases.</p>
@@ -141,28 +193,6 @@
                 <p>To reach the site as a tourist attraction can be done in two stages of the journey from the city of Kendari (Southeast Sulawesi capital) First, from the town of Kendari, Bau-Bau to be able to use pioneering aircraft or ships. If using aircraft pioneer, The journey time approximately 1 hour and about 4 hours if using two sea boats, we travel to the island Liwutongkidi using sea transport with travel time approximately 15 minutes.</p>                
 				</div>
 			</div>
-        </div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

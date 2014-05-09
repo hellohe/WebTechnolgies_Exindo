@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/pentadio.JPG" />
                 <div style="margin-left:250px;">
-                    <h3>Pentadio Resort</h3>      
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="pentadio_resort" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>          
+                    <h3>Pentadio Resort</h3>                
                     <p>One of mainstays tour object in Gorontalo, Sulawesi isPentadio Resort. Pentadio itself comes from Gorontalo language, which means beach-lake. It located in the edge of the wonderful Limboto Lake which is also one of tour object in Gorontalo. Pentadio Resort has 14 hectares wide and has been inaugurated by the Dutch government in 1928. This thing can be seen from the stone monument which is in the hot water bathing place in Pentadio Resort area. Since then, local people has made it into tour object.Tour object
                     <p>There’s spraying hot water bathing place in Pentadio Resort which contains sulfur. This hot water usually used by the visiting tourist to cure skin problems. Pentadio Resort also has some other facilities and activities you can find here such as swimming pool, warm water bathing place, fishing, water bike, and many others. There’s also pub and family karaoke for family occasion or with friends.</p>
                     <p>Location<br />
@@ -83,18 +159,6 @@
                 <img src="images/place/Bolihutuo Beach.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Bolihutuo Beach </h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="bolihutuo_beach" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>During your visit to Gorontalo, in the north of Sulawesi, take time to slide westward toward one of its natural, picturesque beaches with its beautiful view and relaxing atmosphere. This beach is Pantai Bolihutuo, which is located in the Boalemo District about 120 km from Gorontalo City. Facing the  Bay of Tomini. </p>
         
                     <p>Also known as Pantai Boalemo Indah, or Beautiful Boalemo Beach, the coast is famous among local and international tourists for its natural beauty. This beach offers fascinating and charming scenery with views of white sandy shores, lined with giant pine and palm trees. It is one of the main tourist attractions in the Boalemo District.</p>
@@ -109,18 +173,6 @@
                 <img src="images/place/walea.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Tomini Bay and Olele Beach</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="tomini_bay_and_olele_beach" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>There are just so many things that make Gorontalo perfect for holiday, the beauty of its nature, the culture and not forget to mention, the friendly people. General information about Gorontalo, stated at North Sulawesi. Mountains, hills, shore line are the main characteristic of Gorontalo and it makes the island perfect for marine tourism.</p>
                     <p>Most of diving site take you just a few minute from town, Diving in Gorontalo mean diving within the richness of biodiversity, health and unique coral and reefs.</p>
                     <p>Lots of beautiful places could be found here. Tomini Bay, for instance, is famous for under water habitat and undefined creatures. There is several number of unsettled small islands. Tomini Bay is a heaven for divers, because the geographic position of Tomini Bay itself, which is crossed by the equator line, has naturally presented various kinds of sea creature inside.</p>
@@ -143,28 +195,6 @@
             	</div>
             </div>
 		</div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-  	<script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
 			<div class="article">
 				<img src="images/place/ujung kulon.jpg" />
 				<div style="margin-left:250px;">
-					<h3>Ujung Kulon National Park</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="ujung_kulon_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>			
+					<h3>Ujung Kulon National Park</h3>				
 					<p>The last sanctuary of the Javan rhinoceros, the Ujung Kulon National Park is the triangular peninsula situated at the south western-most tip of Java. Ujung Kulon is Indonesia’s first and prime National Park, which was designated as a nature reserve since 1921.  This is the largest remaining lowland tropical rainforest ecosystem in West Java. And, together with the awesome Krakatau volcano the 137,000 hectares Park was declared Natural World Heritage Site by UNESCO.</p>
 					<p>Ujung Kulon is the habitat of the rhino (badak) of which only 60 survive today. Seeing one of these animals is very rare since they are shy and are traceable only at night. Here also roam free some endangered animals like leopard cats, gibbons, long-tailed macaques, leaf-monkeys, crocodiles, muntjaks, mousedeer and herds of grazing wild oxen. In the Park’s surrounding seas are found the great clam, clown fish, angel fish, parrot fish, mudskippers which can climb trees, and archer fish, which spit water up to a height of more than two meters to catch insects.</p>
 				</div>
@@ -81,18 +157,6 @@
 				<img  src="images/place/umang.jpg" />
 				<div style="margin-left:250px;">
 					<h3>The Amazing Umang Island Resorts</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="umang_island" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>Umang Island, situated in Banten province, is a small island perfect for your tropical getaway. Especially when you've done some business in Jakarta, since Umang Island is only 4,5 hours away from the bustling city. The five-hectare private island is maintained by a single management,  Umang Island Resort and Spa, which offers the same comfort as a star-rated hotel with relaxing ambiance.</p>
 					<p>The location is also very strategic for nature trekkers as it's near the UNESCO heritage site Ujung Kulon National Park. Umang Island is also well-protected from the West Java sea storms as there's Tanjung Lesung beach to the north and Panaitan Island to the west.
 So whenever you feel like lazying around a white sandy beach overlooking the crystal sea water, you should try Umang Island, where the beauty of nature may give you peace and tranquility.</p>
@@ -103,18 +167,6 @@ So whenever you feel like lazying around a white sandy beach overlooking the cry
 				<img src="images/place/carita beach.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Carita Beach</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="carita_beach" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>A vast stretch of white sandy beach decorated with rows of sheltering trees and the magnificent view of the Krakatau volcano on the horizon, that is what awaits at Carita Beach. Situated pleasantly on the shoreline facing the Sunda Straits at the western end of Java Island, in the Pandeglang regency, in the province of Banten, this indulging beach is only a three hours’ drive away from the bustling capital city of Jakarta.</p>
                     <p>Here nature graciously offers some of her best features, from the majestic sunrise beyond the hills of Mount Aseupan Pandeglang all the way to the romantic sunset on the horizon over the sea. The various planktons on the surface of the sea would glitter under the brightest moonlight radiating a beautiful scenery. When the young Anak Krakatau is active, its spewing burning lava offers a fascinating scene unlikely to be easily found elsewhere.</p>
                     <p>With relatively calm waves, anyone can enjoy swimming safely and conveniently along the beach. For a different sensation mixing swimming and surfing, visitors can try the swim boards rented at many spots along the beach at a very affordable price. The beach is also a perfect place for various funs and exciting water rides such as the Jetski and Banana Boats.</p>
@@ -128,18 +180,6 @@ So whenever you feel like lazying around a white sandy beach overlooking the cry
 				<img src="images/place/tanjung lesung.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Tanjung Lesung Resort</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="tanjung_lesung_resort" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>Slightly bulging from the mainland of Java into the Sunda Straits is Tanjung Lesung, a developing integrated beach resort for recreation and hotels overlooking Mt. Anak Krakatu, all that is left of the once mighty Krakatau volcano.  Located on Java’s most western coast in the district of Pandeglang in the province of Banten, the Tanjung Lesung resembles the lesung, which in the local Sundanese language means the receptacle for rice pounding.</p>
 					<p>This huge 1,500 hectares area of Tanjung Lesung has been developed by the Banten West Java Tourism Development Corporation (BWJ) since 1996, patterned after the famed Nusa Dua Resort in Bali. The resort is envisaged to contain top range hotels and restaurants, a convention hall, a number of golf courses, marina and theme park. </p>
 					<p>Today, Tanjung Lesung offers a perfect place to lay back and immerse oneself in the beauty of nature found along the vast stretch of soft white sandy beaches, clear and calm blue waters, and fresh tropical breezes. The 15km shoreline is the perfect place for various beach activities such as beach volley, beach football, or just  lie down under the indulging sunshine.</p>
@@ -151,28 +191,6 @@ So whenever you feel like lazying around a white sandy beach overlooking the cry
 			</div>
 		</div>
 			
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
-        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

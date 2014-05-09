@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/muara takus.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Muara Takus Temple</h3>  
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="muara_takus" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>          
+                    <h3>Muara Takus Temple</h3>            
                     <p>Located some 122 from Pekanbaru, capital of the province of Riau, the Muara Takus temple complex (or Candi Muara Takus) is built by the Kampar Kanan river. Muara Takus has the largest brick buildings on Sumatra found remotely in a jungle clearing. The main Candi Mahligai is a tall stupa flanked by ruins of several other brick sanctuaries. Its tall shape differs from the normally bell-shaped Buddhist stupas found on Java. The temple is constructed of river boulders, sandstone and earthen bricks and was restored in 1980.</p>
                     <p>The complex is surrounded by a 74m x 74 m wall, with another earthen rampart of 1.5km x 1.5 km surrounding this, stretching to the edge of the Kampar Kanan river. Within the walls are found the Candi Tua, Candi Bungsu, the Mahligai stupa and the Palangka. In the complex is also found a mound believed to be the place for cremations. </p>
                     <p>These Buddhist remains pose an enigma to archaeologists as to the date that they were actually built, which they estimate to have been constructed either in the 2nd, 4th 7th or 9th century. It is, however, known that during the 10th century, the kingdom of Crivijaya located further south near present-day Palembang was a thriving learning center for Buddhism, where even Chinese pilgrims were said to study on Sumatra first before proceeding to India. </p>
@@ -83,18 +159,6 @@
                 <img src="images/place/annur.jpg" />
                 <div style="margin-left:250px;">
                 <h3>Great Mosque of An-nur</h3>
-                <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="an-nur" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                 <p>Great Mosque of An-nur is Pekanbaru`s Islamic Center. It is said as the biggest mosque in Sumatera. This big mosque are frequently visited by towns people and tourists every day, either for religious activities, morning or afternoon exercise, taking picture or browsing the internet because it is equipped with free WiFi (Wireless Fidelity). It is not a complete journey to Riau if doesn’t come by to Agung An Nur Mosque. This huge mosque is a combination of Malay, Arabic, and Turkish architecture, and is growing to be an “icon” or “landmark” of Pekanbaru. The Agung An Nur Mosque is equipped with various facilities such as education facility starting from playgroup, kindergarten, elementary, high school even a complete library, roomy hall and Islamic organization offices.</p>
                 </div>
             </div>
@@ -103,43 +167,9 @@
                 <img src="images/place/siak palace.jpg" />
                 <div style="margin-left:250px;">
                 <h3>Siak Palace</h3>
-                <div id="ratingBox">
-                    <!--change div id="r1" to article title-->
-                    <div id="siak_palace" class="rate_widget">
-                        <div class="star_1 ratings_stars"></div>
-                        <div class="star_2 ratings_stars"></div>
-                        <div class="star_3 ratings_stars"></div>
-                        <div class="star_4 ratings_stars"></div>
-                        <div class="star_5 ratings_stars"></div>
-                        <div class="total_votes">vote data</div>
-                        <div class="prev_vote"></div>
-                    </div>
-                </div>
                 <p>Siak empire is an empire the largest Muslim Malay Riau , there Srindrapura Siak , with a mileage of about 2-3 hours from the city of Pekanbaru . Siak kingdom reached its heyday in the 16th century until the 20th century . In genealogy sultans kingdom of Siak Sri Indrapura started in 1725 with the 12 sultans who once reigned . Now , as historical evidence of the greatness of the Malay Islamic kingdom in Riau , we can see the form of the kingdom of Siak Royal Palace complex built by Sultan Syarif Hasyim Abdul Jalil Assyaidis Syaifuddin in 1889 under the name ASSIRAYATUL HASYIMIAH kingdom complete with equipment . Now the Royal Palace of Siak Sri Indrapura became the repository for a collection of royal objects </p>
                 </div>
             </div>
-        </div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

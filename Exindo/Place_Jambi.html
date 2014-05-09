@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -58,19 +146,7 @@
             <div class="article">
                 <img src="images/place/muara jambi.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Muara Jambi Temple</h3>  
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="muara_jambi" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>              
+                    <h3>Muara Jambi Temple</h3>                
                     <p>Muara Jambi Temple is considered one of the richest archaeological sites on the island of Sumatra. The eight temple-like structures appear to be Buddhist, and were probably built around the 14th century.</p>
                     <p>Archaelogists conclude that the site was the center of Old Jambi, the capital of ancient Malay kingdom which reigned supreme about ten centuries ago. The capital was sieged and destroyed in 1377 by armies from Burma. For centuries, the site had been lost and forgotten deep in the jungle, only to be rediscovered in 1920 by a British military expedition team. </p>
                     <p>Muara Jambi temple complex covers an area of 12 km2, along the side of Batanghari river. There are eight main temples in the complex. All of them are located in the center area, fortified by walls. Three of them are already renovated.</p>
@@ -82,18 +158,6 @@
                 <img src="images/place/kerinci.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Kerinci Lake and Mountain</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="kerinci_lake" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Mount Kerinci is the highest mountain on the island of Sumatra and it is popular with mountain climbers. The nearest village and climber’s base is Kersik Tuo, near Kayu Aro, Kerinci. The route is marked by signs, posted at half kilometer intervals.
         Nearly 800 meters above sea level, surrounded by boundless stretches of bright, green rice paddies as far as the eye can see; against a backdrop of gently sloping mountains, seemingly a shade of blue; here lies a vast expanse of calm, clear waters, dotted sporadically by small fishing boats gliding along its surface. This isLake Kerinci, the largest of 15 lakes in the Kerinci district and the second largest in Sumatra after Lake Toba. It spans 4,200 hectares and reaches a depth of 110 meters. A number of stone megalithic relics have been discovered in the small villages scattered around the shore of Kerinci, some dating back to 2,000 years ago. The presence of these ancient standing stones shows this area as one that has been inhabited for thousands of years. The lake is located at the foot of Raja Mountain in the Kerinci District, Jambi Province, on the island of Sumatra.</p>
          
@@ -102,28 +166,6 @@
 					<p>Unable to live alone, Calupat asked the dragon to bring residents to his valley. A powerful wind then blew against Lake Bento forming an estuary and causing the river to flow downstream to the east. Lake Bento was again left as an empty valley, and a new river was created: Lake Kerinci. With the presence of the lake, people began to settle around its banks. Upon visiting this spot today, you can still see the shape of Calupat sitting upon the head of a dragon.</p>
                 </div>
             </div>
-        </div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

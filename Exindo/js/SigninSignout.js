@@ -43,22 +43,3 @@ function signout(){
 		}
 	});
 }
-
-//check whether the user is logged in
-function CheckUserLoggedIn(){
-	var loggedin;
-	$.ajax({
-		type:"POST",
-		url:"CheckUserLoggedIn.php",
-		async:false,
-		success: function(response){
-			if(response != "empty"){
-				loggedin = response;
-			}
-			else{
-				loggedin = false;
-			}
-		}
-	});
-	return loggedin;
-}

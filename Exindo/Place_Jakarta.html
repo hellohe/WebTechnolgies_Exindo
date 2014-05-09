@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-  	<script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -58,19 +146,7 @@
             <div class="article">
             	<img src="images/place/National Monument.jpg" />
 	            <div style="margin-left:250px;">
-					<h3>National Monument</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="national_monument" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>      
+					<h3>National Monument</h3>            
 					<p>The main Sudirman-Thamrin avenues in Jakarta lead to the Merdeka Square, where in its center stands the National Monument (also known as Monas--Monumen Nasional) which houses the first red-and-white flag flown at the Proclamation of Independence on 17 August 1945. This flag has now become threadbare, and so nowadays on Independence Day ceremonies, the original flag is taken out but only to accompany the replica flag to be flown in front of the Merdeka Palace. The 137 meter tall National Monument is obelisk shaped, and is topped with a 14.5 meter bronze flame coated with 32 kilograms gold leaf. Within the pedestal is a museum depicting in diorama Indonesia’s fight for Independence as well as the original text of the Proclamation of Independence. A lift takes visitors up to the look-out platform at the base of the flame for a grand view of Jakarta.</p>
 
 					<p>Surrounding the Monument is now a park with a musical fountain, enjoyed by the Jakarta public on Sundays for sports and recreation. Deer roam among the shady trees in the park. </p>
@@ -83,18 +159,6 @@
                 <img src="images/place/tmii.JPG" />
                 <div style="margin-left:250px;">
 					<h3>Taman Mini Indonesia Indah</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="tmii" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>Taman Mini Indonesia Indah or Beautiful Indonesia in Miniature Park is an extensive culture-based park, the prime showcase of Indonesia’s rich cultural and natural diversity located in East Jakarta.</p>
 					<p>Popularly known as Taman Mini, the core of the Park are 26 exclusive replicas of traditional houses of chieftains found throughout the Indonesian archipelago from Aceh to Kalimantan, Sulawesi, Java and Papua. These are pavilions displaying the history, arts and crafts and traditions of each of the provinces.  Built for education and family fun, Taman Miini has large areas for family recreation, a number of flora and fauna parks, various museums, performing theatres, an Imax theatre and accommodation facilities.</p>
 					<p>To further express Indonesia’s tolerance and peaceful coexistence among the different religions in the archipelago here stand in a row the different houses of worship that are still actively used:  a mosque, a Hindu temple, a Buddhist temple, a Catholic church and a Protestant church.</p>
@@ -109,18 +173,6 @@
                 <img src="images/place/kota tua.jpg" />
                 <div style="margin-left:250px;">
 					<h3>Old Batavia</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="old_batavia" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>In its heydays in the 16th century, Batavia was known as “The Queen of the East” and “the Jewel of Asia”. Its Sunda Kelapa harbour was abuzz with merchant vessels from Europe, China, India and from throughout the Indonesian archipelago, loading in and sailing away with precious nutmegs, pepper, tea, coffee, ceramics, cloths and other exotic products of the time. The warehouses were stacked with spices, tin and copper. The successful trade in Batavia filled the coffers of the Netherland’s Treasury.</p>
 					<p>Center of the VOC Dutch East India Company’s administration was the Stadthuiswith its wide front plaza, around which were the Court of Justice, banks and other important buildings.</p>
 					<p>Today, the Sunda Kelapa Harbour is an inter-island harbour, where one can mostly find Bugis phinisi schooners at anchor. Nearly are the old warehouses, which are now converted into a Maritime Museum.This museum houses models of old Dutch ships and the many types of boats used in the archipelago.</p>
@@ -142,18 +194,6 @@
 				<img src="images/place/ancol.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Ancol</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="ancol" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>This is Jakarta's largest and most popular recreation park, more popularly known as "Ancol Dreamland". The Ancol Dreamland has an extensive range of attractions that include a Seaworld,  a water park with artificial waves, an  lagoon for fishing and boating,  exciting rides such as the Torpedo and the Hysteria, an art center, a convention hall and hotels.</p>     
 					<p>In the Ancol complex are also a marina, the Dunia Fantasi (Fantasy World),  a drive-in theatre. The 'Pasar Seni' or art market has a varied collection of Indonesian handicraft, paintings and souvenirs on sale. An open-air theatre features live performances by local artists.</p>
 				</div>
@@ -163,18 +203,6 @@
 				<img src="images/place/The Thousand Islands.jpg" />
 				<div style="margin-left:250px;">
 					<h3>The Thousand Islands</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="thousand_island" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
 					<p>As your plane slowly descends for its approach to Jakarta’s Soekarno-Hatta international airport, you can see a large number of large and small islands dotting the sea in the Bay of Jakarta. These are known as the Thousand Islands, or Kepulauan Seribu. In fact they are a cluster of 76 coral islands with more appearing and disappearing with the tide.</p>
 					<p>Located 45 km north from the city, this part of Jakarta offers a huge change in pace and experience from the hustle and bustle of the city, but is near enough for residents and visitors to enjoy the exhilarating marine environment within just one day excursion.</p>
 					<p>Here are diving, snorkeling and fishing opportunities, or just good for lazing in the sun with nothing to disturb one’s mind except the chirping of birds amidst the gentle lapping of the waves.</p>
@@ -184,28 +212,6 @@
 				</div>
 			</div>
 		</div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

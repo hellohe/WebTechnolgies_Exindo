@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+			
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/komodo national park.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Komodo National Park</h3>    
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="komodo_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>        
+                    <h3>Komodo National Park</h3>            
                     <p>Real dragons spurt no fire, have no need to fly and cast no magic spells. And still, one look from them might render you speechless. These komodos, the real life dragons, are a sight indeed. Gigantic, the lizard-like creatures are about two or three meters in length. They can easily weigh about 165 kilograms. Despite of their sheer size and appearance, they are not active hunters. What makes them intimidating is the fact that they are a patient predator. In the wild, they stalk a victim, usually a weak or injured one. One bite and that's what it usually takes. After following the victim for a while, sometimes up to several days' time, the komodos will devour the dying prey.</p>
                     <p>The Komodo Dragon (Varanus komodoensis) is an endangered species which can only be found in the Komodo National Park (KNP) in East Nusa Tenggara (NTT). Because of the unique and rare nature of this animal, KNP was declared a World Heritage Site by UNESCO in 1986.</p>
                     <p>The park includes three major islands, Komodo, Rinca and Padar, and numerous smaller islands together totaling 603 km2 of land. The total size of Komodo National Park is presently 1,817 km2. Proposed extensions of 25 km2 of land (Banta Island) and 479 km2 of marine waters would bring the total surface area up to 2,321 km2.At least 2500 Komodos live in this area. Large dragons are usually three meters long and weigh up to 90 kg. Their habitat has beautiful panoramic views of savannas, rain forests, white beaches, beautiful corals, and clean blue seas. In this area, you can also find horses, wild buffalo, deer, wild boar, snakes, monkeys, and various types of birds.</p>
@@ -83,18 +159,6 @@
                 <img src="images/place/alor.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Pantar Strait, Alor Archipelago</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="pantar_strait" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Indonesia has many famous diving sites.  For professional divers, Pantar Strait Marine Park is one of the most beautiful in the country and comparable only with that of the Caribbean Sea near Central America.  This Marine Park has its own unique characteristics and beauty.</p>
         			<p>This strait is located between Alor and Pantar islands in the Alor Archipelago, East Nusa Tenggara (NTT).  This narrow strait has a number of small and beautiful islands such as Kepa, Pura, Ternate, Buaya and Tereweng islands.  The waters have a strong current and its sound is as loud as a waterfall.  At unpredictable times, a cold current comes, killing small and medium size fish near the beach.</p>
         			<p>There are at least 26 diving sites around Kepa, Pura, Ternate, and Tanjung Matap islands, and Papa Jahe beach (Alor)- including the famous Shark Close.  At this site, divers can play with groups of friendly sharks.  In the waters around Papa Jahe, you can also go diving at night.</p>
@@ -105,18 +169,6 @@
                 <img src="images/place/kelimutu.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Kelimutu National Park (Kelimutu 3-Colored Lake)</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="kelimutu_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Some people may only dream about trekking to Mt Kelimutu on the island of Flores with its three colored lakes, while others make it a reality. The challenging trip in a rented polished 7-seater car can make one entertained for hours because of the endless winding road. However, being shaken by the sharp curves in the road that cuts through the 350-km long Flores Island is a worthy price to pay to witness the ultimate top-drawer panoramas that Flores has to offer.</p>
                     <p>Mt. Kelimutu National Park is the smallest among six national parks in the stretch between Bali and the Nusatenggara islands. Its size obviously does not matter much when it offers one of the most spectacular wonders that nature has to offer. There are three lakes on the mountain sharing the same name, Kelimutu, meaning ‘the boiling lake’. Each has its own colors and a local name. But all are believed to be the resting place of departed souls.</p>
                     <p>Located some 66 km. from the town of Ende or 83 km. from Maumere, Lake Kelimutu was discovered by a Dutch named Van Such Telen in 1915. It gained global fame after Y. Bouman wrote in his notes in 1929 about the bizarre color-changing lakes.</p>
@@ -126,28 +178,6 @@
                     <p>Here are also endemic mice, deer, porcupines, and the legendary luwak or civet (Pharadoxurus hermaphroditus) that gained its fame for the expensive coffee it produces. Visit Mt. Kelimutu and the three-colored lakes as an essential part of your Flores adventure.</p>
 				</div>
 			</div>
-        </div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

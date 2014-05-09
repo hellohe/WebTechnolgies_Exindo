@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-  	<script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/palangkaraya.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Palangkaraya</h3>   
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="palangkaraya" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>             
+                    <h3>Palangkaraya</h3>                
                     <p>Central Kalimantan, dominated by the indigenous Dayaks, is known as the lung of the world for its vast and fertile tropical jungles and forests. The northern mountain chain, the Schwaner Range, is home to some of the most pristine forests in Kalimantan. Certain areas are within WWF’s Heart of Borneo conservation initiative signed by the 3 nations, Indonesia, Malaysia and Brunei. </p>
                     <p>These mountains are the source of 11 mighty rivers intersecting the vast lowland peat swamps and finishing their journey in dense, crocodile infested mangroves along the estuaries of Central Kalimantan. Peat swamps are home to iconic Bornean fauna, the orangutan, the proboscis monkey and red leaf eating monkey and many bird species. Deer, clouded leopards, porcupines, sun bears, giant pythons, magnificent hornbills, monitor lizards and wild civet cats also share this jungle habitat.</p>
                     <p>Palangkaraya, or Honoured and Sacred Great Place, is the capital city. Growing from Pahandut, a small stilt village on the banks of the Kahayan River, the first President of Indonesia, Sukarno, had decided that that it would become the next site of Indonesia’s capital. The new city was completely designed from scratch and built in grand proportions in the 1960’s. </p>
@@ -85,18 +161,6 @@
                 <img src="images/place/sebangau.JPG" />
                 <div style="margin-left:250px;">
                     <h3>Sebangau National Park</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="sebangau_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Spread out between the Katingan and the Sebangau Rivers, just at the outskirt of Palangkaraya, the Sebangau National Park in Central Kalimantan is one of the last remaining peat swamp forests in Borneo. The vast national park covering approximately 568,700-hectare is home to over 6,000 orangutans, forming one of the world’s largest populations in the wild. Aside from its rich biodiversity, the forest is also known for its special ecosystem:  that of the black water ecosystem. This particular ecosystem was created from decomposing organic matter living in these peat swamps, resulting in the blackened water and the unique variety of organisms.</p>
                     <p>The World Wildlife Fund (WWF) Indonesia campaigned to establish the park, which was gazetted in 2004, and the organizaton remains at the forefront at involving nearby residents in low-impact logging, home industry, reforestation and ecotourism. Thus, providing balance harmony between the preservation of Orangutan and the community. </p>
                     <p>Latest developments based on genetic research by Zhang (2001) and Taxonomy by Groves (1999) revealed that the Borneo Orangutan, Pongo pygmaeus, is of a different species from the Sumatran Pongo abelli. The Borneo orangutan has a distinctive body shape with very long arms that may reach up to two meters in length. They have a coarse, shaggy reddish coat and grasping hands and feet. They are highly sexually dimorphic, with adult males being distinguished by their large size, throat pouch and flanges on either side of the face, known as cheek pads. The Borneo orangutan travels on the ground more than its Sumatran counterpart. It is theorized this may be partly because herethere is no need to avoid large predators as found in Sumatra including he Sumatran Tigers.</p>
@@ -110,18 +174,6 @@
                 <img src="images/place/tj puting.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Tanjung Puting National Park</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="tanjung_puting_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Imagine you are an explorer heading out to the jungle to see wild orang utans and other exotic tropical animals and you will begin to get a sense of what a visit to theTanjung Puting National Park is like.</p>
                     <p>The park, which covers territory the size of Bali, is home to an amazing array of wildlife including it’s world famous orang utans. The park is also home to monkeys, birds and other wildlife, not to mention the pristine vegetation of the jungle itself. This is a world famous natural treasure which attracts a growing number of international visitors each year.</p>
                     <p>Tanjung Puting is located in Central Kalimantan. The area was originally declared as a game reserve in 1935 and became a national park in 1982. The park sits on a peninsula that juts out into the Java sea. The sheer size of the park means that it has diverse habitat zones. This diversity means the park is home to a great variety of inhabitants, both flora and fauna.</p>
@@ -131,28 +183,6 @@
             	</div>
             </div>
 		</div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

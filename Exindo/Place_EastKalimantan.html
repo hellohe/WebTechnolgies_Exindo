@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-    <script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -59,19 +147,7 @@
             <div class="article">
                 <img src="images/place/derawan.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Derawan Archipelago</h3>  
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="derawan_archipelago" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>              
+                    <h3>Derawan Archipelago</h3>                
                     <p>The Derawan islands must be everyone’s dream of the perfect tropical paradise: warm, isolated  islands with soft white sand beaches fringed with waving palm trees, pristine seas that change color from green to deep blue, and an amazing underwater life of giant turtles, dolphins, manta rays, dugongs and barracudas, stingless jellyfish and sometimes, whales  Derawan is indeed one of world’s richest areas in bio-diversity. Small wonder that the Derawan Islands are considered the third best dive destination in the world.</p>
                     <p>Located just away from the mainland of East Kalimantan in the district of Berau, the Derawan archipelago comprises 31 islands, most well known among these are the islands of Derawan, Maratua, Sangalaki and Kakaban. Here is Indonesia’s largest nesting site of the rare and endangered giant green turtles and hawksbill turtles, where one can daily watch turtles lay their eggs in the sand or swim to sea with the turtles. The entire marine conservancy region covers a total area of no less than 1.27 million hectares.</p>
                     <p>Here, you can find 460 different species of corals, ranking this area second only to the Raja Ampat Islands in West Papua. The Nature Conservancy and a team of international experts also found more than 870 species of fish here, ranging from tiny pygmy seahorses to giant manta rays. On some days, groups of up to 50 manta rays have been seen feeding together in Derawan’s waters, says the Conservancy.</p>
@@ -83,19 +159,7 @@
                 <img src="images/place/balikpapan.jpg"/>
                 <div style="margin-left:250px;">
                 <h3>Balikpapan</h3>
-                <div id="ratingBox">
-                    <!--change div id="r1" to article title-->
-                    <div id="balikpapan" class="rate_widget">
-                        <div class="star_1 ratings_stars"></div>
-                        <div class="star_2 ratings_stars"></div>
-                        <div class="star_3 ratings_stars"></div>
-                        <div class="star_4 ratings_stars"></div>
-                        <div class="star_5 ratings_stars"></div>
-                        <div class="total_votes">vote data</div>
-                        <div class="prev_vote"></div>
-                    </div>
-                </div>
-            <p>Located on the south eastern coast of East Kalimantan facing the deep Makassar Straits, the town of Balikpapan is known as the Oil City of Indonesia. Its anniversary which falls on 10th of February, in fact celebrates the first oil drilling undertaken in the area, known as the “Mathilda” drill.</p>
+                <p>Located on the south eastern coast of East Kalimantan facing the deep Makassar Straits, the town of Balikpapan is known as the Oil City of Indonesia. Its anniversary which falls on 10th of February, in fact celebrates the first oil drilling undertaken in the area, known as the “Mathilda” drill.</p>
                 <p>For this reason, Balikpapan, like its counterpart city of Pekanbaru in Riau on Sumatra, is better known for its oil rather than its tourist attractions. Oil and other mining industries are the reasons why nearly all domestic airlines fly to Balikpapan rather than to the provincial capital of Samarinda.  For, it is in Balikpapan where gather the oil and mining related foreign and Indonesian business communities. Exports from Balikpapan are chiefly in oil, natural gas and coal, while agricultural produce take second place.</p>
                 <p>Balikpapan’s Sepinggan airport is also the main transit point  inland toTanjungredep  airport in Berau, the hopping off point to the wonderful Derawan Dive Islands.</p>
                 <p>It comes as no surprise, therefore, that Balikpapan has a number of five and four starred hotels catering to top management clientele and their VIP visitors, although more reasonable rate hotels are also available around town.</p>
@@ -110,44 +174,10 @@
                 <img src="images/place/kutai.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Kutai National Park</h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="kutai_national_park" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Kutai National Park (KNP) is a lowland tropical forest in East Kalimantan. KNP has an area width of 198,629 hectares. Its bio-diversity and vegetation makes it a great destination for local as well as foreign nature lovers and researchers. Iron-meranti-kapur (Dryobalanops Spp.) woods, mixed dipterocarpaceae, mangroves and kerangsa are types of vegetations found in KNP.</p>
             	</div>
             </div>
 		</div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
-        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

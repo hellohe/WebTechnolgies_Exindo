@@ -8,11 +8,99 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-  	<script type="text/javascript" src="js/Rating.js"></script>
-    <script type="text/javascript" src="js/exindoContent.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//initialize menu
+			cbpHorizontalMenu.init();
+
+			//search for cookie
+			var allCookie = document.cookie.split(";");
+			var name;
+			var pass;
+			for(var i = 0;i < allCookie.length; i++){
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
+					name = allCookie[i].split("=")[1];
+				}
+				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
+					pass = allCookie[i].split("=")[1];
+				}
+			}
+			//automatic login if cookie is available
+			if(name != null && pass != null){
+				$.ajax({
+					type:"POST",
+					url:"checklogin.php",
+					data:{"memberUsername":name, "memberPassword":pass},
+					dataType: "json",
+					success: function(response){
+						if(response == "empty"){
+							document.getElementsByClassName('warningtxt')[0].style.display = "block";
+							document.getElementById('username').value = "";
+							document.getElementById('password').value = "";
+						}
+						else{
+							//close the login popup box
+							$('#mask , .loginpopup').fadeOut(500 , function() {
+								$('#mask').remove();
+							});
+							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+							if(document.getElementsByClassName('remember')[0].checked){
+								var expireDate = new Date();
+								expireDate.setDate(expireDate.getDate() + 13);
+								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
+								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
+							}
+						}
+					}
+				});
+			}
+			
+			//check whether the user is logged in or not
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				success: function(response){
+					if(response != "empty"){
+						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+					}
+				}
+			});
+			
+			//jquery eventhandler for sign in
+			$('a.signin').click(function() {
+				// Getting the variable's value from a link and show
+				var loginBox = $(this).attr('href');
+				$(loginBox).fadeIn(500);
+				
+				//position
+				var popMargTop = ($(loginBox).height() + 24) / 2; 
+				var popMargLeft = ($(loginBox).width() + 24) / 2; 
+				
+				$(loginBox).css({ 
+					'margin-top' : -popMargTop,
+					'margin-left' : -popMargLeft
+				});
+				
+				// Add the mask to body
+				$('body').append('<div id="mask"></div>');
+				$('#mask').fadeIn(500);
+				
+				return false;
+			});
+			
+			//closing modal login box
+			$('a.close, #mask').on('click', function() { 
+				$('#mask , .loginpopup').fadeOut(500 , function() {
+					$('#mask').remove();  
+				}); 
+				return false;
+			});
+		});
+		</script>
 </head>
 
-<body onload="configHCB();">
+<body>
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -33,7 +121,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
+				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -60,18 +148,7 @@
                 <img src="images/place/Ora Beach.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Ora Beach</h3>
-                	<div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="ora_beach" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
+                
                     <p>As the country with the second longest coastline in the world, Indonesia is home to countless beautiful beaches, and has won numerous awards for such. One of these beaches is Ora Beach, carefully hidden away on the North Coast of Seram Island. An exotic and extremely remote destination, Ora beach is perfect for Eco-travellers and honeymooners alike. A row of cozy, wooden cottages line the sandy, white beaches, overlooking the crystal clear waters of Sawai Bay, and with a backdrop of limestone cliffs and majestic mountains, covered in lush, tropical greenery. Seram island is most famous for its abundant bird life. Of 117 species found on the island, 14 are endemic to Seram.</p>
                     <p>Seram is the largest island in the Maluku province, measuring approximately 16,000 square kilometers, yet is home to a population of only about 170,000. It lies just north of the smaller and more historically renowned island of Ambon. Maluku Province is located between Indonesia’s larger islands of Sulawesi and Papua. Seram’s geographic location amidst several tectonic plates, gives the island a remarkably complex terrain. A central mountain range runs across the island, its highest mountain, Gunung Binaya, peaking at just over 3,000 meters. The island is covered mostly in dense, tropical rain forests, bordered on one side by towering cliffs and the other by sandy white beaches, and finally encircled by a crystal blue sea.</p>
                 </div>
@@ -81,18 +158,6 @@
                 <img src="images/place/Banda Neira.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Banda Neira </h3>
-                    <div id="ratingBox">
-                        <!--change div id="r1" to article title-->
-                        <div id="banda_neira" class="rate_widget">
-                            <div class="star_1 ratings_stars"></div>
-                            <div class="star_2 ratings_stars"></div>
-                            <div class="star_3 ratings_stars"></div>
-                            <div class="star_4 ratings_stars"></div>
-                            <div class="star_5 ratings_stars"></div>
-                            <div class="total_votes">vote data</div>
-                            <div class="prev_vote"></div>
-                        </div>
-                    </div>
                     <p>Banda Neira or Banda Naira is one of ten volcanic islands in the Banda Archipelago in the Maluku province, in eastern Indonesia. The Banda Islands, probably better known as the fabled Spice Islands of ancient times, are covered with towering, aromatic, tropical-evergreens.The Myristica Trees, indigenous to the Banda Islands, are the source of two rare and lucrative spices: nutmeg and mace – once found exclusively on the Banda Islands. A sparkling, sapphire sea surrounds these already incredible islands, brimming with exquisite corals and abundant ocean life, making the Banda Islands not only a historically significant destination, but also an internationally recognized diving spot.
                     <p>Stepping onto the shores of Banda Neira is like taking a stroll through history—a trip back in time into a town that has remained relatively unchanged for centuries. Remnants of a once great trading centre are visible across the island. The majestic Dutch Fort, Belgica, sits in its lofty position atop the high hill overlooking Neira’s Bay, commanding the attention and recognition of all who pass. Ancient cannons lie scattered across the island, serving as reminders of the days when the Banda’s production of one of the world’s most sought-after commodities was one that was worth fighting to rule. Huge colonial palaces from times of the Dutch, Portuguese and British rule still leave their mark on Neira, built by those who had been catapulted into riches after successfully completing the arduous journey across oceans and seas for a spice once worth their weight in gold.</p>
                     <p>The Banda Islands have been a regional trading post for thousands of years, but were first settled by European sailors in the early 16th century. Upon discovery of the island’s high production of these spices, the Bandas were instantly transformed into an international centre of trade, luring merchants from opposite ends of the globe for a chance at fortune. The spices are well-known for their preservative qualities, and were once believed to have multiple medicinal qualities, including being a cure for the bubonic plague.</p>
@@ -100,28 +165,6 @@
                     <p>Pulau Run, or Run Island is one of the smaller Banda islands, measuring only about 3 x 1 km, yet it is sometimes considered to be Indonesia’s “most valuable real estate.” Multiple European powers had battled for control of the islands for many years until the signging of the Treaty of Breda in 1667. The British traded the tiny island of Run with the Dutch for an equally tiny island on the other side of the world, thus giving the Dutch full monopoly of the Banda islands which they maintained for almost two hundred years. The island across the globe traded to the British still goes by its Dutch name: Manhattan, in New York, USA.</p>
                 </div>
             </div>
-        </div>
-        
-        <div id="commentSection">
-            <!-- begin htmlcommentbox.com -->
-            <div id="HCB_comment_box">
-                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
-            </div>
-            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
-			<script type="text/javascript" id="hcb">
-                if(!window.hcb_user){
-                    hcb_user={};
-                } 
-                (function(){
-                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
-                    s.setAttribute("type","text/javascript");
-                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
-                    if (typeof s!="undefined") 
-                        document.getElementsByTagName("head")[0].appendChild(s);
-                    })
-                ();
-            </script>
-            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

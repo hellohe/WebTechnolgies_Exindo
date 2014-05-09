@@ -264,21 +264,21 @@ img.closeBtn {
 	height:32px;
 }
 
-/*rating css*/
+/*rating css */
 .rate_widget {
+    border:     1px solid #CCC;
     overflow:   visible;
     padding:    10px;
     position:   relative;
-    width:      500px;
-    height:     50px;
+    width:      270px;
+    height:     54px;
 }
 .ratings_stars {
     background: url('images/starEmpty.png') no-repeat;
     float:      left;
-    height:     20px;
+    height:     50px;
     padding:    2px;
-    width:      20px;
-	clear:right;
+    width:      50px;
 }
 .ratings_vote {
     background: url('images/starFull.png') no-repeat;
@@ -287,14 +287,18 @@ img.closeBtn {
     background: url('images/starHighlight.png') no-repeat;
 }
 .total_votes {
-    /*background: #eaeaea;*/
-	top:30px;
+    background: #eaeaea;
+    top: 75px;
+    left: 0;
+    padding: 5px;
     position: absolute; 
 }
 .prev_vote{
-	/*background: #eaeaea;*/
-	top:50px;
-    position: absolute;  
+	background: #eaeaea;
+    top: 100px;
+    left: 0;
+    padding: 5px;
+    position: absolute; 
 }
 
 fieldset { 
@@ -408,6 +412,10 @@ form.signinform .textbox .remember{
 	color:#036;
 }
 
+.contents object{
+	padding-bottom:30px;
+}
+
 .article p{
 	font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size:18px;
@@ -477,12 +485,12 @@ form.signinform .textbox .remember{
 	padding-top:5px;
 	padding-bottom:50px;
 	padding-left:70px;
-	padding-right:30px;
+	padding-right:10px;
 }
 
 .imgContact img{
 	padding-top:10px;
-	padding-right:70px;
+	padding-right:30px;
 	width:450px;
 	height:200px;
 }
@@ -546,25 +554,4 @@ form.signinform .textbox .remember{
 	font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	font-size:small;
 	text-align:center;
-}
-
-#commentSection{
-	width:700px;
-	height:auto;
-	padding:20px;
-	box-shadow:0px 0px 15px #000;
-	margin-top: auto;
-	margin-right: auto;
-	margin-bottom: 20px;
-	margin-left: auto;
-}
-
-#HCB_comment_box{
-	display:none;
-}
-
-#HCB_comment_box h3{
-	text-align:center;
-	font-size: 34px;
-	font-weight: bold;
 }
