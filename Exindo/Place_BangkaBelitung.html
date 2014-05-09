@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-			
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+  	<script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -121,7 +33,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -147,7 +59,19 @@
 			<div class="article">
 				<img src="images/place/Lengkuas Island.jpg" />
 				<div style="margin-left:250px;">
-					<h3>Lengkuas Island</h3>            
+					<h3>Lengkuas Island</h3>   
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="lengkuas_island" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>         
 					<p>The twin islands of Bangka-Belitung off the eastern coast of Sumatra are surrounded by a number of beautiful tiny islands. Notable among these Lengkuas Island, blessed with a pristine beach, turquoise blue waters and distinct huge granite boulders, the icon of Belitung beaches, located north of Tanjung Binga Village in Belitung. Adding to the splendor is the existence of a hundred years’ old Lighthouse which offers complete fascinating views of the island and its surroundings.</p>
 					<p>With a total area of less than 1 hectare, Lengkuas is located within the Sijuk sub-district, Belitung Regency. While it may be small in size nevertheless it offers a wide range of splendors. This humble little island offers idyllic landscape, lush palm trees and staggering boulders that are great fun to climb on or swim beneath.</p>
 					<p>One can reach these unique, giant granite clusters by walking across the shallow waters that are no deeper than 1.2 meters. The water is so transparent that the bottom of the sea is clearly visible.  Below the surface, the waters around the island are filled with colorful fish of various kinds, pristine coral reefs, a large number of starfish and more of the fascinating granite boulders. The moderately calm and shallow water makes it a perfect place for swimming and snorkeling, while on the beach the fresh breeze will truly indulge those who lay down on the soft white sands.</p>
@@ -159,6 +83,18 @@
 				<img src="images/place/belitung.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Belitung Island</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="belitung_island" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>Off the eastern coast of Sumatra, flanked by the Gaspar and Karimata Straits, lies an enchanting island with beautiful beaches and fascinating scenery called:  Belitung Island. Its unique landscape, decorated with pearly white sand beaches, crystal clear water, and magnificent granite stone formations on its shallow shores, are some of the best features of the island. Along with the much larger nearby Bangka Island and other smaller islands, the island-cluster was once a district in the Province of South Sumatra. But in 2000, the island group was officially declared the 31st province of Indonesia called the Bangka Belitung Islands Province. Belitung Island itself is divided into two districts, the Belitung district with capital Tanjung Pandan city, and the East Belitung District with Manggar city as its capital.</p>
 					<p>In September 2005, a native Belitung writer, Andrea Hirata, published a novel entitled “Laskar Pelangi” or the Rainbow troops. Set in the enchanting Belitung Island, the novel was widely acclaimed and even crossed geographical and language barriers as it has been translated into English, Malay, Chinese, Vietnamese and Korean. Later, in 2008, the novel was made into a movie, and the enchanting sceneries of Belitung Island were introduced to the rest of the world. The name”Laskar Pelangi” even became the name of the island’s seaport following the movie’s fantastic success.</p>
 					<p>Although not as popular as Bali or Lombok, Belitung is blessed with some of the best beaches of the country. The sand is soft and as white as palm sugar, and some even argue that the sand here is even whiter than that in Bali. The most distinct features of the Belitung Beaches are the fascinating granite rock formations that spread through its shallow shores. Ranging from several cubic meters, these giant granite rocks can measure up to the size of a typical house. Some formations of these giant rocks even have short tunnels underneath, making this an exciting playground for visitors to bathe in its calm waters. One of the most iconic granite rock beach sceneries is found at the Tanjung Tinggi Beach, which was featured in the Laskar Pelangi movie.</p>
@@ -172,6 +108,18 @@
 				<img src="images/place/Pantai Parai Tenggiri.JPG" />
 				<div style="margin-left:250px;">
 					<h3>Matras and Parai Tenggiri Beach </h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="matras_and_parai_tenggiri_beach" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>Matras and Parai Tenggiri in the northeast of Bangka, 48 km. from Pangkal Pinang and 12 km from Sungai Liat. The beach is about 3 kilometers long and its width is almost 30 metres. Parai, a beach set between rocky capes is an ideal location for relaxing and swimming. Local fishermen moor their vessels here aftBeaches er a day of fishing, giving the beach the picturesque feel of a fishing village.<br /><br /><br /><br /> </p>        
 				</div>
 			</div>
@@ -180,10 +128,44 @@
 				<img src="images/place/menumbing.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Mount Menumbing</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="mount_menumbing" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>Mount Menumbing (355 m) a rather high hill in the neighbourhood of Mentok (North West Bangka) stands as a memorial to the history of the Indonesian nation. A guest house which was built here by the Dutch in 1932 was used to house the former President Soe¬karno and Vice-President Hatta during their imprisonment from February to July 1949.</p>
 				</div>
 			</div>
 		</div>
+        
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

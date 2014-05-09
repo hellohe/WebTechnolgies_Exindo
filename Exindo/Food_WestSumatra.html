@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+    <script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -121,7 +33,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -148,6 +60,18 @@
                 <img src="images/food/rendang.jpg" />
                 <div style="margin-left:250px;">
                   <h3>Rendang</h3>
+                  <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="rendang" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                   <p>Rendang is a traditional food which consist of meat and coconut milk. This food originated come from Minang Kabau, Sumatera Barat, Indonesia. Rendang can be found in every Padang Restaurants in Indonesia.
     In the 2011 through the internet polling which involving 35,000 respondents which held by CNN International, Rendang has crowned as a first ranked of delicious meal in the list of 'World's 50 Most Delicious Foods'.</p>
                 </div>
@@ -157,6 +81,18 @@
                 <img src="images/food/masakan padang.jpg" />
                 <div style="margin-left:250px;">
                   <h3>Padang Food</h3>
+                  <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="padang_food" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                   <p>Padang food is the cuisine of the Minangkabau people of West Sumatra, Indonesia. It is named after the city of Padang, the capital city of West Sumatra province. It is served in restaurants opened by Minangkabau people in Indonesian cities. The term "Padang food" is often used to designate the whole culinary traditions of Minangkabau people. Padang food is famous for its rich taste of succulent coconut milk and spicy chili. Since most Minangkabau people are Muslims, Minangkabau cuisine follows halal dietary law rigorously. Protein intake are mostly taken from beef, water buffalo, goat, lamb meat, poultry, and fish. Seafood is popular in coastal West Sumatran cities, and most are grilled or fried with spicy chili sauce or in curry gravy. Most of Minangkabau food is eaten with hot steamed rice or compressed rice such as katupek (ketupat). Vegetables are mostly boiled such as boiled cassava leaf, or simmered in thin curry as side dishes.</p>
                 </div>
             </div>
@@ -165,6 +101,18 @@
                 <img src="images/food/sate padang.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Sate Padang</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="sate_padang" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>A dish from Padang and the surrounding area in West Sumatra, which is made from cow or goat offal boiled in spicy broth then grilled. Its main characteristic is a yellow sauce made from rice flour mixed with spicy offal broth, turmeric, ginger, garlic, coriander, galangal root, cumin, curry powder and salt. It is further separated into two sub-variants, the Pariaman and the Padang Panjang, which differ in taste and the composition of their yellow sauces.
         </p>
                 </div>
@@ -174,11 +122,45 @@
                 <img src="images/food/nasi kapau.jpg" />
                 <div style="margin-left:250px;">
                   <h3>Nasi Kapau</h3>
+                  <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="nasi_kapau" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Nasi Kapau is a Minang steamed rice topped with various choices of dishes originated from Nagari Kapau, Bukittinggi, a  culinary hotspot town in West Sumatra, Indonesia.A Nasi Kapau food stall usually consists of stages and rows of large bowls, plates or saucepans filled with various dishes. In these stalls, after the customer is seated, he or she is asked which dishes they desire. The waiter then prepared steamed hot rice on plate with cubadak (unripe jackfruit gulai), and boiled cassava leaf, and sambal. The chosen dishes will be put directly — using long serving spoon — upon the steamed rice or in separate small plates. Nasi kapau eating establishments usually insist on using high quality fragrant rice. In Minang food establishments, it is common to eat with one's hands. They usually provide kobokan, a bowl of tap water with a slice of lime in it to give a fresh scent. This water is used to wash one's hands before and after eating. If a customer does not wish to eat with bare hands, it is acceptable to ask for a spoon and fork.</p>
 				</div>
 			</div>
         </div>
 		
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>
