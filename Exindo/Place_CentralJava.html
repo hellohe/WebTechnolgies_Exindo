@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+  	<script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -121,7 +33,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -146,7 +58,19 @@
             <div class="article">
                 <img src="images/place/borobudur.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Borobudur Temple – Magelang</h3>                
+                    <h3>Borobudur Temple – Magelang</h3> 
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="borobudur" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>               
                     <p>The magnificent Borobudur temple is the world’s biggest Buddhist monument, an ancient site widely considered to be one of the world’s seven wonders. Built in the 9th century during the reign of the Syailendra dynasty, the temple’s design in Gupta architecture reflects India's influence on the region, yet there are enough indigenous scenes and elements incorporated to make Borobudur uniquely Indonesian. This awe inspiring monument is truly a marvel. After a visit here you will understand why it is Indonesia’s most visited tourist attraction and a famous icon of Indonesia’s cultural heritage.</p>
     
                     <p>Located on the island of Java, the temple sits majestically on a hilltop overlooking lush green fields and distant hills. It covers an enormous area, measuring 123 x 123 meters. The monument is a marvel of design, decorated with 2,672 relief panels and 504 Buddha statues. The architecture and stonework of this temple has no equal. And it was built without using any kind of cement or mortar! The structure is like a set of massive interlocking Lego blocks held together without any glue.</p>
@@ -165,6 +89,18 @@
                 <img src="images/place/Baturaden Waterfall.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Batu Raden</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="batu_raden" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Baturraden. Central Java’s most outstanding resort, approximately 14 kms north of Purwokerto, an administrative town in the southern of Java island. It is occupies a fine site on the slopes of Mount Slamet, 650 m above sea level, feel the coolness air, nice gardens, pines forest, hot springs, ponds and bungalow-style hotels.<br /><br /><br /><br /></p>
             	</div>
             </div>
@@ -173,6 +109,18 @@
                 <img src="images/place/lawang sewu.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Lawang Sewu</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="lawang_sewu" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Abandoned and antique buildings have a tendency to inspire stories. Legends, Myths, Haunted tales of the building's origin, its owners and builders. Indonesia as a whole is home to numerous historical and mystical buildings, many antique and dating back hundreds of years. One such building is Lawang Sewu which was built by the Dutch between the years 1904 and 1907 and functioned as head office for The Dutch East Indies Railway Company (Nederlandsch Indische Spoorweg Maatschappij) until 1942. During World War II, the building was used as Japanese Military Headquarters. It is located on the Tugu Muda roundabout, in Semarang, capital city of Central Java. </p>
         
                     <p>Lawang Sewu in the Javanese language is translated to mean "A thousand doors". And while the building does not really have a thousand doors, the massive, three-story structure is lined with numerous doors and windows that resemble doors, from which the building obtained its name.</p>
@@ -187,6 +135,18 @@
 				<img src="images/place/dieng.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Dieng Plateau</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="dieng" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>The name ‘dieng’ which literally translates as ‘abode of the Gods’ says all you need to know about this collection small ancient temples set in the  remarkable volcanic landscape of the Dieng Plateau. The misty location, sulphurous springs and colored lakes truly make this a place of natural wonder and cultural significance.</p>
 					<p>Come here and you will be transported back to ancient times. The temples are remnants from the glorious period of the Hindu empire in Java dating back to the 7th and 8th centuries. Standing on a plateau 2,000 meters (6,500 ft) above sea level, it is the extraordinary setting of these temples which make them most remarkable. It is believed that this place was chosen as the sacred location because of the spectacular landscape.</p>
 					<p>From the bubbling mudholes, brightly colored sulphur lakes and thick mist surrounding the plateau, visitors will easily understand why the ancient Javanese considered this place to be the seat of supernatural powers. Modern visitors to the plateau are enthralled by the unearthly beauty of this spot, with many finding it quite eerie.</p>
@@ -201,6 +161,18 @@
 				<img src="images/place/karimun java.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Karimun Java</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="karimun_java" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>Travelers to Central Java do not need to go far to enjoy marine life, above and below the sea. The Karimunjawa archipelago, located in the Java Sea, north of the capital city of Semarang, has everything to offer divers and backpackers who enjoy trekking and snorkeling along a pristine beach. The Karimun Jawa National Park (not to be confused with the Karimun Islands in Bintan, Riau) is one amongst seven marine national parks in Indonesia. Taking only a four to five-hour trip from Semarang, you will be surrounded by natural beauty, so that you wish that you could stay there forever.</p>
 					<p>Separated from the larger Java Island, the marine conservation area is far from the hustle and bustle of the metropolis, although it floats geographically only 120 kilometers off the north coast of Semarang between Java and Kalimantan. Such distance forms a natural fence from physical degradation and has made it culturally resilient from modern influences.</p>
 					<p>Karimunjawa was formally declared a Marine Protection Area in 1986 encompassing some 272,000 acres, with the largest part being sea. Then on February 22, 1999, it was signed as the Karimunjawa National Park. The pristine beaches and seas are home to healthy coral reefs that scatter in an 80 kilometers wide area all the way to the coast of Jepara, a Central Java town, well known for its top-drawer furniture.</p>
@@ -210,6 +182,28 @@
 				</div>
 			</div>
 		</div>
+        
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
         
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>

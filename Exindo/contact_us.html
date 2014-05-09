@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Contact Us | Exindo - Exciting Indonesia, Your Lifetime Journey</title>
     <link href="style.css" rel="stylesheet" type="text/css"/>
-	<link href="css/ticker-style.css" rel="stylesheet" type="text/css" />
     <link href="images/logo.png" rel="shortcut icon" />
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
@@ -57,6 +56,11 @@
 				});
 			}
 			
+			var loggedin = CheckUserLoggedIn();
+			if(loggedin != false){
+				document.getElementById('statusbox').innerHTML = 'Welcome, ' + loggedin + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+			}
+			
 			//jquery eventhandler for sign in
 			$('a.signin').click(function() {
 				// Getting the variable's value from a link and show
@@ -84,9 +88,29 @@
 				$('#mask , .loginpopup').fadeOut(500 , function() {
 					$('#mask').remove();  
 				}); 
+				document.getElementsByClassName('warningtxt')[0].style.display = 'none';
 				return false;
 			});
 		});
+		
+		//check whether the user is logged in
+		function CheckUserLoggedIn(){
+			var loggedin;
+			$.ajax({
+				type:"POST",
+				url:"CheckUserLoggedIn.php",
+				async:false,
+				success: function(response){
+					if(response != "empty"){
+						loggedin = response;
+					}
+					else{
+						loggedin = false;
+					}
+				}
+			});
+			return loggedin;
+		}
 		</script>
 </head>
 
@@ -111,7 +135,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>

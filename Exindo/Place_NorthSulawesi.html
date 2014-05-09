@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+    <script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -121,7 +33,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -147,7 +59,19 @@
             <div class="article">
                 <img src="images/place/bunaken.jpg" />
                 <div style="margin-left:250px;">
-                    <h3>Bunaken</h3>                
+                    <h3>Bunaken</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="bunaken" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>                
                     <p>Ever fancy yourself being a mermaid? Being able to swim along with other creatures of the sea , moving to the rhythm of the waves? In the Bunaken Marine Park, you will encounter a real “mermaid”, and you can also get a glimpse of sea life here.</p>
     
                     <p>Bunaken is an 8.08 km² island in the Bay of Manado, situated in the north of the island of Sulawesi, Indonesia. Bunaken forms part of the administrative city of Manado , capital of North Sulawesi. The marine Park around Bunaken is part of the  National Park that also includes the ocean around the island of  Manado Tua – or Old Manado, Siladen and Mantehage.</p>
@@ -168,6 +92,18 @@
                 <img src="images/place/tondano.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Lake Tondano</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="lake_tondano" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Lake Tondano is a famous tourist destination in the province of North Sulawesi. It is located 600 meters above sea level and covers an area of 4,278 hectares (or about 10,571 acres). This lake is situated by the village of Remboken, some 3 kilometers from Tomohon city or some 30 km from Manado.</p>
         
                     <p>Lake Tondano  is surrounded by mountains of 700 meters high, which are the Lembena, the Kaweng, the Tampusu and Masarang. The lake covers three sub-districts, these are Eris, Kakas and Remboken. From the lake side, you can see clearly Mount Kaweng.</p>
@@ -180,6 +116,18 @@
                 <img src="images/place/tomohon.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Flower City of Tomohon</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="flower_city_of_tomohon" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Tomohon is a hill resort located some 22 kilometers east of Manado, the capital city of North Sulawesi province.  Tomohon consists of 35 villages in five sub-districts, namely West, East, Central, South and North Tomohon.</p>
         
                     <p>Its land contour, cool weather and fertile soil encourage the local community to cultivate various kinds of flowers and vegetables. This city is known as a producer of flowers.  When in season,  the  flower gardens of the local inhabitants look very beautiful.</p>
@@ -187,6 +135,28 @@
                     <p>Annually the Tomohon Flower Festival is held here in  June and July. During this event, watch the flower floats parade through the town.  A flower tournament is also held during this Festival where participants from 94 cities in Indonesia take part at the Inspiration Hill.</p>                
             	</div>
             </div>
+        </div>
+        
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
         </div>
         
         <div class="footer">    

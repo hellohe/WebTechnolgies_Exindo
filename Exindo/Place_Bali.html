@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+  	<script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -121,7 +33,7 @@
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
                 <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -148,6 +60,18 @@
                 <img src="images/place/kuta beach.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Kuta Beach</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="kuta_beach" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Once a sleepy village with a quiet, beautiful sweep of beach, Kuta today has become a popular beach destination in its own right, alive with tourists from all over the world, swimming, surfing or sunbathing by the beach. Others, casually dressed in shorts, T-shirts and flip-flops stroll along its main road, shopping around or enjoying meals at its many open air restaurants. When in Kuta you know that you are in a holiday town, and people here are in a holiday mood. </p>
                     <p>Back in the 1960’s the only hotel was the Kuta Beach Hotel, but soon without much planning, Kuta developed rapidly into a haunt for surfers and backpackers, while the high end market preferred to stay at the more sedate Sanur village on the opposite side of the peninsula.  </p> 
                     <p>With time, Kuta’s popularity grew, and shops, restaurants, discos hotels, - from the simple to the exclusive - sprang up along the main road from Kuta to Legian, catering to the ever increasing holiday crowd, that not only included international tourists but also domestic visitors from Jakarta and other big cities. </p>
@@ -160,6 +84,18 @@
 				<img src="images/place/ubud.jpg"/>
 				<div style="margin-left:250px;">
 					<h3>Ubud – Ubud Monkey Forest</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="ubud" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>If you’re looking for peace and quiet, then Ubud is the place to be. Steeped in culture and enhanced by magnificent vistas, Ubud offers a respite from the humdrum of your busy life. In the past, Ubud was just a small village, but now it has grown into a thriving yet laid back cosmopolitan community. Ubud pampers visitors in body and soul. Fine dining restaurants and spas here will delight and relax the senses. A walk through the lush paddy fields, watching colourful processions of women gracefully balancing piles of fruit offerings on their way to the temple, are lasting impressions and simply breathtaking.</p>
 					<p>The best way to observe Bali’s traditions and culture is through mingling with the locals and watching their daily routine. In this town, you can visit the temples and villages that have remained relatively unchanged through the years. Art galleries are also abundant. Masterful paintings and sculptures are waiting to be admired and appreciated, for who knows you may find the perfect painting or statue to grace your own living room?</p>
 					<p>This region is steeped in history and culture. Many remains from the old kingdoms of Bali can be found here, and unique arts and crafts are just waiting to be discovered. Known for its tranquillity, Ubud offers several natural retreats. The lush, green views and cool atmosphere makes morning and afternoon strolls most pleasant.</p>
@@ -173,6 +109,18 @@
 				<img src="images/place/Tanah Lot.jpg" />
 				<div style="margin-left:250px;">
 					<h3>Tanah Lot</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="tanah_lot" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>To many people, Tanah Lot epitomizes the romantic island of Bali. This is the image of Balinese temples on the rock facing the wide open ocean, perched high above the crashing waves below, with as background the colorful sky at dusk, lit by the slowly disappearing setting sun.
 					<p>Located in the sea some 300 meters from shore, the huge rock of Tanah Lot is reachable overland at low tide. On its northern side stand two Balinese temples built on an overhanging cliff which connects the islet to the shore. Underneath the rock are caves that are inhabited by sea snakes, believed to be the guardians of the temples. </p>    
 					<p>The Tanah Lot temples form an inseparable part of the Dang Kahyangan temples, the six most holy temples on Bali, but here believers pray to the god of the sea. On the west side of the rock is a spring which the Hindus believe to be holy water and the reason why the temples were built on this rock. </p>
@@ -186,6 +134,18 @@
 				<img src="images/place/gwk.jpg" />
 				<div style="margin-left:250px;">
 					<h3>The Giant Garuda Wisnu Kencana (GWK) Statue</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="gwk" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
 					<p>Situated on a limestone plateau in south Bali, high on the Bukit Peninsula, 300 meters above Bali’s shoreline, is the Garuda Wisnu Kencana Cultural Park that offers a grand view on Jimbaran Bay and Kuta to the west, and Tanjung Benoa andSanur to the east with the imposing Mount Agung and Mount Batur as its background.</p>
 					<p>Focal point of this Cultural Park is the magnificent Garuda Wisnu Kencana statue, that will reach a total height of 126 meters, weighing 3,000 tons, that will be taller than the Statue of Liberty in New York. The statue depicts Lord Vishnu mounting the mythical Garuda bird, as manifestation of the conscience of Amerta, the Perennial Goodness.</p>
 					<p>At present, the 23 meters high head and torso of Lord Vishnu already stands in place. Still in construction is the giant Garuda Bird. When completed, both the head and torso of Lord Vishnu will be placed on the Garuda bird, which together will reach 75 meters high with the Garuda wings spanning 64 meters wide. The entire statue will then be placed on top of a 60 meters pedestal, so that the total structure will stand 126 meters high. The statue’s structure is made of copper, brass, steel, with gold mosaic placed on specified parts.</p>
@@ -200,6 +160,28 @@
 			</div>
 		</div>
 
+		<div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

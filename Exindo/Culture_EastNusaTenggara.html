@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-			
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+  	<script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -109,7 +21,7 @@
         </div>
 		
 		<div id="loginbox" class="loginpopup">
-			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
 			<form name="form1" method="post" action="" class="signinform">
 			<fieldset class="textbox">
 				<label class="username">
@@ -120,8 +32,8 @@
 					<span>Password: </span>
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
-                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember">Remember Me!</span>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -148,6 +60,18 @@
                 <img src="images/culture/Sasando.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Sasando</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="sasando" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Sasando is a stringed musical instrument or cordophone type musical instrument. It comes from the island of Rote, East Nusa Tenggara Indonesia. The most southern island in Indonesia archipelago. Sasando word comes from Rote word sasandu. It means vibrant instrument. Sasando form is similar to other stringed instruments such as guitar, violin and harp.</p>
 					<p>The main part of the long tubular Sasando commonly made from bamboo. Then in the middle, circling from top to bottom is placed some lumps in which the strings that stretched across the tube, from top to bottom resting. The wedge gives different tone to each passage of the string. Then this Sasando tube placed in a container made from a kind of woven palm leaves (Lontar leaves ) like a fan made. This container is the place of Sasando resonance</p>
 					<p>The composition of the notation is irregular and you can not see it because it is wrapped. Sasando is played with both hands from the opposite direction. From left to right and left to right. Left hand plays the melody and bass, while right hand plays the accord. That makes Sasando unique because somebody could play the melody, bass, and accord at once. And the harmony is awesome.</p>
@@ -158,11 +82,45 @@
                 <img src="images/culture/JoustingPasola.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Jousting Pasola</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="jousting_pasola" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Jousting Pasola ceremony on the island of Sumba is an interesting one for you to view. Pasola is a game bunch of colorful horsemen of the javelin throw on horseback. The ceremony was held during the month of February in the village Lamboya and Kodi also in March in Gaura and Wanokaka. The ceremony started a few days after the full moon and coincides with the celebration of the capture Nyale sea worms on the beach by local people.</p>
                 </div>
             </div>    
         </div>
 		
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

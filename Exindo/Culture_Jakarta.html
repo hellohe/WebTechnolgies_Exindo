@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-			
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+   	<script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -109,7 +21,7 @@
         </div>
 		
 		<div id="loginbox" class="loginpopup">
-			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
 			<form name="form1" method="post" action="" class="signinform">
 			<fieldset class="textbox">
 				<label class="username">
@@ -120,8 +32,8 @@
 					<span>Password: </span>
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
-                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember">Remember Me!</span>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
@@ -148,6 +60,18 @@
              <img src="images/culture/WayangKulit_Jakarta.jpeg" />
             <div style="margin-left:250px;">
                 <h3>Wayang Kulit</h3>
+                <div id="ratingBox">
+                    <!--change div id="r1" to article title-->
+                    <div id="wayang_kulit" class="rate_widget">
+                        <div class="star_1 ratings_stars"></div>
+                        <div class="star_2 ratings_stars"></div>
+                        <div class="star_3 ratings_stars"></div>
+                        <div class="star_4 ratings_stars"></div>
+                        <div class="star_5 ratings_stars"></div>
+                        <div class="total_votes">vote data</div>
+                        <div class="prev_vote"></div>
+                    </div>
+                </div>
                 <p>Among other cultural activities, the Taman Ismail Marzuki centre has facilities for traditional and classical art performances as well as theatres for presenting modern plays and concerts; the centre also has a planetarium. Traditional performances include wayang dance and drama, gamelan music, and wayang kulit shadow-play puppet shows. Traditional performances representing the culture of other parts of Indonesia are included in the programs presented at the annual Jakarta Fair.</p>
 			</div>
 			</div>
@@ -156,6 +80,18 @@
              <img src="images/culture/Ondel ondel.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Ondel - Ondel</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="ondel-ondel" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>The Ondel-ondel puppet is made on a bamboo frame of up to 2.5 to 5 meters high with a diameter of ± 80 centimeters. It is constructed in such a way so that it can be easily lifted by one person from the inside. The puppet is usually dressed in brightly colored garments or traditional Betawi clothings. The puppet's face is a mask made from wood and is its hair made of dried palm tree leaves that have been shredded lengthwise. The wooden mask of the male ondel-ondel is traditionally painted red, while the female is white.</p>
 					<p>Ondel-ondel is generally performed in pairs, resembling a couple of husband and wife. To enhance its visual appearance, the male is usually decorated with long moustache, beard, thick eyebrows, and sideburns. To make the female prettier, usually bright red lipstick, curled eyelashes, pointed eyebrows, and sometimes a mole are added.  Occasionally, child ondel-ondel are featured.</p>
                 </div>
@@ -165,6 +101,18 @@
              <img src="images/culture/Pencak_Silat.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Pencak Silat</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="pencak_silat" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>The history and development of the city of Jakarta is connected in many ways to the traditional culture of Pencak Silat Betawi, the Indonesian martial art that has for many centuries influenced and enhanced the lives of the indigenous Betawi. Amongst hundreds of martial arts in Indonesia covered under the name “Pencak Silat”, Silat Betawi is one of the oldest forms, and Betawi (Jakarta), the place where the art was born.</p>
  					<p>In almost every village in Indonesia today, you will find a form of Silat and a respected hero of that trade; a hometown hero who used martial arts to defend the good and protect them from tyranny. The Art of Silat in Indonesia is linked to honor, respect, and the triumph of good over evil.</p>
  					<p>The existence of Silat Betawi was first recorded in the 16th century and was often seen demonstrated at important events and celebrations, making the art not just a form of warfareor sport, but an integral part of local culture and social life. Also known as maenpukulan, Pencak Silat was once required teaching in Betawi amongst students of the Islamic Religion.</p>
@@ -174,6 +122,29 @@
             
             
         </div>
+        
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>

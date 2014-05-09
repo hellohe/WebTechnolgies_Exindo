@@ -8,99 +8,11 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/SigninSignout.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//initialize menu
-			cbpHorizontalMenu.init();
-			
-			//search for cookie
-			var allCookie = document.cookie.split(";");
-			var name;
-			var pass;
-			for(var i = 0;i < allCookie.length; i++){
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "name"){
-					name = allCookie[i].split("=")[1];
-				}
-				if(allCookie[i].split("=")[0].replace(/^\s+|\s+$/g,'') == "pass"){
-					pass = allCookie[i].split("=")[1];
-				}
-			}
-			//automatic login if cookie is available
-			if(name != null && pass != null){
-				$.ajax({
-					type:"POST",
-					url:"checklogin.php",
-					data:{"memberUsername":name, "memberPassword":pass},
-					dataType: "json",
-					success: function(response){
-						if(response == "empty"){
-							document.getElementsByClassName('warningtxt')[0].style.display = "block";
-							document.getElementById('username').value = "";
-							document.getElementById('password').value = "";
-						}
-						else{
-							//close the login popup box
-							$('#mask , .loginpopup').fadeOut(500 , function() {
-								$('#mask').remove();
-							});
-							document.getElementById('statusbox').innerHTML = 'Welcome, ' + response[0] + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-							if(document.getElementsByClassName('remember')[0].checked){
-								var expireDate = new Date();
-								expireDate.setDate(expireDate.getDate() + 13);
-								document.cookie = "name="+response[0]+";expires=" + expireDate.toGMTString();
-								document.cookie = "pass="+response[1]+";expires=" + expireDate.toGMTString();
-							}
-						}
-					}
-				});
-			}
-			
-			//check whether the user is logged in or not
-			$.ajax({
-				type:"POST",
-				url:"CheckUserLoggedIn.php",
-				success: function(response){
-					if(response != "empty"){
-						document.getElementById('statusbox').innerHTML = 'Welcome, ' + response + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-					}
-				}
-			});
-			
-			//jquery eventhandler for sign in
-			$('a.signin').click(function() {
-				// Getting the variable's value from a link and show
-				var loginBox = $(this).attr('href');
-				$(loginBox).fadeIn(500);
-				
-				//position
-				var popMargTop = ($(loginBox).height() + 24) / 2; 
-				var popMargLeft = ($(loginBox).width() + 24) / 2; 
-				
-				$(loginBox).css({ 
-					'margin-top' : -popMargTop,
-					'margin-left' : -popMargLeft
-				});
-				
-				// Add the mask to body
-				$('body').append('<div id="mask"></div>');
-				$('#mask').fadeIn(500);
-				
-				return false;
-			});
-			
-			//closing modal login box
-			$('a.close, #mask').on('click', function() { 
-				$('#mask , .loginpopup').fadeOut(500 , function() {
-					$('#mask').remove();  
-				}); 
-				return false;
-			});
-		});
-		</script>
+    <script type="text/javascript" src="js/Rating.js"></script>
+    <script type="text/javascript" src="js/exindoContent.js"></script>
 </head>
 
-<body>
+<body onload="configHCB();">
     <div class="container" id="container">
         <div class="header">
             <img src="images/logo.png" alt="logo" />
@@ -109,7 +21,7 @@
         </div>
 		
 		<div id="loginbox" class="loginpopup">
-			 <a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
+			<a href="#" class="close"><img src="images/closeBtn.png" class="closeBtn" title="Close Window" alt="Close" /></a>
 			<form name="form1" method="post" action="" class="signinform">
 			<fieldset class="textbox">
 				<label class="username">
@@ -120,11 +32,12 @@
 					<span>Password: </span>
 					<input type="password" id="password" name="password" placeholder="Password">
 				</label>
-                <span><input type="checkbox" name="remember" value="yes" class="remember" />Remember Me!</span>
-				<label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label>
+                <span><input type="checkbox" name="remember" value="yes" class="remember">Remember Me!</span>
+				<span><label class="warningtxt" style="color:#F00; display:none;">Invalid Username and/or Password</label></span>
 				<button type="button" class="submitBtn" onclick="signin()">Sign In</button>
 			</fieldset>
 			</form>
+		</div>form>
 		</div>
     
         <div class="cbp-container">	
@@ -148,6 +61,18 @@
              <img src="images/culture/KuncaranMaskDance.jpg" />
             <div style="margin-left:250px;">
                 <h3>Kuncaran Mask Dance</h3>
+                <div id="ratingBox">
+                    <!--change div id="r1" to article title-->
+                    <div id="kuncaran_mask_dance" class="rate_widget">
+                        <div class="star_1 ratings_stars"></div>
+                        <div class="star_2 ratings_stars"></div>
+                        <div class="star_3 ratings_stars"></div>
+                        <div class="star_4 ratings_stars"></div>
+                        <div class="star_5 ratings_stars"></div>
+                        <div class="total_votes">vote data</div>
+                        <div class="prev_vote"></div>
+                    </div>
+                </div>
                 <p>Kuncaran Mask Dance, is a dance that tells about a king that being rejected by a girl he loved. This dance is is having strong yet delicate movements that showing the anger of the rejection but also the gentle heart of the king who love the girl.
 				As mentioned, this dance is mainly using mask as the primary wardrobe that typical of West Java mask character. Moreover, the dancers are also wore traditional Javanese clothes. Behind the mask, it can be men or women who wear a figure of mask.</p>
 			</div>
@@ -157,6 +82,18 @@
              <img src="images/culture/MerakDance.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Merak Dance</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="merak_dance" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Merak dance is a traditional folk dance originating from Pasundan land, West Java. This dance was created by Raden Tjetjep Somantri in 1950s and it had been rearrange by Irawati Durban in 1965. Merak in English means Peacock bird.
 						From its name, it clearly describes the dance that symbolize the elegant of peacock movements. </p>
 					<p>Merak dance is can be performed solo or in groups. The dancers of this beautiful dance are wearing scarf that perform the tail of the peacock with multicolor scenic tone. Moreover, the dancers are also wearing the crown a la peacock head crown.
@@ -169,6 +106,18 @@
              <img src="images/culture/KecapiSuling.jpg" />
                 <div style="margin-left:250px;">
                     <h3>Kecapi Suling</h3>
+                    <div id="ratingBox">
+                        <!--change div id="r1" to article title-->
+                        <div id="kecapi_suling" class="rate_widget">
+                            <div class="star_1 ratings_stars"></div>
+                            <div class="star_2 ratings_stars"></div>
+                            <div class="star_3 ratings_stars"></div>
+                            <div class="star_4 ratings_stars"></div>
+                            <div class="star_5 ratings_stars"></div>
+                            <div class="total_votes">vote data</div>
+                            <div class="prev_vote"></div>
+                        </div>
+                    </div>
                     <p>Kecapi Suling , Sundanese Culture Harmonious Society indeed have known stringed instrument . Melody and beautiful harmony created from the plucked instrument . However , not many people who know about the lute or lyre flute which is a unique art Cianjur city .
 					In essence , consists of flute harp lute ovary . Ovarian harp shaped like a boat , so it is better known as a harp lute boat . This art is usually presented instrumentally , but not infrequently also lute flute used to accompany chanting songs from sekar interpreter .
 					The songs are presented as gamelan , Talutur , SINOM , Kaleon using Salendro barrel , Sorog , or Pelog .</p>
@@ -177,6 +126,29 @@
             
             
         </div>
+        
+        <div id="commentSection">
+            <!-- begin htmlcommentbox.com -->
+            <div id="HCB_comment_box">
+                <a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...
+            </div>
+            <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
+			<script type="text/javascript" id="hcb">
+                if(!window.hcb_user){
+                    hcb_user={};
+                } 
+                (function(){
+                    var s=document.createElement("script"), l=(hcb_user.PAGE || ""+window.location), h="//www.htmlcommentbox.com";
+                    s.setAttribute("type","text/javascript");
+                    s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10");
+                    if (typeof s!="undefined") 
+                        document.getElementsByTagName("head")[0].appendChild(s);
+                    })
+                ();
+            </script>
+            <!-- end htmlcommentbox.com -->
+        </div>
+        
         <div class="footer">    
             <p>&copy; Copyright 2014. All Rights Reserved.</p>
             <p>www.excitingindonesia.com</p>
