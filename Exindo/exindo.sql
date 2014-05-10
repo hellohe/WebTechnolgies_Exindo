@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2014 at 10:49 AM
+-- Generation Time: May 09, 2014 at 03:52 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `exindo`
 --
+CREATE DATABASE IF NOT EXISTS `exindo` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `exindo`;
 
 -- --------------------------------------------------------
 
@@ -38,8 +40,13 @@ CREATE TABLE IF NOT EXISTS `rating` (
 --
 
 INSERT INTO `rating` (`ArticleTitle`, `TotalVotes`, `TotalPoints`, `AvgVote`) VALUES
-('r1', 205, 717, '3.50'),
-('r2', 10, 34, '3.40');
+('r1', 211, 743, '3.52'),
+('r2', 10, 34, '3.40'),
+('acehnese_clothing', 3, 14, '4.67'),
+('rincong', 1, 4, '4.00'),
+('ketoprak', 1, 5, '5.00'),
+('babi_panggang', 1, 4, '4.00'),
+('banjarmasin', 1, 3, '3.00');
 
 -- --------------------------------------------------------
 
@@ -63,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `registration` (
 --
 
 INSERT INTO `registration` (`username`, `password`, `firstname`, `lastname`, `age`, `phone`, `email`) VALUES
-('admin', '8e8be2b03e76a0b31593906724435a81', 'admin dont need name', 'admin dont need name', 999, 1234, 'admin@gmail.com');
+('admin', '8e8be2b03e76a0b31593906724435a81', 'admin dont need name', 'admin dont need name', 999, 1234, 'admin@gmail.com'),
+('johndoe', '34819d7beeabb9260a5c854bc85b3e44', 'john', 'doe', 13, 1234123, 'johndoe@gmail.com');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

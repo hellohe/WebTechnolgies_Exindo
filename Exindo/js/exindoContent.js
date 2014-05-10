@@ -26,19 +26,6 @@ $(document).ready(function() {
 		});
 	}
 	
-	//check whether the user is logged in
-	loggedin = CheckUserLoggedIn();
-	if(loggedin != false){
-		document.getElementById('statusbox').innerHTML = 'Welcome, ' + loggedin + ' | <a href="#" onclick="signout()">LOGOUT</a>';
-	}
-	else{
-		var allPrevVote = document.getElementsByClassName('prev_vote');
-		for (var i = 0; i < allPrevVote.length; i++) {
-			var lbl = allPrevVote[i];
-			lbl.innerHTML = "<strong>Login to vote</strong>";
-		}
-	}
-	
 	//rating system javascript
 	//get values fromm database for every rating widget
 	$('.rate_widget').each(function(i) {
@@ -69,7 +56,6 @@ $(document).ready(function() {
 			},
 			'json'
 		);
-		
 	});
 	
 	//change star on hover
@@ -86,6 +72,19 @@ $(document).ready(function() {
 		}
 	);
 	
+	//check whether the user is logged in
+	loggedin = CheckUserLoggedIn();
+	if(loggedin != false){
+		document.getElementById('statusbox').innerHTML = 'Welcome, ' + loggedin + ' | <a href="#" onclick="signout()">LOGOUT</a>';
+	}
+	else{
+		var allPrevVote = document.getElementsByClassName('prev_vote');
+		for (var i = 0; i < allPrevVote.length; i++) {
+			var lbl = allPrevVote[i];
+			lbl.innerHTML = "<strong>Login to vote</strong>";
+		}
+	}
+	
 	//send the vote to database only when cookie is not present (user has not vote)
 	$('.ratings_stars').bind('click', function() {
 		var star = this;
@@ -101,7 +100,6 @@ $(document).ready(function() {
 			}
 		}
 		
-		alert(loggedin);
 		if(loggedin != false && !isPresent){
 			var clicked_data = {
 				clicked_on : $(star).attr('class'),
